@@ -1,7 +1,10 @@
 import React from 'react'
 
-export default function Page1() {
+const Page1=()=> {
   return (
-    <div>page11111</div>
+    <div>
+     首页
+    </div>
   )
 }
+export default Page1
