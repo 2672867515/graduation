@@ -3,19 +3,7 @@ import React, { ReactElement, useEffect, useRef, useState } from 'react';
 import * as THREE from "three";
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import  './index.css'
-import home1_left from './img/home1_left.jpg'
-import home1_right from './img/home1_right.jpg'
-import home1_top from './img/home1_top.jpg'
-import home1_bottom from './img/home1_bottom.jpg'
-import home1_front from './img/home1_front.jpg'
-import home1_back from './img/home1_back.jpg'
-
-import home2_left from './img/home2_left.jpg'
-import home2_right from './img/home2_right.jpg'
-import home2_top from './img/home2_top.jpg'
-import home2_bottom from './img/home2_bottom.jpg'
-import home2_front from './img/home2_front.jpg'
-import home2_back from './img/home2_back.jpg'
+import {image} from '../image.ts'
 import { Button, Modal, notification, Radio, Space } from 'antd';
 
 interface HomeOjb {
@@ -38,15 +26,7 @@ const Vr = (): ReactElement => {
 
   const [currentHome, setCurrentHome] = useState('') // 当前所处房间
 
-  const [res, setRes] = useState<any>({
-    home1: {
-      image: [home1_left, home1_right, home1_top, home1_bottom, home1_front, home1_back],// 左右前后上下
-    
-    },
-    home2: {
-      image: [home2_left, home2_right, home2_top, home2_bottom, home2_front, home2_back]
-    }
-  })
+  const [res, setRes] = useState<any>(image)
 
   useEffect(() => {
     init()
@@ -77,7 +57,7 @@ const Vr = (): ReactElement => {
   const getNewData = (obj: any) => {
     return Object.entries(obj).map((v: any) => {
       return [v[0], {
-        ...v[1], image: v[1].image.map((el: any) => {
+         ...v[1],vimage: v[1].image.map((el: any) => {
           const text = loader.load(el)
           return new THREE.MeshBasicMaterial({ map: text, side: THREE.DoubleSide, })
         })
@@ -113,7 +93,7 @@ const Vr = (): ReactElement => {
     //渲染至threeDemo
     setTimeout(() => {
       document.getElementById("threeDemo")!.appendChild(renderer.domElement);
-    }, 1500);
+    }, 1000);
   
     // 创建controls对象;
     controls.enableDamping = true; //动态阻尼系数 就是鼠标拖拽旋转灵敏度
@@ -135,7 +115,7 @@ const Vr = (): ReactElement => {
     const activeHome = homeArr.find((v: any) => v[0] == currentHome)
     // 创建一个矩形，贴上六张材质图片，模拟室内效果
     const homeGeoMetry = new THREE.BoxGeometry(40, 40, 40);
-    const homeMesh = new THREE.Mesh(homeGeoMetry, activeHome[1].image);
+    const homeMesh = new THREE.Mesh(homeGeoMetry, activeHome[1].vimage);
     homeMesh.castShadow = true
 
     homeMesh.position.set(0, 0, 0);
@@ -148,15 +128,27 @@ const Vr = (): ReactElement => {
     requestAnimationFrame(renderHome);
     renderer.render(scene, camera);
   }
-  const change=()=>{
-    setCurrentHome(getNewData(res)[1][0]) 
+  const change=(i)=>{
+    setCurrentHome(getNewData(res)[i][0]) 
   }
+
   return (
     <div className='vr'>
       {/* 场景 */}
       <div id="threeDemo" style={{ overflow: 'hidden' }}>
       </div>
-      <button onClick={change}>换</button>
+      <div className="select">
+      {
+        homeArr.map((item,index)=>{
+          return (
+          <div onClick={()=>change(index)} className="option">
+            <div className="text">{item[0]}</div>
+            <img style={{ width: '100%',height: '100%'}} key={index} src={item[1].image[1]} /> 
+          </div>
+          )
+        })
+      }
+      </div>
     </div>
   );
 }

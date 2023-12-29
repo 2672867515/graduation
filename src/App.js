@@ -1,7 +1,6 @@
 // import './App.css';
 import React,{Suspense} from "react";
 import { Route,Link,Switch,Redirect } from 'react-router-dom';
-import { lazy } from 'react';
 import routes from './router.ts'
 // const Vr = lazy(() => import('./VR/index.tsx')); 
 // const Page1 = lazy(() => import('./pages/page1/index.tsx')); 
