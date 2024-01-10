@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Page1=()=> {
+const Page1=(props)=> {
   return (
     <div>
      首页

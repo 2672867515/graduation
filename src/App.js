@@ -11,7 +11,7 @@ function App() {
     <div className="App">
       <Header />
         {/* 注册路由 */}
-      <Suspense fallback={<h1>loading...</h1>}>
+      <Suspense>
         <Switch>
           {routes.map((item,index)=>{
            return <Route path={item.path} key={index} component={item.component} />
