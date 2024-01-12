@@ -4,6 +4,7 @@ import * as THREE from "three";
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import  './index.css'
 import {image} from '../image.ts'
+import { useParams } from 'react-router-dom';
 import { Button, Modal, notification, Radio, Space } from 'antd';
 
 interface HomeOjb {
@@ -28,8 +29,11 @@ const Vr = (): ReactElement => {
 
   const [res, setRes] = useState<any>(image)
 
+  const { id } = useParams();
+
+
   useEffect(() => {
-    init()
+    init() 
   }, [])
 
   useEffect(() => {
