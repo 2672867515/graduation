@@ -7,7 +7,7 @@ import routes from './router.ts'
 import Header from './components/header/index.tsx'
 
 function App(props) {
-  const [show,Setshow]=useState(true)
+  const [show,Setshow]=useState(false)
   const history=useHistory()
   console.log(history);
   useEffect(()=>{
