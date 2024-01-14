@@ -1,5 +1,5 @@
 import React from 'react'
-import Vr from '../../VR/index.tsx'
+import Vr from '../../components/VR/index.tsx'
 const Page2=(props)=> {
   return (
     <div>page2222

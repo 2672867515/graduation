@@ -2,8 +2,8 @@
 import React, { ReactElement, useEffect, useRef, useState } from 'react';
 import * as THREE from "three";
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import  './index.css'
-import {image} from '../image.ts'
+import  './index.scss'
+import {image} from '../../image.ts'
 import { useParams } from 'react-router-dom';
 import { Button, Modal, notification, Radio, Space } from 'antd';
 

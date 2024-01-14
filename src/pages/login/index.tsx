@@ -3,33 +3,58 @@ import { useHistory } from 'react-router-dom';
 import './index.scss'
 import { Button, Form, Input } from 'antd';
 import { LockOutlined , UserOutlined } from '@ant-design/icons';
-
+import { useSelector, useDispatch } from 'react-redux';
+import { LoginState } from '../../redux/action';
 const  Login=(props)=> {
   let   history = useHistory() //将useHistory()钩子赋值给history方便使用
   const [login,Setlogin]=useState('login')
+  const isLogin = useSelector((state) => state.isLogin);
+  const dispatch = useDispatch();
+
   const onFinish = (values: any) => {
     console.log('Success:', values);
     history.push(`/Page1`)
+    localStorage.setItem('login','true')
+    // 会重新加载
+    dispatch(LoginState('true'))
   };
-  
+
   const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);
   };
-  const register=()=>{
+
+  const goregister=()=>{
     Setlogin('register')
   }
+  const gologin=()=>{
+    Setlogin('login')
+  }
+
+  const onRegister = (values: any) => {
+    console.log('Success:', values);
+  };
+  const onRegisterFailed = (errorInfo: any) => {
+    console.log('Failed:', errorInfo);
+  };
+
+
   type FieldType = {
     username?: string;
     password?: string;
+  };
+  type FieldType2 = {
+    username?: string;
+    password?: string;
+    password2?: string;
   };
  
   return (
     <div className='login-box'>
       <div className="title">基于three.js的3D选房平台</div>
       <div className="modal">
-        <div className="state">登录</div>
+        {login==='login'&&<div className="state">登录</div>}
         {login==='register'&&<div className="state">注册</div>}
-      <Form
+      {login==='login'&&<Form
         name="login"
         wrapperCol={{  offset: 2, span: 20 }}
         style={{ maxWidth: 600 }}
@@ -41,14 +66,14 @@ const  Login=(props)=> {
           name="username"
           rules={[{ required: true, message: '请输入账号' }]}
         >
-          <Input size="large"  prefix={<UserOutlined className="site-form-item-icon" />}  />
+          <Input  placeholder="账号" size="large"  prefix={<UserOutlined className="site-form-item-icon" />}  />
         </Form.Item>
 
         <Form.Item<FieldType>
           name="password"
           rules={[{ required: true, message: '请输入密码' }]}
         >
-          <Input.Password size="large"  prefix={<LockOutlined  className="site-form-item-icon" />} />
+          <Input.Password  placeholder="密码" size="large"  prefix={<LockOutlined  className="site-form-item-icon" />} />
         </Form.Item>
 
         <Form.Item wrapperCol={{ offset: 2, span: 20 }}>
@@ -57,43 +82,64 @@ const  Login=(props)=> {
           </Button>
         </Form.Item>
         <Form.Item wrapperCol={{ offset: 2, span: 20 }}>
-          <Button onClick={register} size="large"  block>
+          <Button onClick={goregister} size="large"  block>
             没有账号，去注册
           </Button>
         </Form.Item>
-      </Form>
+      </Form>}
+
       {login==='register'&&<Form
-      name="dependencies"
+      wrapperCol={{offset:2, span: 20 }}
+      name="register"
       autoComplete="off"
+      onFinish={onRegister}
+      onFinishFailed={onRegisterFailed}
       style={{ maxWidth: 600 }}
-      layout="vertical"
     >
-      <Form.Item label="Password" name="password" rules={[{ required: true }]}>
-        <Input />
+       <Form.Item<FieldType2>
+          name="username"
+          rules={[{ required: true, message: '请输入账号' }]}
+        >
+          <Input  placeholder="账号" prefix={<UserOutlined className="site-form-item-icon" />}  />
+        </Form.Item>
+
+      <Form.Item<FieldType2> 
+      name="password" 
+      rules={[{ required: true,message: '请输入密码' }]}>
+        <Input  placeholder="密码" prefix={<LockOutlined  className="site-form-item-icon" />} />
       </Form.Item>
 
       {/* Field */}
-      <Form.Item
-        label="Confirm Password"
+      <Form.Item<FieldType2>
         name="password2"
         dependencies={['password']}
         rules={[
           {
             required: true,
+            message: '请再次输入密码'
           },
           ({ getFieldValue }) => ({
             validator(_, value) {
               if (!value || getFieldValue('password') === value) {
                 return Promise.resolve();
               }
-              return Promise.reject(new Error('The new password that you entered do not match!'));
+              return Promise.reject(new Error('密码不一致！'));
             },
           }),
         ]}
       >
-        <Input />
+        <Input  placeholder="确认密码" prefix={<LockOutlined  className="site-form-item-icon" />} />
       </Form.Item>
-
+      <Form.Item wrapperCol={{ offset:2, span: 20 }}>
+          <Button type="primary"  htmlType="submit" size="middle"  block style={{ backgroundColor: 'rgb(0, 160, 0)', borderColor: 'rgb(0, 150, 0)' }}>
+            注册
+          </Button>
+        </Form.Item>
+      <Form.Item wrapperCol={{ offset:2, span: 20 }}>
+          <Button onClick={gologin}  size="middle"  block>
+            返回登录
+          </Button>
+        </Form.Item>
     </Form>}
       </div>
     </div>
