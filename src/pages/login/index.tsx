@@ -4,19 +4,17 @@ import './index.scss'
 import { Button, Form, Input } from 'antd';
 import { LockOutlined , UserOutlined } from '@ant-design/icons';
 import { useSelector, useDispatch } from 'react-redux';
-import { LoginState } from '../../redux/action';
+import { LoginState,HeaderState } from '../../redux/action';
 const  Login=(props)=> {
   let   history = useHistory() //将useHistory()钩子赋值给history方便使用
   const [login,Setlogin]=useState('login')
-  const isLogin = useSelector((state) => state.isLogin);
   const dispatch = useDispatch();
-
   const onFinish = (values: any) => {
     console.log('Success:', values);
     history.push(`/Page1`)
     localStorage.setItem('login','true')
-    // 会重新加载
     dispatch(LoginState('true'))
+    dispatch(HeaderState('Page1'))
   };
 
   const onFinishFailed = (errorInfo: any) => {

@@ -34,6 +34,8 @@ const Vr = (): ReactElement => {
 
   useEffect(() => {
     init() 
+    // console.log(id);
+    
   }, [])
 
   useEffect(() => {
@@ -147,7 +149,7 @@ const Vr = (): ReactElement => {
           return (
           <div onClick={()=>change(index)} className="option">
             <div className="text">{item[0]}</div>
-            <img style={{ width: '100%',height: '100%'}} key={index} src={item[1].image[1]} /> 
+            <img style={{ width: '100%',height: '100%'}} key={index} src={item[1].image[4]} /> 
           </div>
           )
         })

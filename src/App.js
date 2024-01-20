@@ -15,7 +15,7 @@ function App(props) {
           {routes.map((item,index)=>{
            return <Route path={item.path} key={index} component={item.component} />
           })}
-          <Redirect to="/Page1" />
+          <Redirect to="/home" />
         </Switch>
       </Suspense>
     </div>

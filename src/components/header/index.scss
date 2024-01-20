@@ -3,6 +3,8 @@
     height: 4vh;
     background-color: rgb(252,251,252);
    text-align: center; 
+   position: relative;
+   z-index: 10;
    .items{
         position: relative;
         margin: auto;
@@ -14,7 +16,7 @@
         align-items: center;
         @mixin item{
             cursor: pointer;
-            margin-left: 20px;
+            margin-left: 25px;
             transition: 50ms;
             color: rgba(0, 0, 0,0.3);
             font-weight:bolder;

@@ -7,8 +7,8 @@ export const LoginState = data => ({
   type: Type.ISLOGIN,
   value: data,
 });
-export const decAction = data => ({
-  type: Type.DECREMENT,
+export const HeaderState = data => ({
+  type: Type.HEADER,
   value: data,
 });
 /**
