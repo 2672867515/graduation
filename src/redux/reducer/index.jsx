@@ -3,7 +3,7 @@ import { Type } from '../constant';
 // 设置初始值
 const initState = {
   isLogin:'false',
-  header:'Page1'
+  header:'Home'
 };
 export default (state = initState, action) => {
   const { type, value } = action;

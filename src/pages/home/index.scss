@@ -1,12 +1,17 @@
 .mainbox{
     position: relative;
-
+    .toTop{
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-Index: 999
+    }
     .bg{
         width: 100%;
         height: 55vh;
         position: absolute;
         top: -5vh;
-        animation: animation 3s linear infinite;
+        animation: animation 5s linear infinite;
     }
     @keyframes animation{
         0% {
@@ -33,13 +38,62 @@
         font-style:italic;
         line-height: 10vh;
     }
-    .content{
+    .search{
         position: absolute;
         width: 80%;
-        height: 200px;
+        height: 230px;
         border-radius: 5px;
         top: 35vh;
         left: 10%;
-        background-color: rgb(233, 233, 233);
+        background-color: rgb(255, 255, 255);
+        box-shadow: 0 0  15px rgba(0, 0, 0,0.2);
+        .searchinput{
+            position: absolute;
+            top: 10%;
+            left: 5%;
+            width: 60%;
+        }
+        .searchbut{
+            display: flex;
+            gap: 10px;
+            position: absolute;
+            top: 10%;
+            left:68% ;
+        }
+        .fastSearch{
+            display: flex;
+            justify-content: space-between;
+            width: 90%;
+            height: 140px;
+            position: absolute;
+            top: 35%;
+            left: 5%;
+            // background-color: antiquewhite;
+           
+        }
+    }
+    .content{
+        position: absolute;
+        width: 80%;
+        top: 70vh;
+        left: 10%;
+        background-color: rgb(248, 195, 195);
+        @mixin content-part{
+            width: 100%;
+            height: 300px;
+            background-color: aquamarine;
+        }
+        .content-part1{
+            @include content-part
+        }
+        .content-part2{
+            @include content-part
+        }
+        .content-part3{
+            @include content-part
+        }
+        .content-part4{
+            @include content-part
+        }
     }
 }

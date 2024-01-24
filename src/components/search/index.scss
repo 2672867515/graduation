@@ -1,0 +1,25 @@
+.searchcondition{
+    // background-color: aquamarine;
+    width: 32%;
+    height: 100%;
+    .condition{
+        position: relative;
+        // background-color: red;
+        margin-top: 5px;
+        .area{
+           margin-top: -22px;
+            margin-left:40px ;
+            display: flex;
+            gap: 8px;
+            // background-color: aliceblue;
+            flex-wrap: wrap;
+            span{
+                cursor: pointer;
+            }
+            span:hover{
+                color: rgb(0, 150, 0);
+                text-decoration-line: underline;
+            }
+        }
+    }
+}

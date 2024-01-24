@@ -5,10 +5,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import  './index.scss'
 import {image} from '../../image.ts'
 import { useParams } from 'react-router-dom';
-import {
-  ArrowsAltOutlined
-} from '@ant-design/icons';
-import { Tooltip } from 'antd';
+import { Button, Modal, notification, Radio, Space } from 'antd';
 
 interface HomeOjb {
   materials: [],
@@ -18,7 +15,7 @@ interface HomeOjb {
 let scene: any = null //场景
 let loader: any = null
 
-const Vr = (props): ReactElement => {
+const Vr = (): ReactElement => {
 
   const [camera, setCamera] = useState<any>() //摄像机
 
@@ -76,8 +73,8 @@ const Vr = (props): ReactElement => {
 
   const init = () => {
     loader = new THREE.TextureLoader() //纹理加载器
-    const width =550;
-    const height = 450
+    const width =  window.innerWidth;
+    const height = window.innerHeight
     setHomeArr(getNewData(res))
     console.log(getNewData(res));
     setCurrentHome(getNewData(res)[0][0]) // 首次进来的房间
@@ -90,8 +87,8 @@ const Vr = (props): ReactElement => {
   }
 
   const initBaseFactor = () => {
-    const width = 550;//浏览器窗口的当前视口宽度
-    const height = 450
+    const width = window.innerWidth;;//浏览器窗口的当前视口宽度
+    const height = window.innerHeight
     scene = new THREE.Scene();
     camera.position.x = 0;
     camera.position.y = 0;
@@ -145,10 +142,7 @@ const Vr = (props): ReactElement => {
     <div className='vr'>
       {/* 场景 */}
       <div id="threeDemo" style={{ overflow: 'hidden' }}>
-      <Tooltip title="全屏">
-        <a className="tip"  target='blank' href={`/bigvr/${id}`}> <ArrowsAltOutlined  />
-        </a>
-      </Tooltip>
+      </div>
       <div className="select">
       {
         homeArr.map((item,index)=>{
@@ -161,8 +155,6 @@ const Vr = (props): ReactElement => {
         })
       }
       </div>
-      </div>
-     
     </div>
   );
 }

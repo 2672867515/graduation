@@ -27,11 +27,11 @@ const Header=(props)=> {
   return (
     <div className='header'>
       <div className="items">
-        <div className="item" style={{color:click==='Page1'?'rgb(0, 153, 0)':''}} onClick={()=>page("home")}>首页</div>
-        <div className="item" style={{color:click==='Vr'?'rgb(0, 153, 0)':''}} onClick={()=>page("Vr")}>新房</div>
-        <div className="item" style={{color:click==='Vr'?'rgb(0, 153, 0)':''}} onClick={()=>page("Vr")}>二手房</div>
-        <div className="item" style={{color:click==='Vr'?'rgb(0, 153, 0)':''}} onClick={()=>page("Vr")}>租房</div>
-        <div className="item" style={{color:click==='Vr'?'rgb(0, 153, 0)':''}} onClick={()=>page("Vr")}>问答</div>
+        <div className="item" style={{color:click==='Home'?'rgb(0, 153, 0)':''}} onClick={()=>page("Home")}>首页</div>
+        <div className="item" style={{color:click==='Newhome'?'rgb(0, 153, 0)':''}} onClick={()=>page("Newhome")}>新房</div>
+        <div className="item" style={{color:click==='Used'?'rgb(0, 153, 0)':''}} onClick={()=>page("Used")}>二手房</div>
+        <div className="item" style={{color:click==='Rent'?'rgb(0, 153, 0)':''}} onClick={()=>page("Rent")}>租房</div>
+        <div className="item" style={{color:click==='Question'?'rgb(0, 153, 0)':''}} onClick={()=>page("Question")}>问答</div>
         {local==='false'&&<div className="login" style={{color:click==='Login'?'rgb(0, 153, 0)':''}} onClick={()=>page("Login")}>登录</div>}
         {
            local==='true'&&  <Popover

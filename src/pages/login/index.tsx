@@ -47,6 +47,9 @@ const  Login=(props)=> {
   };
  
   return (
+    <div className="loginpage">
+
+
     <div className='login-box'>
       <div className="title">基于three.js的3D选房平台</div>
       <div className="modal">
@@ -140,6 +143,7 @@ const  Login=(props)=> {
         </Form.Item>
     </Form>}
       </div>
+    </div>
     </div>
   );
 }
