@@ -6,11 +6,14 @@ import banner1 from '../../img/banner1.jpg';
 import banner2 from '../../img/banner2.png';
 import banner3 from '../../img/banner3.png';
 import { Button, Input } from 'antd';
+import { useDispatch } from 'react-redux';
+import { HeaderState } from '../../redux/action';
 import {
   ArrowUpOutlined
 } from '@ant-design/icons';
-const Page1=(props)=> {
+const Home=(props)=> {
   let   history = useHistory() //将useHistory()钩子赋值给history方便使用
+  const dispatch = useDispatch();
   const bannerArr=[banner1,banner2,banner3]
   const [url,setUrl]=useState(bannerArr[0])
   const [isVisible, setIsVisible] = useState(false);
@@ -59,6 +62,11 @@ const Page1=(props)=> {
     setInputValue(event.target.value);
   }
 
+  const search=(type)=>{
+
+    history.push(`/${type}?q=${inputValue}`)
+    dispatch(HeaderState(type))
+  }
   return (
     <div className='mainbox'>
       <img className="bg" src={url} alt='bg' />
@@ -69,17 +77,17 @@ const Page1=(props)=> {
       <div className="search">
       <Input placeholder="请输入小区名称、地址" className='searchinput' size={'large'}  allowClear value={inputValue} onChange={onChange}  />
       <div className="searchbut">
-      <Button className='but' size={'large'} type="primary"  style={{width:'100px', backgroundColor: 'rgb(82,196,26)' }}>新房</Button>
-      <Button className='but' size={'large'} type="primary"  style={{width:'100px', backgroundColor: 'rgb(250,140,22)' }}>二手房</Button>
-      <Button className='but' size={'large'} type="primary"  style={{width:'100px', backgroundColor: 'rgb(19,194,194)'}}>租房</Button>
+      <Button className='but' size={'large'} type="primary"  style={{width:'100px', backgroundColor: 'rgb(82,196,26)' }} onClick={()=>search('Newhome')}>新房</Button>
+      <Button className='but' size={'large'} type="primary"  style={{width:'100px', backgroundColor: 'rgb(250,140,22)' }}onClick={()=>search('Used')}>二手房</Button>
+      <Button className='but' size={'large'} type="primary"  style={{width:'100px', backgroundColor: 'rgb(19,194,194)'}}onClick={()=>search('Rent')}>租房</Button>
       </div>
       <div className="fastSearch">
 
-        <Search title='新房' condition= {1} />
+        <Search title='新房' condition= {1} type='Newhome' />
 
-        <Search title='二手房' condition= {2}/>
+        <Search title='二手房' condition= {2} type='Used'/>
 
-        <Search title='租房' condition= {3}/>
+        <Search title='租房' condition= {3} type='Rent'/>
 
       </div>
       </div>
@@ -104,4 +112,4 @@ const Page1=(props)=> {
     </div>
   )
 }
-export default Page1
+export default Home

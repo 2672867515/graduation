@@ -1,63 +1,95 @@
 import React from 'react';
 import './index.scss'
-
+import { useDispatch } from 'react-redux';
+import { HeaderState } from '../../redux/action';
+import { useHistory } from 'react-router-dom';
 interface detail{
     title:string
     condition:number
+    type:String
 }
 const Search=React.memo((props:detail)=> {
-    const {title,condition}=props
+    
+    const {title,condition,type}=props
+    let   history = useHistory() //将useHistory()钩子赋值给history方便使用
+    const dispatch = useDispatch();
+    const area=[
+        {name:'鼓楼',path:'gl'},
+        {name:'晋安',path:'ja'},
+        {name:'仓山',path:'cs'},
+        {name:'台江',path:'tj'},
+        {name:'马尾',path:'mw'},
+        {name:'长乐',path:'cl'},
+        {name:'闽侯',path:'mh'},
+        {name:'福清',path:'fq'},
+        {name:'平潭',path:'pt'},
+        {name:'永泰',path:'yt'},
+        {name:'闽清',path:'mq'},
+        {name:'罗源',path:'ly'},
+        {name:'连江',path:'lj'},
+    ]
+    const newprice=[
+        {name:'1万以下',path:'max1'},
+        {name:'1-1.5万',path:'max1.5'},
+        {name:'1.5-2万',path:'max2'},
+        {name:'2-2.5万',path:'max2.5'},
+        {name:'2.5-3万',path:'max3'},
+        {name:'3万以上',path:'min3'},
+    ]
+    const usedprice=[
+        {name:'100万以内',path:'max100'},
+        {name:'100-150万',path:'max150'},
+        {name:'150-200万',path:'max200'},
+        {name:'200-250万',path:'max250'},
+        {name:'250-300万',path:'max300'},
+        {name:'300-350万',path:'max350'},
+        {name:'350-400万',path:'max400'},
+        {name:'400万以上',path:'min400'},
+    ]
+    const rentprice=[
+        {name:'1000元以内',path:'max0.1'},
+        {name:'1000-2000元',path:'max0.2'},
+        {name:'2000-3000元',path:'max0.3'},
+        {name:'3000-4000元',path:'max0.4'},
+        {name:'4000元以上',path:'min0.4'},
+    ]
+    const search=(path)=>{
+        history.push(`/${type}/${path}`)
+        dispatch(HeaderState(type))
+    }
   return (
     <div className='searchcondition'>
         {title}
         {condition!==2&&<div className="condition">
            区域：
             <div className="area">
-                <span>鼓楼</span>
-                <span>晋安</span>
-                <span>仓山</span>
-                <span>台江</span>
-                <span>马尾</span>
-                <span>长乐</span>
-                <span>闽侯</span>
-                <span>福清</span>
-                <span>平潭</span>
-                <span>永泰</span>
-                <span>闽清</span>
-                <span>罗源</span>
+                { area.map((item,index)=>{
+                   return <span onClick={()=>search(item.path)}>{item.name}</span>
+                })}
             </div>
         </div>}
         {condition!==2&&condition!==3&&<div className="condition">
             售价:
             <div className="area">
-                <span>1万以下</span>
-                <span>1-1.5万</span>
-                <span>1.5-2.5万</span>
-                <span>2.5-3.5万</span>
-                <span>3.5万以上</span>
+            { newprice.map((item,index)=>{
+                   return <span onClick={()=>search(item.path)}>{item.name}</span>
+                })}
             </div>
         </div>}
         {condition===2&&<div className="condition">
             售价:
             <div className="area">
-                <span>100万以内</span>
-                <span>100-150万</span>
-                <span>150-200万</span>
-                <span>200-250万</span>
-                <span>250-300万</span>
-                <span>300-350万</span>
-                <span>350-400万</span>
-                <span>400万以上</span>
+            { usedprice.map((item,index)=>{
+                   return <span onClick={()=>search(item.path)}>{item.name}</span>
+                })}
             </div>
         </div>}
         {condition===3&&<div className="condition">
             租金:
             <div className="area">
-                <span>800元以内</span>
-                <span>800-1500元</span>
-                <span>1500-3000元</span>
-                <span>3000-5000元</span>
-                <span>5000元以上</span>
+            { rentprice.map((item,index)=>{
+                   return <span onClick={()=>search(item.path)}>{item.name}</span>
+                })}
             </div>
         </div>}
         {condition>3&& <div className="condition">

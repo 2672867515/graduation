@@ -16,9 +16,9 @@ const routes = [
   { name: '大详情', component: Bigvr, path: '/bigvr/:id' },
   { name: '登录', component: Login, path: '/Login' },
   { name: '个人中心', component: Personal, path: '/Personal' },
-  { name: '新房', component: Newhome, path: '/Newhome' },
-  { name: '二手房', component: Used, path: '/Used' },
-  { name: '租房', component: Rent, path: '/Rent' },
+  { name: '新房', component: Newhome, path: '/Newhome/:path' },
+  { name: '二手房', component: Used, path: '/Used/:path' },
+  { name: '租房', component: Rent, path: '/Rent/:path' },
   { name: '问答', component: Question, path: '/Question' },
 ];
 
