@@ -11,10 +11,10 @@ const  Login=(props)=> {
   const dispatch = useDispatch();
   const onFinish = (values: any) => {
     console.log('Success:', values);
-    history.push(`/Page1`)
+    history.push(`/Home`)
     localStorage.setItem('login','true')
     dispatch(LoginState('true'))
-    dispatch(HeaderState('Page1'))
+    dispatch(HeaderState('Home'))
   };
 
   const onFinishFailed = (errorInfo: any) => {

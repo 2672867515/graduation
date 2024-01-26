@@ -68,32 +68,90 @@
             position: absolute;
             top: 35%;
             left: 5%;
-            // background-color: antiquewhite;
-           
+
         }
     }
     .content{
         position: absolute;
         width: 80%;
-        top: 70vh;
+        top: 65vh;
         left: 10%;
-        background-color: rgb(248, 195, 195);
-        @mixin content-part{
+        padding-bottom: 80px;
+        @mixin content-parts{
+            margin-top: 8vh;
             width: 100%;
-            height: 300px;
-            background-color: aquamarine;
+            position: relative;
+ 
+            .hot-title{
+                font-size: 22px;
+            }
+      
+            .hot-more{
+                cursor: pointer;
+                position: absolute;
+                color: rgb(83, 83, 83);
+                right: 0;
+                top: 0;
+            }
+            .hot-more:hover{
+                color: rgb(0, 150, 0);
+                text-decoration-line: underline;
+            }
         }
-        .content-part1{
-            @include content-part
+        .content-part{
+            @include content-parts;
+            .part-item{
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between;
+                margin-top: 20px;
+                gap: 20px;
+            }
+          
         }
-        .content-part2{
-            @include content-part
+        .banner{
+            width: 100%;
+            overflow: hidden;
+            .part1{
+                width: 200%;
+                height: 400px;
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between;
+                margin-top: 20px;
+                transition: 1s;
+                margin-left: 0%;
+                padding: 15px;
+                box-sizing: border-box;
+                .part1-content{
+                    width: 24%;
+                    height: 100%;
+                    &:hover{
+                        box-shadow: 0 0 20px rgba(0, 0, 0,0.3);
+                    }
+                .part1-img{
+                    width: 100%;
+                    height: 80%;
+                }
+                .part1-detail{
+                        width: 100%;
+                        .part1-name{
+                            font-size: 18px;
+                        }
+                        .part1-size{
+                            color: rgba(0, 0, 0,0.7);
+                        }
+                        .part1-price{
+                            color: red;
+                            font-size: 18px;
+                        }
+                }
+                }
+            
+            }
+
+                    
         }
-        .content-part3{
-            @include content-part
-        }
-        .content-part4{
-            @include content-part
-        }
+
     }
 }

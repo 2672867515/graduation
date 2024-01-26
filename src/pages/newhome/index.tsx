@@ -5,8 +5,8 @@ const Newhome=(props)=> {
   const { path } = useParams();
   console.log(path);
   const queryParams = new URLSearchParams(window.location.search);
-  const qValue = queryParams.get('q');
-  console.log(qValue);
+  const kw = queryParams.get('kw');
+  console.log(kw);
   
   return (
     <div>

@@ -11,6 +11,8 @@ import { HeaderState } from '../../redux/action';
 import {
   ArrowUpOutlined
 } from '@ant-design/icons';
+import loading from '../../img/2ba.jpg'
+import Hotitem from '../../components/hotitem/index.tsx'
 const Home=(props)=> {
   let   history = useHistory() //将useHistory()钩子赋值给history方便使用
   const dispatch = useDispatch();
@@ -18,6 +20,9 @@ const Home=(props)=> {
   const [url,setUrl]=useState(bannerArr[0])
   const [isVisible, setIsVisible] = useState(false);
   const [inputValue, setInputValue] = useState('');
+  const [topbanner, setTopbanner] = useState(false);
+  const hotnew=[1,2,3,4,5,6,7,8]
+  const hotnew11=[1,2,3,4]
   //轮播
   useEffect(()=>{
     let i=0
@@ -29,6 +34,13 @@ const Home=(props)=> {
         i=0
       }
     },5000)
+    const intervalId = setInterval(() => {
+      setTopbanner((prevValue) => !prevValue);
+    }, 5000);
+
+
+    // 在组件卸载时清除定时器，以避免资源泄漏
+    return () => clearInterval(intervalId);
   },[])
   // 监听滚动事件
   useEffect(() => {
@@ -54,19 +66,20 @@ const Home=(props)=> {
     });
   };
 
-  const login=(id:number)=>{
-    history.push(`/detail/${id}`)
-  }
-
   const onChange=(event)=>{
     setInputValue(event.target.value);
   }
 
   const search=(type)=>{
-
-    history.push(`/${type}?q=${inputValue}`)
+    history.push(`/${type}/to?kw=${inputValue}`)
     dispatch(HeaderState(type))
   }
+
+  const more=(type)=>{
+    history.push(`/${type}/all`)
+    dispatch(HeaderState(type))
+    
+}
   return (
     <div className='mainbox'>
       <img className="bg" src={url} alt='bg' />
@@ -92,23 +105,54 @@ const Home=(props)=> {
       </div>
       </div>
       <div className="content">
-       
-        <div className="content-part1">
-          热门套房
-          <div className="a" onClick={()=>login(1)}>11</div>
-          <div className="a" onClick={()=>login(2)}>22</div>
+        <div className="content-part">
+          
+          <div className="hot-title">热门套房</div>
+          <div className="banner">
+            <div className="part1" style={{marginLeft:topbanner?'-100%':'0'}}>
+            {hotnew11.map(()=>{
+              return( <div className="part1-content">
+              <img className="part1-img" src={loading} alt='' />
+                  <div className="part1-detail">
+                    <div className="part1-name">{1}</div>
+                    <div className="part1-size">{1}</div>
+                    <div className="part1-price">{1}</div>
+                  </div>
+              </div>)
+            })}
+            </div>
+          </div>
         </div>
-        <div className="content-part2">
-          精选新房
+        <div className="content-part">
+          <div className="hot-title">精选新房</div>
+          <div className="hot-more" onClick={()=>more('Newhome')}>查看更多</div>
+          <div className="part-item">
+            {hotnew.map(()=>{
+              return <Hotitem id={2} type='Newhome' name='汤臣一品' size='1-1-1' price='1000w'  />
+            })}
+          </div>
+        
         </div>
-        <div className="content-part3">
-          精选二手房
+        <div className="content-part">
+          <div className="hot-title">精选二手房</div>
+          <div className="hot-more" onClick={()=>more('Used')}>查看更多</div>
+          <div className="part-item">
+            {hotnew.map(()=>{
+              return <Hotitem id={2} type='Used' name='汤臣一品' size='1-1-1' price='1000w'  />
+            })}
+          </div>
+        
         </div>
-        <div className="content-part4">
-          热租好房
+        <div className="content-part">
+          <div className="hot-title">热租好房</div>
+          <div className="hot-more" onClick={()=>more('Rent')}>查看更多</div>
+          <div className="part-item">
+            {hotnew.map(()=>{
+              return <Hotitem id={2} type='Rent' name='汤臣一品' size='1-1-1' price='1000w'  />
+            })}
+          </div>
         </div>
       </div>
-    
     </div>
   )
 }

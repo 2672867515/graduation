@@ -1,9 +1,8 @@
-// import './App.css';
+import './App.css';
 import React,{Suspense, useEffect, useState} from "react";
 import { Route,Link,Switch,Redirect,useHistory  } from 'react-router-dom';
 import routes from './router.ts'
 import Header from './components/header/index.tsx'
-
 function App(props) {
 
   return (
@@ -18,7 +17,7 @@ function App(props) {
           <Redirect to="/home" />
         </Switch>
       </Suspense>
-    </div>
+      </div>
   );
 }
 
