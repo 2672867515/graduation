@@ -1,0 +1,33 @@
+.Used{
+    width: 80%;
+    margin-left: 10%;
+    position: relative;
+    background-color: antiquewhite;
+    height: 2000px;
+    .head{
+        width: 100%;
+        padding-top: 20px;
+        background-color: aliceblue;
+        position: relative;
+        .project{
+            font-size: 30px;
+            font-weight: bolder;
+            color: rgb(29, 182, 131);
+        }
+        .pagetype{
+            margin-left: 20px;
+            font-size: 18px;
+            font-weight: bolder;
+        }
+        .searchinput{
+            position: absolute;
+            right: 10%;
+            width: 40%;
+        }
+        .but{
+            position: absolute;
+            right: 00%;
+        }
+    }
+   
+}

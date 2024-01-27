@@ -22,7 +22,7 @@ const Home=(props)=> {
   const [inputValue, setInputValue] = useState('');
   const [topbanner, setTopbanner] = useState(false);
   const hotnew=[1,2,3,4,5,6,7,8]
-  const hotnew11=[1,2,3,4]
+  const hothouse=[1,2,3,4]
   //轮播
   useEffect(()=>{
     let i=0
@@ -80,6 +80,11 @@ const Home=(props)=> {
     dispatch(HeaderState(type))
     
 }
+const detial=(id)=>{
+  history.push(`/detail/${id}`)
+  dispatch(HeaderState('Newhome'))
+  
+}
   return (
     <div className='mainbox'>
       <img className="bg" src={url} alt='bg' />
@@ -88,7 +93,7 @@ const Home=(props)=> {
       基于three.js的3D选房平台
       </div>
       <div className="search">
-      <Input placeholder="请输入小区名称、地址" className='searchinput' size={'large'}  allowClear value={inputValue} onChange={onChange}  />
+      <Input placeholder="请输入楼盘名称、地址" className='searchinput' size={'large'}  allowClear value={inputValue} onChange={onChange}  />
       <div className="searchbut">
       <Button className='but' size={'large'} type="primary"  style={{width:'100px', backgroundColor: 'rgb(82,196,26)' }} onClick={()=>search('Newhome')}>新房</Button>
       <Button className='but' size={'large'} type="primary"  style={{width:'100px', backgroundColor: 'rgb(250,140,22)' }}onClick={()=>search('Used')}>二手房</Button>
@@ -110,8 +115,8 @@ const Home=(props)=> {
           <div className="hot-title">热门套房</div>
           <div className="banner">
             <div className="part1" style={{marginLeft:topbanner?'-100%':'0'}}>
-            {hotnew11.map(()=>{
-              return( <div className="part1-content">
+            {hothouse.map(()=>{
+              return( <div className="part1-content" onClick={()=>detial(1)}>
               <img className="part1-img" src={loading} alt='' />
                   <div className="part1-detail">
                     <div className="part1-name">{1}</div>
