@@ -2,12 +2,11 @@
     width: 80%;
     margin-left: 10%;
     position: relative;
-    background-color: antiquewhite;
-    height: 2000px;
+    // background-color: antiquewhite;
+    // height: 2000px;
     .head{
         width: 100%;
         padding-top: 20px;
-        background-color: aliceblue;
         position: relative;
         .project{
             font-size: 30px;
@@ -27,6 +26,80 @@
         .but{
             position: absolute;
             right: 00%;
+        }
+    }
+    .chat{
+        width: 100%;
+        background-color:  rgb(35,201,147);
+        margin-top: 20px;
+        color: white;
+        font-size: 18px;
+        padding: 0 5px;
+        box-sizing: border-box;
+    }
+    .searchpart{
+        width: 100%;
+        margin-top: 20px;
+    }
+    .newcontent{
+        margin-top: 20px;
+        width: 100%;
+        position: relative;
+        .newhead{
+            width: 70%;
+            border-bottom: 2px solid  rgb(35,201,147);
+            display: flex;
+            .headitm{
+                color: black;
+                font-size: 18px;
+                font-weight: 500;
+                width: 100px;
+                text-align: center;
+                padding: 5px;
+                transition: 200ms;
+                box-sizing: border-box;
+                &:hover{
+                    color: white;
+                    background-color: rgb(35,201,147);
+                }
+            }
+            .headitmclick{
+                background-color: rgb(35,201,147);
+                color: white;
+            }
+        }
+        .newhouse{
+            position: absolute;
+            left: 0;
+            top: 50px;
+            width: 70%;
+            .houseitem{
+                width: 100%;
+                padding:10px  0 ;
+                border-bottom: 1px solid rgba(0, 0, 0,0.1);
+                box-sizing: border-box;
+                margin-top: 10px;
+                position: relative;
+                & .img{
+                    width: 20%;
+                }
+                & .title{
+                    position: absolute;
+                    left: 22%;
+                    top: 5px;
+                    font-size: 20px;
+                    font-weight: bold;
+                }
+           
+            }
+        }
+        .hotnew{
+            position: absolute;
+            right: 0;
+            top: 60px;
+            width: 28%;
+            height: 200px;
+            background-color: rgb(189, 208, 208);
         }
     }
    

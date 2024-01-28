@@ -1,0 +1,36 @@
+.pagesearch{
+    width: 100%;
+    padding: 20px;
+    padding-top: 0;
+    border: 1px solid rgba(0, 0, 0,0.1);
+    box-sizing: border-box;
+    .condition{
+        position: relative;
+        margin-top: 15px;
+        .area{
+            margin-top: -22px;
+            margin-left:50px ;
+            display: flex;
+            gap: 25px;
+            flex-wrap: wrap;
+            span{
+                cursor: pointer;
+            }
+            span:hover{
+                color: rgb(0, 150, 0);
+                text-decoration-line: underline;
+            }
+        }
+        .searchitem{
+            cursor: pointer;
+            &:hover{
+                color: rgb(0, 150, 0);
+                text-decoration-line: underline;
+            }
+        }
+    }
+    .hr{
+        border-color: rgba(0, 0, 0,0.1);
+        margin-top:20px
+    }
+}
