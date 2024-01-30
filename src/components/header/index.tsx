@@ -17,7 +17,7 @@ const Header=(props)=> {
   const page=(page:string)=>{
     dispatch(HeaderState(page))
     if(page!=='Personal'&&page!=='Home'&&page!=='Question')
-    history.push(`/${page}/all`)
+    history.push(`/${page}/all?type=${page}`)
     else
     history.push(`/${page}`)
   }

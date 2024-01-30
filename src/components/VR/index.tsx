@@ -34,6 +34,8 @@ const Vr = (props): ReactElement => {
 
   const { id } = useParams();
 
+  const width =750;
+  const height = 600
 
   useEffect(() => {
     init() 
@@ -76,8 +78,7 @@ const Vr = (props): ReactElement => {
 
   const init = () => {
     loader = new THREE.TextureLoader() //纹理加载器
-    const width =550;
-    const height = 450
+
     setHomeArr(getNewData(res))
     console.log(getNewData(res));
     setCurrentHome(getNewData(res)[0][0]) // 首次进来的房间
@@ -90,8 +91,6 @@ const Vr = (props): ReactElement => {
   }
 
   const initBaseFactor = () => {
-    const width = 550;//浏览器窗口的当前视口宽度
-    const height = 450
     scene = new THREE.Scene();
     camera.position.x = 0;
     camera.position.y = 0;

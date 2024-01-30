@@ -16,7 +16,7 @@ const Search=React.memo((props:detail)=> {
     const dispatch = useDispatch();
    
     const search=(path)=>{
-        history.push(`/${type}/${path}`)
+        history.push(`/${type}/${path}?type=${type}`)
         dispatch(HeaderState(type))
     }
   return (

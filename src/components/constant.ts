@@ -64,5 +64,14 @@ const tese=[
     {name:'送车位',path:'carport'},
     {name:'学区房',path:'school'}
 ]
+const rentts=[
+    {name:'近地铁',path:'metro'},
+    {name:'近商圈',path:'cbd'},
+    {name:'套房',path:'suite'},
+    {name:'合租',path:'share'},
+    {name:'独栋别墅',path:'villa'},
+    {name:'学校附近',path:'school'},
+    {name:'医疗设施完善',path:'hospital'}
+]
 
-export {area,newprice,usedprice,rentprice,huxing,mianji,tese}
+export {area,newprice,usedprice,rentprice,huxing,mianji,tese,rentts}

@@ -71,17 +71,17 @@ const Home=(props)=> {
   }
 
   const search=(type)=>{
-    history.push(`/${type}/to?kw=${inputValue}`)
+    history.push(`/${type}/to?kw=${inputValue}&type=${type}`)
     dispatch(HeaderState(type))
   }
 
   const more=(type)=>{
-    history.push(`/${type}/all`)
+    history.push(`/${type}/all?type=${type}`)
     dispatch(HeaderState(type))
     
 }
 const detial=(id)=>{
-  history.push(`/detail/${id}`)
+  history.push(`/detail/${id}?type=Newhome`)
   dispatch(HeaderState('Newhome'))
   
 }

@@ -1,26 +1,46 @@
-import { Button } from 'antd';
-import Input from 'antd/es/input/Input';
+import { Button, Input } from 'antd';
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import './index.scss'
-  const Rent=()=> {
-    const { path } = useParams();
-    console.log(path);
-    const queryParams = new URLSearchParams(window.location.search);
-    const kw = queryParams.get('kw');
-    const [inputValue, setInputValue] = useState('');
+import Pagesearch from '../../components/pagesearch//index.tsx'
+import img from '../../img/2bo.jpg'
+import { useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { HeaderState } from '../../redux/action/index.jsx';
+const Rent=(props)=> {
+  const dispatch = useDispatch();
+  let   history = useHistory()
+  const { path } = useParams();
+  console.log(path);
+  const queryParams = new URLSearchParams(window.location.search);
+  const kw = queryParams.get('kw');
+  const type = queryParams.get('type');
+  dispatch(HeaderState(type))
+  const [inputValue, setInputValue] = useState('');
+
+  const housearr=[{ts:['近地铁','fg'],hot:'安心租'},
+                {ts:['ute','5rt'],hot:0},
+                {ts:['67yh','ewsf','fgh'],hot:0},
+                {ts:['q343dw','e33'],hot:0},
+                {ts:['f','fg'],hot:'安心租'},
+                {ts:['hjk','6765g'],hot:0}
+              ]
+
+  const onChange=(event)=>{
+    setInputValue(event.target.value);
+  }
+  const search=()=>{
     
-    const onChange=(event)=>{
-      setInputValue(event.target.value);
-    }
-    const search=()=>{
-      
-      console.log(inputValue);
-      
-    }
+    console.log(inputValue);
+    
+  }
+  const detial=(id)=>{
+    history.push(`/detail/${id}?type=Rent`)
+    
+  }
   return (
-    <div className='Rent'>
-       <div className="head">
+    <div className='Newhome'>
+      <div className="head">
         <span className="project">基于three.js的3D选房平台</span>
         <span className="pagetype">|  租房</span>
       <Input placeholder="请输入楼盘名称、地址" className='searchinput' size={'middle'}  allowClear value={inputValue} onChange={onChange}  />
@@ -28,7 +48,47 @@ import './index.scss'
         搜索
       </Button>
       </div>
-      <div className="searchpart">qq</div>
+      <div className="chat">安心租好房</div>
+      <div className="searchpart">
+        <Pagesearch type={3} />
+      </div>
+      <div className="newcontent">
+        <div className="newhead">
+          <div className='headitm headitmclick'>全部</div>
+        </div>
+        <div className="newhouse">
+          {housearr.map((item)=>{
+            return (<div className="houseitem" onClick={()=>detial(1)}>
+              <img className='img' src={img} alt="" />
+              {item.hot!==0&&<div className="hot">{item.hot}</div>}
+              <div className="title">汤臣一品</div>
+              <div className="size">100</div>
+              <div className="address">10dss0</div>
+              <div className="price">1000元/月</div>
+              <div className="ts">
+                  {item.ts.map((item)=>{
+                    return <div className="tsitems">{item}</div>
+                  })}
+              </div>
+            </div>)
+          })}
+         
+        </div>
+        <div className="renttip">
+          <div className="title">
+            租房小贴士
+          </div> 
+           <div className="hotitem">
+            1、定金是您对该房源的租住的担保，从法律上同时约束租赁双方的权利义务，请您确定租住后再缴纳定金。<br /><br />
+            2、未实地看房前请勿交定金，以免实地看房后对房源不满意，造成您时间和金钱上的损失。<br /><br />
+            3、如您联系的是商家房源，咨询商家或线下看房时，如遇房源承诺支持月付(押一付一)，请您与商家确认是否需要必须绑定金融产品支付。<br /> <br />
+            4、请您谨慎处理如遇经纪人以个人名义向您收取佣金的情形，避免不必要的经济损失。<br /> <br />
+            5、您知晓并同意，如产生房屋纠纷须由您与房源业主或/和房东或/和经纪人或/和商家协商或依据各方签署的协议约定进行纠纷解决，与平台无关，平台不承担任何赔偿责任。
+          </div>
+ 
+        </div>
+      </div>
+
     </div>
   );
 }

@@ -9,7 +9,7 @@ import { HeaderState } from '../../redux/action';
     let   history = useHistory() //将useHistory()钩子赋值给history方便使用
     const dispatch = useDispatch();
     const detial=(type)=>{
-        history.push(`/detail/${id}`)
+        history.push(`/detail/${id}?type=${type}`)
         dispatch(HeaderState(type))
         
     }

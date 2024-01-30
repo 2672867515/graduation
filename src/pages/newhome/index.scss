@@ -2,8 +2,6 @@
     width: 80%;
     margin-left: 10%;
     position: relative;
-    // background-color: antiquewhite;
-    // height: 2000px;
     .head{
         width: 100%;
         padding-top: 20px;
@@ -41,6 +39,11 @@
         width: 100%;
         margin-top: 20px;
     }
+   @mixin abab{
+        white-space: nowrap;         /* 防止文字换行 */
+        overflow: hidden;            /* 隐藏超出容器的内容 */
+        text-overflow: ellipsis;    /* 显示省略号 */
+    }
     .newcontent{
         margin-top: 20px;
         width: 100%;
@@ -52,12 +55,13 @@
             .headitm{
                 color: black;
                 font-size: 18px;
-                font-weight: 500;
+                font-weight: bold;
                 width: 100px;
                 text-align: center;
                 padding: 5px;
                 transition: 200ms;
                 box-sizing: border-box;
+                cursor: pointer;
                 &:hover{
                     color: white;
                     background-color: rgb(35,201,147);
@@ -73,6 +77,7 @@
             left: 0;
             top: 50px;
             width: 70%;
+            padding-bottom: 80px;
             .houseitem{
                 width: 100%;
                 padding:10px  0 ;
@@ -80,15 +85,84 @@
                 box-sizing: border-box;
                 margin-top: 10px;
                 position: relative;
+                cursor: pointer;
+                &:hover{
+                    box-shadow: 0 0 10px rgba(0, 0, 0,0.1);
+                }
                 & .img{
                     width: 20%;
                 }
                 & .title{
                     position: absolute;
                     left: 22%;
-                    top: 5px;
+                    top: 5%;
                     font-size: 20px;
                     font-weight: bold;
+                    max-width: 62%;
+                    @include abab
+                }
+                & .hot{
+                    position: absolute;
+                    width: 90px;
+                    text-align: center;
+                    border-radius: 5px;
+                    right: 2%;
+                    top: 5%;
+                    font-size: 16px;
+                    font-weight: bold;
+                    background-color: rgb(253,76,56);
+                    color:white;
+                    padding: 3px 3px;
+                    box-sizing: border-box;
+                }
+                & .size{
+                    position: absolute;
+                    left: 22%;
+                    top: 25%;
+                    color: rgba(0, 0, 0,0.6);
+                    font-size: 18px;
+                    width: 62%;
+                    @include abab
+                }
+                & .address{
+                    position: absolute;
+                    left: 22%;
+                    top: 45%;
+                    color: rgba(0, 0, 0,0.6);
+                    font-size: 18px;
+                    width: 62%;
+                    @include abab
+                }
+           
+                & .price{
+                    position: absolute;
+                    right: 3%;
+                    top: 30%;
+                    font-size: 28px;
+                    color: rgb(253,76,56);
+                    font-weight: bold;
+                    .per{
+                        color: rgba(0, 0, 0,0.5);
+                        position: absolute;
+                        font-size: 16px;
+                        right: 0;
+                    }
+                }
+           
+                & .ts{
+                    position: absolute;
+                    left: 22%;
+                    top: 65%; 
+                    display: flex;
+                    gap: 10px;
+                    & .tsitems{
+                        color: rgba(0, 0, 0,0.6);
+                        font-size: 16px;
+                        background-color:rgb(103,205,219);
+                        padding: 0 5px;
+                        color: white;
+                        border-radius: 3px2;
+                    }
                 }
            
             }
@@ -96,10 +170,26 @@
         .hotnew{
             position: absolute;
             right: 0;
-            top: 60px;
+            top: 5px;
             width: 28%;
-            height: 200px;
-            background-color: rgb(189, 208, 208);
+            padding-bottom: 80px;
+            & .title{
+                font-size: 20px;
+                font-weight: bold;
+
+            }
+            .hotitem{
+                
+                width: 100%;
+                margin-top: 20px;
+                & .img{
+                    width: 100%;
+                }
+                & .describe{
+                    color: rgb(253,76,56);
+                    @include abab;
+                }
+            }
         }
     }
    
