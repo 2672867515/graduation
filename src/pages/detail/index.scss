@@ -3,8 +3,9 @@
     margin-left: 10%;
     .head{
         width: 100%;
-        padding-top: 20px;
+        padding: 20px 0;
         position: relative;
+        border-bottom: 2px solid rgb(29, 182, 131);
         .project{
             font-size: 30px;
             font-weight: bolder;
@@ -30,13 +31,14 @@
             position: absolute;
             top: 20px;
             right: 0;
-            min-width: 35%;
+            width: 35%;
             .tip{
                 position: absolute;
                 top: 0;
                 width: 100%;
                 background-color: rgb(251,247,241);
                 padding: 10px;
+                box-sizing: border-box;
                 .ad{
                     display: inline-block;
                     padding: 2px;
@@ -45,25 +47,192 @@
                     color: rgb(251,218,165);
                     background-color: rgb(73,50,23);
                     font-size: 18px;
+                    
                 }
                 .vr{
                     margin-left: 15px;
                     font-weight: 600;
                 }
+               
+            }
+            .message{
+                position: absolute;
+                top: 60px;
+                width: 100%;
                 .price{
-                    height: 50px;
-                    margin-top: 20px;
                     font-size: 40px;
                     font-weight: bold;
                     color: rgb(253,76,56);
-                    line-height: 50px;
-                    span{
-                        color: black;
+                    .per{
+                        display: inline-block;
                         font-size: 18px;
-                        line-height: 50px;
+                        color: rgba(0,0,0,0.5);
                     }
+                }
+                .base{
+                    margin-top: 20px;
+                    display: flex;
+                    gap: 30px;
+                    text-align: center;
+                    color: black;
+                    font-size: 20px;
+                    font-weight: bold;
+                .zx{
+                    font-size: 16px;
+                    font-weight: 500;
+                    color: rgba(0,0,0,0.5);
+                }
+                .jf{
+                    font-size: 16px;
+                    font-weight: 500;
+                    color: rgba(0,0,0,0.5);
+                }
+                }
+                .ts{
+                    margin-top: 20px;
+                    display: flex;
+                    gap: 20px;
+                    .tsitem{
+                        background-color:rgb(245,247,249);
+                        padding: 0 5px;
+                        border-radius: 3px;
+                        color: rgba(0,0,0,0.5);
+                    }
+                }
+                .address{
+                    margin-top: 20px;
+                }
+                .manager{
+                    margin-top: 20px;
+                }
+            }
+            .map{
+                position: absolute;
+                top: 330px;
+                right: 0;
+                width: 100%;
+                height: 190px;
+                background-color: antiquewhite;
+            }
+           
+        }
+        .lb{
+            position: absolute;
+            left: 0;
+            .survey{
+                margin-top: 50px;
+                height: 200px;
+                width: 750px;
+                background-color: aqua;
+                .title{
+                    font-size: 20px;
+                    font-weight: bold;
+                }
+                .block{
+                    width: 80%;
+                    background-color: aliceblue;
+                  
+                }
+            }
+            .comment{
+                margin-top: 50px;
+                width: 750px;
+                height: 200px;
+                background-color: rgb(147, 227, 227);
+                & .title{
+                    font-size: 20px;
+                    font-weight: bold;
                 }
             }
         }
+        @mixin abab{
+            white-space: nowrap;         /* 防止文字换行 */
+            overflow: hidden;            /* 隐藏超出容器的内容 */
+            text-overflow: ellipsis;    /* 显示省略号 */
+        }
+        .alike{
+            position: absolute;
+            right: 0;
+            top:95%;
+            width: 35%;
+            & .title{
+                font-size: 20px;
+                font-weight: bold;
+            }
+            .houseitem{
+                width: 100%;
+                padding:10px  0 ;
+                border-bottom: 1px solid rgba(0, 0, 0,0.1);
+                margin-top: 20px;
+                position: relative;
+                cursor: pointer;
+                &:hover{
+                    box-shadow: 0 0 10px rgba(0, 0, 0,0.1);
+                }
+                & .img{
+                    width: 25%;
+                }
+                & .title{
+                    position: absolute;
+                    left: 28%;
+                    top: 5%;
+                    font-size: 20px;
+                    font-weight: bold;
+                    max-width: 62%;
+                    @include abab
+                }
+                & .size{
+                    position: absolute;
+                    left: 28%;
+                    top: 30%;
+                    color: rgba(0, 0, 0,0.6);
+                    font-size: 18px;
+                    width: 62%;
+                    @include abab
+                }
+                & .address{
+                    position: absolute;
+                    left: 28%;
+                    top: 50%;
+                    color: rgba(0, 0, 0,0.6);
+                    font-size: 18px;
+                    width: 62%;
+                    @include abab
+                }
+           
+                & .price{
+                    position: absolute;
+                    right: 3%;
+                    top: 20%;
+                    font-size: 28px;
+                    color: rgb(253,76,56);
+                    font-weight: bold;
+                    .per{
+                        color: rgba(0, 0, 0,0.5);
+                        position: absolute;
+                        font-size: 16px;
+                        right: 0;
+                    }
+                }
+           
+                & .ts{
+                    position: absolute;
+                    left: 28%;
+                    top: 75%; 
+                    display: flex;
+                    gap: 10px;
+                    & .tsitems{
+                        color: rgba(0, 0, 0,0.6);
+                        font-size: 16px;
+                        background-color:rgb(103,205,219);
+                        padding: 0 5px;
+                        color: white;
+                        border-radius: 3px;
+                    }
+                }
+           
+            }
+        }
+     
     }
 }
