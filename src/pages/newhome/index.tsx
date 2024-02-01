@@ -74,7 +74,8 @@ const Newhome=(props)=> {
               <div className="title">汤臣一品</div>
               <div className="size">100</div>
               <div className="address">10dss0</div>
-              <div className="price">1000w <br /><span className="per">23564/㎡</span></div>
+              {type!=='Newhome'&&<div className="price">1000w <br /><span className="per">23564/㎡</span></div>}
+              {type==='Newhome'&&<div className="newprice">均价：<span className="per">23564</span>/㎡</div>}
               <div className="ts">
                   {item.ts.map((item)=>{
                     return <div className="tsitems">{item}</div>
@@ -89,7 +90,7 @@ const Newhome=(props)=> {
             热门好房
           </div> 
          {hotarr.map((item)=>{
-          return <div className="hotitem">
+          return <div className="hotitem" onClick={()=>detial(1)}>
             <img className='img' src={img} alt="" />
             <div className="name">{item.name}</div>
             <div className="describe">{item.describe}</div>

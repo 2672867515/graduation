@@ -47,11 +47,21 @@
                     color: rgb(251,218,165);
                     background-color: rgb(73,50,23);
                     font-size: 18px;
-                    
                 }
                 .vr{
                     margin-left: 15px;
                     font-weight: 600;
+                }
+                .collect{
+                    position: absolute;
+                    right: 10px;
+                    color: rgba(0, 0, 0,0.3);
+                    font-size: 20px;
+                    transition: 100ms;
+                    cursor: pointer;
+                    &:hover{
+                        color: orange;
+                    }
                 }
                
             }
@@ -69,6 +79,15 @@
                         color: rgba(0,0,0,0.5);
                     }
                 }
+                .newprice{
+                    color: rgba(0, 0, 0,0.8);
+                    font-weight: bold;
+                    font-size: 20px;
+                    .per{
+                        color: rgb(253,76,56);
+                        font-size: 40px;
+                    }
+                }
                 .base{
                     margin-top: 20px;
                     display: flex;
@@ -82,7 +101,7 @@
                     font-weight: 500;
                     color: rgba(0,0,0,0.5);
                 }
-                .jf{
+                .kp{
                     font-size: 16px;
                     font-weight: 500;
                     color: rgba(0,0,0,0.5);
@@ -119,20 +138,78 @@
         .lb{
             position: absolute;
             left: 0;
+            @mixin block{
+                width: 90%;
+                .item{
+                    width: 100%;
+                    .dot{
+                        margin-top: 20px;
+                        width: 100%;
+                        display: flex;
+                        gap: 10px;
+                        .line{
+                            border: 3px solid rgb(29, 182, 131);
+                            box-sizing: border-box;
+                            border-radius: 2px;
+                        }
+                        span{
+                            font-size: 14px;
+                        }
+                    }
+                    .survey-detail{
+                        margin-top: 10px;
+                    }
+                }
+            }
             .survey{
                 margin-top: 50px;
-                height: 200px;
                 width: 750px;
-                background-color: aqua;
                 .title{
                     font-size: 20px;
                     font-weight: bold;
                 }
-                .block{
-                    width: 80%;
-                    background-color: aliceblue;
-                  
+                @include block
+            }
+            .householdtype{
+                margin-top: 50px;
+                width: 750px;
+                .title{
+                    font-size: 20px;
+                    font-weight: bold;
                 }
+                .items{
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 10px;
+                    .block{
+                        border: 1px solid rgba(0, 0, 0,0.1);
+                        padding: 10px;
+                        box-sizing: border-box;
+                        width: 32%;
+                        text-align: center;
+                        margin-top: 20px;
+                        .img{
+                            width: 100%;
+                        }
+                        .size{
+                            font-size: 15px;
+                            font-weight: bold;
+                        }
+                        .price{
+                            color: rgb(253,76,56);
+                            font-size: 20px;
+                            font-weight: bold;
+                            .per{
+                                color:rgba(0, 0, 0,0.5);
+                                font-size: 16px;
+                                font-weight: 500;
+                                margin-left: 20px;
+                            }
+                            
+                        }
+                    }
+                }
+              
             }
             .comment{
                 margin-top: 50px;
@@ -169,7 +246,7 @@
                 &:hover{
                     box-shadow: 0 0 10px rgba(0, 0, 0,0.1);
                 }
-                & .img{
+                & .imgs{
                     width: 25%;
                 }
                 & .title{
@@ -213,8 +290,19 @@
                         font-size: 16px;
                         right: 0;
                     }
+                    
                 }
-           
+                .newprice{
+                    color: rgba(0, 0, 0,0.8);
+                    position: absolute;
+                    right: 3%;
+                    top: 30%;
+                    font-weight: bold;
+                    .per{
+                        color: rgb(253,76,56);
+                        font-size: 28px;
+                    }
+                }
                 & .ts{
                     position: absolute;
                     left: 28%;

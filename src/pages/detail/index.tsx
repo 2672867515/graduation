@@ -1,12 +1,17 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Vr from '../../components/VR/index.tsx'
 import { useParams } from 'react-router-dom';
 import  './index.scss'
 import { useDispatch,useSelector } from 'react-redux';
 import { HeaderState } from '../../redux/action/index.jsx';
-import img from '../../img/2r.jpg'
+import img from '../../img/2t.jpg'
 import { useHistory } from 'react-router-dom';
+import { Tooltip } from 'antd';
+import {
+  StarFilled
+} from '@ant-design/icons';
 const Detail=(props)=> {
+  const [collect,setCollect]=useState(true)
   let   history = useHistory()
   const dispatch = useDispatch();
   const { id } = useParams();
@@ -26,11 +31,15 @@ const Detail=(props)=> {
   {ts:['q343dw','e33']},
   {ts:['f','fg'],hot:'超级优惠'},
   {ts:['hjk','6765g']}
-]
-const detial=(id)=>{
-  history.push(`/detail/${id}?type=${type}`)
-  
-}
+  ]
+  const hxarr=[1,2,3,4]
+
+  const detial=(id)=>{
+    history.push(`/detail/${id}?type=${type}`)
+  }
+  const changecollect=()=>{
+    setCollect(prevState => !prevState)
+  }
   return (
     <div className='detail'>
         <div className="head">
@@ -46,9 +55,13 @@ const detial=(id)=>{
                 热门好房
               </div>
               <span className="vr">支持VR</span>
+              <Tooltip title={collect?'取消收藏':'收藏'} >
+                <span className="collect" style={{color:collect?'orange':''}} onClick={changecollect}> <StarFilled /></span>
+              </Tooltip>
             </div>
             <div className="message">
-              <div className="price">300万 <div className='per'>20305元/㎡</div></div>
+              {type!=='Newhome'&&<div className="price">300万 <div className='per'>20305元/㎡</div></div>}
+              {type==='Newhome'&&<div className="newprice">均价：<span className="per">23564 </span> /㎡</div>}
                 <div className="base">
                   <span>2室2厅1卫 </span>
                   <div>
@@ -56,8 +69,8 @@ const detial=(id)=>{
                     <span className='zx'>精装修</span>
                   </div>
                   <div>
-                    <span className='kp'>2015年开盘</span><br />
-                    <span className='jf'>2019年交房</span>
+                    <span className='jf'>2019年交房</span><br />
+                    <span className='kp'>2015年开盘</span>
                   </div>
                   
                 </div>
@@ -75,14 +88,29 @@ const detial=(id)=>{
           {type!=='Newhome'&&<div className="survey">
             <div className="title">房源概况</div>
             <div className="block">
-         
+              <div className="item">
+                <div className="dot"><div className="line"></div><span>核心卖点</span></div>
+                <div className="survey-detail">asadasa</div>
+                <div className="dot"><div className="line"></div><span>基本情况</span></div>
+                <div className="survey-detail">asadasa</div>
+              </div>
             </div>
           </div>}
-          {type==='Newhome'&&<div className="survey">
+          {type==='Newhome'&&<div className="householdtype">
             <div className="title">楼盘户型</div>
-            <div className="block">
-         
+            <div className="items">
+              {
+                hxarr.map((item)=>{
+                  return <div className="block">
+                    <img className="img" src={img} alt='' />
+                    <div className="size">三室一厅 120㎡</div>
+                    <div className="floor">2单元-608</div>
+                    <div className="price">400万<span className="per">23564 /㎡</span> </div>
+                </div>
+                })
+              } 
             </div>
+           
           </div>}
 
           <div className="comment">
@@ -93,11 +121,13 @@ const detial=(id)=>{
             <div className="title">相关推荐</div>
           {housearr.map((item)=>{
             return (<div className="houseitem" onClick={()=>detial(2)}>
-              <img className='img' src={img} alt="" />
+              <img className='imgs' src={img} alt="" />
               <div className="title">汤臣一品</div>
               <div className="size">100</div>
               <div className="address">10dss0</div>
-              <div className="price">1000w <br /><span className="per">23564/㎡</span></div>
+              
+              {type!=='Newhome'&&<div className="price">1000w <br /><span className="per">23564/㎡</span></div>}
+              {type==='Newhome'&&<div className="newprice">均价：<span className="per">23564</span>/㎡</div>}
               <div className="ts">
                   {item.ts.map((item)=>{
                     return <div className="tsitems">{item}</div>

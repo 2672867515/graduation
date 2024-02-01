@@ -148,6 +148,17 @@
                         right: 0;
                     }
                 }
+                .newprice{
+                    color: rgba(0, 0, 0,0.8);
+                    position: absolute;
+                    right: 3%;
+                    top: 30%;
+                    font-weight: bold;
+                    .per{
+                        color: rgb(253,76,56);
+                        font-size: 28px;
+                    }
+                }
            
                 & .ts{
                     position: absolute;
@@ -173,12 +184,17 @@
             top: 5px;
             width: 28%;
             padding-bottom: 80px;
+  
             & .title{
                 font-size: 20px;
                 font-weight: bold;
             }
             .hotitem{
-                
+                &:hover{
+                    box-shadow: 0 0 10px rgba(0, 0, 0,0.1);
+                }
+                padding: 20px;
+                box-sizing: border-box;
                 width: 100%;
                 margin-top: 20px;
                 & .img{

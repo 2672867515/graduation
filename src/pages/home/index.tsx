@@ -121,7 +121,7 @@ const detial=(id)=>{
                   <div className="part1-detail">
                     <div className="part1-name">{1}</div>
                     <div className="part1-size">{1}</div>
-                    <div className="part1-price">{1}</div>
+                    <div className="part1-price">{1}/㎡</div>
                   </div>
               </div>)
             })}
@@ -129,7 +129,7 @@ const detial=(id)=>{
           </div>
         </div>
         <div className="content-part">
-          <div className="hot-title">精选新房</div>
+          <div className="hot-title">精选新盘</div>
           <div className="hot-more" onClick={()=>more('Newhome')}>查看更多</div>
           <div className="part-item">
             {hotnew.map(()=>{

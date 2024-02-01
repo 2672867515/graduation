@@ -20,7 +20,8 @@ import { HeaderState } from '../../redux/action';
             <div className="hot-detail">
               <div className="hot-name">{name}</div>
               <div className="hot-size">{size}</div>
-              <div className="hot-price">{price}</div>
+              {type!=='Newhome'&&<div className="hot-price">{price}</div>}
+              {type==='Newhome'&&<div className="hot-price">{price}/㎡</div>}
             </div>
         </div>
     </div>
