@@ -44,11 +44,11 @@ const Used=(props)=> {
     setChoose(i)
   }
   const more=()=>{
-    history.push(`/Question`)
+    history.push(`/Question?type=Used`)
     dispatch(HeaderState('Question'))
   }
-  const qs=()=>{
-    history.push(`/Question`)
+  const qs=(id)=>{
+    history.push(`/Question?qs=${id}`)
     dispatch(HeaderState('Question'))
   }
   const detial=(id)=>{
@@ -100,7 +100,7 @@ const Used=(props)=> {
           <div className="hotitem">
           
           {questions.map((item)=>{
-                    return <div className="qsitems" onClick={()=>qs(1)}>{item.qs}</div>
+                    return <div className="qsitems" onClick={()=>qs(item.id)}>{item.qs}</div>
                   })}
           </div>
     

@@ -212,13 +212,66 @@
               
             }
             .comment{
+                @mixin abab{
+                    white-space: nowrap;         /* 防止文字换行 */
+                    overflow: hidden;            /* 隐藏超出容器的内容 */
+                    text-overflow: ellipsis;    /* 显示省略号 */
+                }
                 margin-top: 50px;
                 width: 750px;
-                height: 200px;
-                background-color: rgb(147, 227, 227);
                 & .title{
                     font-size: 20px;
                     font-weight: bold;
+                }
+                .qs{
+                    margin-top: 20px;
+                    cursor: pointer;
+                    &:hover{
+                        box-shadow: 0 0 10px rgba(0, 0, 0,0.1);
+                    }
+                    padding: 10px 0;
+                    .question{
+                        width: 80%;
+                        .icon{
+                            color: white;
+                            background-color: rgb(255,146,54);
+                            font-size: 13px;
+                            padding: 2px;
+                            margin-right: 10px;
+                        }
+                        @include abab
+                    }
+                    .answer{
+                        margin-top: 10px;
+                        width: 80%;
+                        @include abab;
+                        .time{
+                            color: rgba(0,0,0,0.5);
+                            font-size: 13px;
+                            position: absolute;
+                            right: 5%;
+                        }
+                    }
+                    .all{
+                        color: rgba(0,0,0,0.5);
+                        font-size: 13px;
+                        margin-top: 10px;
+                    }
+                }
+                .more{
+                    margin-top: 30px;
+                    width: 25%;
+                    border: 2px solid rgb(29, 182, 131);
+                    color: rgb(29, 182, 131);
+                    text-align: center;
+                    padding: 10px;
+                    font-size: 20px;
+                    cursor: pointer;
+                    transition: 100ms;
+                    &:hover{
+                        background-color: rgb(29, 182, 131);
+                        color: white;
+                    }
                 }
             }
         }

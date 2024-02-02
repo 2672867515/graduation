@@ -15,7 +15,7 @@ const Newhome=(props)=> {
   const queryParams = new URLSearchParams(window.location.search);
   const kw = queryParams.get('kw');
   const type = queryParams.get('type');
-  dispatch(HeaderState(type))
+  dispatch(HeaderState('Newhome'))
   const [inputValue, setInputValue] = useState('');
   const [choose, setChoose] = useState('all');
   const housearr=[{ts:['近地铁','fg'],hot:'热门好房'},

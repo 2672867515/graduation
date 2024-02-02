@@ -1,0 +1,22 @@
+.question{
+    width: 80%;
+    margin-left: 10%;
+    position: relative;
+    .head{
+        width: 100%;
+        padding: 20px 0;
+        position: relative;
+        border-bottom: 2px solid rgb(29, 182, 131);
+        .project{
+            font-size: 30px;
+            font-weight: bolder;
+            color: rgb(29, 182, 131);
+        }
+        .pagetype{
+            margin-left: 20px;
+            font-size: 18px;
+            font-weight: bolder;
+        }
+       
+    }
+}

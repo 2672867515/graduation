@@ -34,11 +34,26 @@ const Detail=(props)=> {
   ]
   const hxarr=[1,2,3,4]
 
+  const qs=[1,2,3]
+
   const detial=(id)=>{
     history.push(`/detail/${id}?type=${type}`)
   }
   const changecollect=()=>{
     setCollect(prevState => !prevState)
+  }
+  const getqs=(type,id)=>{
+    switch (type){
+      case 1 :
+      history.push(`/Question?qs=${id}`)
+      dispatch(HeaderState('Question'))
+      break;
+      case 2 :
+      history.push(`/Question?house=${id}`)
+      dispatch(HeaderState('Question'))
+      break;
+    }
+    
   }
   return (
     <div className='detail'>
@@ -114,7 +129,15 @@ const Detail=(props)=> {
           </div>}
 
           <div className="comment">
-            <div className="title">评论</div>
+            <div className="title">小区问答 ({100})</div>
+            {qs.map(()=>{
+              return <div className="qs" onClick={()=>getqs(1,1)}>
+                <div className="question"><span className='icon'>问</span> ???老wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww登</div>
+                <div className="answer"><span className='auth'>大炮 : </span>说的是多所多所wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww多所多所多 <span className='time'>2024-01-01</span></div>
+                <div className="all">44个回答</div>
+              </div>
+            })}
+            <div className="more"onClick={()=>getqs(2,3)}>查看更多小区问答</div>
           </div>
           </div>
           <div className="alike">
