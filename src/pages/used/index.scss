@@ -189,18 +189,19 @@
                     top: 0;
                 }
             }
-            .hotitem{
+            .hotqs{
                 width: 100%;
                 margin-top: 20px;
                 .qsitems{
-                  
-                    margin-top: 20px;
+                    margin-top: 0px;
                     font-size: 17px;
                     color: rgba(0,0,0,0.6);
                     cursor: pointer;
                     @include abab;
+                    padding: 10px 0;
                     &:hover{
                         color: rgb(35,201,147);
+                        box-shadow: 0 0 10px rgba(0, 0, 0,0.1);
                     }
                 }
             }

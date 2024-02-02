@@ -1,22 +1,107 @@
-.question{
-    width: 80%;
-    margin-left: 10%;
-    position: relative;
+.mainbody{
+    width: 100%;
+    background-color:rgba(0, 0, 0,0.03) ;
+    padding-bottom: 20px;
     .head{
-        width: 100%;
+        background-color: white;
         padding: 20px 0;
-        position: relative;
+        width: 100%;
         border-bottom: 2px solid rgb(29, 182, 131);
-        .project{
-            font-size: 30px;
-            font-weight: bolder;
-            color: rgb(29, 182, 131);
-        }
-        .pagetype{
-            margin-left: 20px;
-            font-size: 18px;
-            font-weight: bolder;
+        .hc{
+            width: 80%;
+            margin-left: 10%;
+            position: relative;
+            .project{
+                font-size: 30px;
+                font-weight: bolder;
+                color: rgb(29, 182, 131);
+            }
+            .pagetype{
+                margin-left: 20px;
+                font-size: 18px;
+                font-weight: bolder;
+            }
+            .searchinput{
+                position: absolute;
+                right: 10%;
+                width: 30%;
+                bottom: 0;
+            }
+            .but{
+                position: absolute;
+                right: 0;
+                bottom: 0;
+            }
         }
        
+    }
+    .question{
+        width: 80%;
+        margin-left: 10%;
+        position: relative;
+        .ask{
+            position: fixed;
+            bottom: 30px;
+            right: 10%;
+            z-Index: 999;
+            width: 60px;
+            height: 60px;
+        }
+
+        .searchmode{
+            margin-top: 20px;
+            background-color: rgb(255, 255, 255);
+            width: 70%;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 50px;
+            padding: 20px;
+            box-sizing: border-box;
+            .searchitems{
+                width: 40%;
+                .title{
+                    color: rgb(98,171,0);
+                    font-size: 20px;
+                }
+                .searchtype{
+                    display:  flex;
+                    flex-wrap: wrap;
+                    gap: 20px;
+                    margin-top: 10px;
+                    .type{
+                        cursor: pointer;
+                        &:hover{
+                            color: rgb(0, 150, 0);
+                            text-decoration-line: underline;
+                        }
+                    }
+                }
+            }
+        }
+        .inconcluso{
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 25%;
+            height: 200px;
+            background-color: white;
+            padding:20px;
+            box-sizing: border-box;
+            .title{
+                position: absolute;
+                font-size: 20px;
+                font-weight: bold;
+            }
+        }
+        .qa{
+            width: 70%;
+            background-color: white;
+            margin-top: 30px;
+            font-size: 20px;
+            font-weight: bold;
+            span{
+                color:rgb(253,76,56) ;
+            }
+        }
     }
 }

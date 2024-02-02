@@ -44,7 +44,7 @@ const Used=(props)=> {
     setChoose(i)
   }
   const more=()=>{
-    history.push(`/Question?type=Used`)
+    history.push(`/Question`)
     dispatch(HeaderState('Question'))
   }
   const qs=(id)=>{
@@ -97,13 +97,12 @@ const Used=(props)=> {
             热门问答 
             <div className="to"> <RightOutlined /> </div>
           </div> 
-          <div className="hotitem">
+          <div className="hotqs">
           
           {questions.map((item)=>{
                     return <div className="qsitems" onClick={()=>qs(item.id)}>{item.qs}</div>
                   })}
           </div>
-    
         </div>
       </div>
 

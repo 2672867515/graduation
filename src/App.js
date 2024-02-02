@@ -6,6 +6,7 @@ import Header from './components/header/index.tsx'
 function App(props) {
 
   return (
+    
     <div className="App">
      <Header />
         {/* 注册路由 */}

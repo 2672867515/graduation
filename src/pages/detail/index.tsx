@@ -6,7 +6,7 @@ import { useDispatch,useSelector } from 'react-redux';
 import { HeaderState } from '../../redux/action/index.jsx';
 import img from '../../img/2t.jpg'
 import { useHistory } from 'react-router-dom';
-import { Tooltip } from 'antd';
+import { Tooltip,message } from 'antd';
 import {
   StarFilled
 } from '@ant-design/icons';
@@ -22,7 +22,7 @@ const Detail=(props)=> {
   dispatch(HeaderState(type))
   const header = useSelector((state) => state.header);
   console.log(header);
-
+  const [messageApi, contextHolder] = message.useMessage();
   const tsarr=['特色','特色','特色']
 
   const housearr=[{ts:['近地铁','fg']},
@@ -40,7 +40,12 @@ const Detail=(props)=> {
     history.push(`/detail/${id}?type=${type}`)
   }
   const changecollect=()=>{
+    messageApi.open({
+      type: 'success',
+      content: collect?'已取消':'已收藏',
+    });
     setCollect(prevState => !prevState)
+   
   }
   const getqs=(type,id)=>{
     switch (type){
@@ -49,7 +54,7 @@ const Detail=(props)=> {
       dispatch(HeaderState('Question'))
       break;
       case 2 :
-      history.push(`/Question?house=${id}`)
+      history.push(`/Question}`)
       dispatch(HeaderState('Question'))
       break;
     }
@@ -57,6 +62,7 @@ const Detail=(props)=> {
   }
   return (
     <div className='detail'>
+        {contextHolder}
         <div className="head">
           <span className="project">基于three.js的3D选房平台</span>
           <span className="pagetype">|  详情</span>
