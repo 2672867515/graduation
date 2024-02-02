@@ -69,8 +69,12 @@ const Question=()=> {
               <div className="title">待解决问题</div>
             </div>
             <div className="qa">
-              {issearch&&<>为您找到<span>100</span>条"<span>aasasas</span>"相关的问题</>}
-              {!issearch&&<>共有<span>100</span>个房产问答</>}
+              <div className="title">
+                {issearch&&<>为您找到<span>100</span>条"<span>aasasas</span>"相关的问题</>}
+                {!issearch&&<>共有<span>100</span>个房产问答</>}
+              </div>
+              
+              0000
             </div>
         </div>
     </div>
