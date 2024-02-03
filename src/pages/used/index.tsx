@@ -48,7 +48,7 @@ const Used=(props)=> {
     dispatch(HeaderState('Question'))
   }
   const qs=(id)=>{
-    history.push(`/Question?qs=${id}`)
+    history.push(`/Qa/${id}`)
     dispatch(HeaderState('Question'))
   }
   const detial=(id)=>{

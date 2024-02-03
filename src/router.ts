@@ -9,6 +9,7 @@ const Newhome = lazy(() => import('./pages/newhome/index.tsx'));
 const Used = lazy(() => import('./pages/used/index.tsx'));
 const Rent = lazy(() => import('./pages/rent/index.tsx'));
 const Question = lazy(() => import('./pages/question/index.tsx'));
+const Qa = lazy(() => import('./pages/qa/index.tsx'));
 
 const routes = [
   { name: '首页', component: Home, path: '/Home' },
@@ -20,6 +21,7 @@ const routes = [
   { name: '二手房', component: Used, path: '/Used/:path' },
   { name: '租房', component: Rent, path: '/Rent/:path' },
   { name: '问答', component: Question, path: '/Question' },
+  { name: '问答详情', component: Qa, path: '/Qa/:id' },
 ];
 
 export default routes;

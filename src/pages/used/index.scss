@@ -198,7 +198,7 @@
                     color: rgba(0,0,0,0.6);
                     cursor: pointer;
                     @include abab;
-                    padding: 10px 0;
+                    padding: 10px;
                     &:hover{
                         color: rgb(35,201,147);
                         box-shadow: 0 0 10px rgba(0, 0, 0,0.1);

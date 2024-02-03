@@ -212,6 +212,7 @@
               
             }
             .comment{
+                
                 @mixin abab{
                     white-space: nowrap;         /* 防止文字换行 */
                     overflow: hidden;            /* 隐藏超出容器的内容 */
@@ -226,10 +227,11 @@
                 .qs{
                     margin-top: 20px;
                     cursor: pointer;
+                    position: relative;
                     &:hover{
                         box-shadow: 0 0 10px rgba(0, 0, 0,0.1);
                     }
-                    padding: 10px 0;
+                    padding: 10px;
                     .question{
                         width: 80%;
                         .icon{
@@ -242,14 +244,21 @@
                         @include abab
                     }
                     .answer{
-                        margin-top: 10px;
+                        margin-top: 15px;
                         width: 80%;
                         @include abab;
+                        .icon{
+                            color: white;
+                            background-color:  rgb(98,171,0);
+                            font-size: 13px;
+                            padding: 2px;
+                            margin-right: 10px;
+                        }
                         .time{
                             color: rgba(0,0,0,0.5);
                             font-size: 13px;
                             position: absolute;
-                            right: 5%;
+                            right: 3%;
                         }
                     }
                     .all{

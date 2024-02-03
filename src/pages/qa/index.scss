@@ -1,0 +1,33 @@
+.qa{
+    width: 100%;
+    background-color:rgba(0, 0, 0,0.03) ;
+    padding-bottom: 20px;
+    .head{
+        background-color: white;
+        padding: 20px 0;
+        width: 100%;
+        border-bottom: 2px solid rgb(29, 182, 131);
+        .hc{
+            width: 80%;
+            margin-left: 10%;
+            position: relative;
+            .project{
+                font-size: 30px;
+                font-weight: bolder;
+                color: rgb(29, 182, 131);
+            }
+            .pagetype{
+                margin-left: 20px;
+                font-size: 18px;
+                font-weight: bolder;
+            }
+        
+        }
+       
+    }
+    .qacontent{
+        width: 80%;
+        margin-left: 10%;
+    }
+   
+}

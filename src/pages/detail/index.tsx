@@ -50,11 +50,11 @@ const Detail=(props)=> {
   const getqs=(type,id)=>{
     switch (type){
       case 1 :
-      history.push(`/Question?qs=${id}`)
+      history.push(`/Qa/${id}`)
       dispatch(HeaderState('Question'))
       break;
       case 2 :
-      history.push(`/Question}`)
+      history.push(`/Question`)
       dispatch(HeaderState('Question'))
       break;
     }
@@ -139,7 +139,7 @@ const Detail=(props)=> {
             {qs.map(()=>{
               return <div className="qs" onClick={()=>getqs(1,1)}>
                 <div className="question"><span className='icon'>问</span> ???老wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww登</div>
-                <div className="answer"><span className='auth'>大炮 : </span>说的是多所多所wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww多所多所多 <span className='time'>2024-01-01</span></div>
+                <div className="answer"><span className='icon'>答</span>说的是多所多所wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww多所多所多 <span className='time'>2024-01-01</span></div>
                 <div className="all">44个回答</div>
               </div>
             })}
