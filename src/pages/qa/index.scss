@@ -28,6 +28,143 @@
     .qacontent{
         width: 80%;
         margin-left: 10%;
+        position: relative;
+        padding-top:20px;
+        @mixin break{
+            word-wrap: break-word; /* 允许单词在断字处换行 */
+            overflow-wrap: break-word; /* 允许单词在断字处换行（同 word-wrap，为了更好的浏览器兼容性） */
+        }
+        @mixin abab{
+            white-space: nowrap;         /* 防止文字换行 */
+            overflow: hidden;            /* 隐藏超出容器的内容 */
+            text-overflow: ellipsis;    /* 显示省略号 */
+        }
+        .q{
+            width: 70%;
+            background-color: white;
+            padding: 20px;
+            box-sizing: border-box;
+            .question{
+                @include break;
+                font-size: 25px;
+                font-weight: bold;
+            }
+            .bot{
+                margin-top: 20px;
+                color: rgba(0, 0, 0,0.5);
+                font-size: 15px;
+                display: flex;
+                gap: 20px;
+            }
+           
+        }
+        .a{
+            width: 70%;
+            background-color: white;
+            margin-top: 30px;
+            padding: 20px;
+            box-sizing: border-box;
+            .title{
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                border-bottom: 1px solid rgba(0, 0, 0,0.1);
+                padding: 10px 0;
+                .all{
+                    font-size: 20px;
+                    font-weight: bold;
+                }
+                .ican{
+                    font-size: 13px;
+                    width: 70px;
+                    height: 40px;
+                    background-color: rgb(242,246,237);
+                    border-radius: 10px;
+                    text-align: center;
+                    line-height: 40px;
+                    color: rgb(98,171,0);
+                    cursor: pointer;
+                    &:hover{
+                        background-color: rgb(50, 182, 131);
+                        color: white;
+                    }
+                }
+            }
+            .answers{
+                .answeritem{
+                    padding: 20px;
+                    width: 100%;
+                    box-sizing: border-box;
+                    position: relative;
+                    margin-top: 10px;
+                    border-bottom: 1px solid rgba(0, 0, 0,0.1);
+                    display: flex;
+                    gap: 20px;
+                    .headimg{
+                        width: 60px;
+                        height: 60px;
+                    }
+                    .itemr{
+                        top: 10px;
+                        left: 12%;
+                        width: 85%;
+                        .answer{
+                            margin-top: 5px;
+                            @include break;
+                        }
+                        .time{
+                            margin-top: 10px;
+                            color: rgba(0, 0, 0,0.5);
+                            font-size: 15px;
+                        }
+                    }
+                   
+                }
+            }
+        }
+        .alike{
+            position: absolute;
+            right: 0;
+            width: 25%;
+            top: 20px;
+            background-color: white;
+            padding:20px;
+            box-sizing: border-box;
+            .title{
+                position: relative;
+                font-size: 20px;
+                font-weight: bold;
+                .all{
+                    position: absolute;
+                    font-size: 13px;
+                    right: 0;
+                    bottom: 0;
+                    font-weight: 500;
+                    color: rgba(0, 0, 0,0.5);
+                    cursor: pointer;
+                    &:hover{
+                        color: rgb(0, 150, 0);
+                            text-decoration-line: underline;
+                    }
+                }
+            }
+            .initem{
+                margin-top: 20px;
+                &:hover{
+                    background-color: rgba(0, 0, 0,0.03);
+                }
+                cursor: pointer;
+                .alikeqa{
+                    @include abab
+                }
+                .time{
+                    color: rgba(0, 0, 0,0.5);
+                    font-size: 13px;
+                    margin-top: 5px;
+                }
+            }
+          
+        }
     }
    
 }

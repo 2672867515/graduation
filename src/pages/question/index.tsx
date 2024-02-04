@@ -29,7 +29,7 @@ const Question=()=> {
     {title:'买房',item:['房价行情','购房建议','买房风险','新房','二手房']},
     {title:'卖房',item:['房屋估价','卖房流程','出售方案','卖房风险']},
     {title:'租房',item:['租房准备','租房注意事项','合租','整租',]},
-    {title:'其他',item:['装修','拆迁','房产政策','法律纠纷']}
+    {title:'其他',item:['装修','拆迁','房产政策','法律纠纷','其他']}
   ]
   const [bytype,setBytype]=useState('')
   const qas=[
@@ -182,14 +182,31 @@ const Question=()=> {
           style={{ maxWidth: 500 }}
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
-          initialValues={{select:'Demo'}}
+          initialValues={{select:'1'}}
         >
            <Form.Item 
            name="select" 
            label="问题类型"
            rules={[{ required: true, message: '请选择问题类型' }]}>
             <Select >
-              <Option value="Demo">Demo</Option>
+              <Option value="1">房价行情</Option>
+              <Option value="2">购房建议</Option>
+              <Option value="3">买房风险</Option>
+              <Option value="4">新房</Option>
+              <Option value="5">二手房</Option>
+              <Option value="6">房屋估价</Option>
+              <Option value="7">卖房流程</Option>
+              <Option value="8">出售方案</Option>
+              <Option value="9">卖房风险</Option>
+              <Option value="10">租房准备</Option>
+              <Option value="11">租房注意事项</Option>
+              <Option value="12">合租</Option>
+              <Option value="13">整租</Option>
+              <Option value="14">装修</Option>
+              <Option value="15">拆迁</Option>
+              <Option value="16">房产政策</Option>
+              <Option value="17">法律纠纷</Option>
+              <Option value="18">其他</Option>
             </Select>
           </Form.Item>
           <Form.Item

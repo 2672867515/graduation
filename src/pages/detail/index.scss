@@ -1,6 +1,7 @@
 .detail{
     width: 80%;
     margin-left: 10%;
+
     .head{
         width: 100%;
         padding: 20px 0;
@@ -212,7 +213,7 @@
               
             }
             .comment{
-                
+                padding-bottom: 50px;
                 @mixin abab{
                     white-space: nowrap;         /* 防止文字换行 */
                     overflow: hidden;            /* 隐藏超出容器的内容 */
