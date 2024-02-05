@@ -1,7 +1,6 @@
 .personal{
     width: 100%;
     background-color:rgba(0, 0, 0,0.03) ;
-    // padding-bottom: 20px;
     .head{
         background-color: white;
         padding: 20px 0;
@@ -31,22 +30,365 @@
         min-height: 83vh;
         margin-left: 10%;
         position: relative;
+        padding: 20px;
+        box-sizing: border-box;
         .menu{
             position: fixed;
             top: 110px;
             left: 72px;
         }
         .personalmessage{
-            
+            .message{
+                width: 100%;
+                padding-top: 25px ;
+                box-sizing: border-box;
+                box-shadow:0 0 10px  rgba(0, 0, 0,0.1);
+            }
+            .statistic{
+                margin-top: 30px;
+                box-shadow:0 0 10px  rgba(0, 0, 0,0.1);
+                padding: 10px ;
+                box-sizing: border-box;
+                border-radius: 5px;
+            }
+            .suggess{
+                margin-top: 40px;
+                .title{
+                    font-size: 20px;
+                    font-weight: bold;
+                }
+                @mixin abab{
+                    white-space: nowrap;         /* 防止文字换行 */
+                    overflow: hidden;            /* 隐藏超出容器的内容 */
+                    text-overflow: ellipsis;    /* 显示省略号 */
+                }
+                .alike{
+                    display: flex;
+                    flex-wrap: wrap;
+                    justify-content: center;
+                    gap: 50px;
+                    box-shadow:0 0 10px  rgba(0, 0, 0,0.1);
+                    margin-top: 20px;
+                    & .title{
+                        font-size: 20px;
+                        font-weight: bold;
+                    }
+                    .houseitem{
+                        width: 45%;
+                        padding:10px  0 ;
+                        border-bottom: 1px solid rgba(0, 0, 0,0.1);
+                        position: relative;
+                        cursor: pointer;
+                        &:hover{
+                            box-shadow: 0 0 10px rgba(0, 0, 0,0.1);
+                        }
+                        & .imgs{
+                            width: 25%;
+                        }
+                        & .title{
+                            position: absolute;
+                            left: 28%;
+                            top: 5%;
+                            font-size: 20px;
+                            font-weight: bold;
+                            max-width: 62%;
+                            @include abab
+                        }
+                        & .size{
+                            position: absolute;
+                            left: 28%;
+                            top: 30%;
+                            color: rgba(0, 0, 0,0.6);
+                            font-size: 18px;
+                            width: 62%;
+                            @include abab
+                        }
+                        & .address{
+                            position: absolute;
+                            left: 28%;
+                            top: 50%;
+                            color: rgba(0, 0, 0,0.6);
+                            font-size: 18px;
+                            width: 62%;
+                            @include abab
+                        }
+                   
+                        & .price{
+                            position: absolute;
+                            right: 3%;
+                            top: 20%;
+                            font-size: 28px;
+                            color: rgb(253,76,56);
+                            font-weight: bold;
+                            .per{
+                                color: rgba(0, 0, 0,0.5);
+                                position: absolute;
+                                font-size: 16px;
+                                right: 0;
+                            }
+                            
+                        }
+                        .newprice{
+                            color: rgba(0, 0, 0,0.8);
+                            position: absolute;
+                            right: 3%;
+                            top: 30%;
+                            font-weight: bold;
+                            .per{
+                                color: rgb(253,76,56);
+                                font-size: 28px;
+                            }
+                        }
+                        & .ts{
+                            position: absolute;
+                            left: 28%;
+                            top: 75%; 
+                            display: flex;
+                            gap: 10px;
+                            & .tsitems{
+                                color: rgba(0, 0, 0,0.6);
+                                font-size: 16px;
+                                background-color:rgb(103,205,219);
+                                padding: 0 5px;
+                                color: white;
+                                border-radius: 3px;
+                            }
+                        }
+                   
+                    }
+                }
+            }
         }
         .myquestion{
-
+            .qa{
+                background-color: white;
+                padding: 10px;
+                box-sizing: border-box;
+                .title{
+                    font-size: 20px;
+                    font-weight: bold;
+                    span{
+                        color:rgb(253,76,56) ;
+                    }
+                }
+                .qaitem{
+                    margin-top: 20px;
+                    position: relative;
+                    min-height: 100px;
+                    cursor: pointer;
+                    padding: 10px;
+                    box-sizing: border-box;
+                    border-bottom: 1px solid rgba(0, 0, 0,0.1);
+                    @mixin abab{
+                        word-wrap: break-word; /* 允许单词在断字处换行 */
+                        overflow-wrap: break-word; /* 允许单词在断字处换行（同 word-wrap，为了更好的浏览器兼容性） */
+                    }
+                    &:hover{
+                        background-color: rgba(0, 0, 0,0.03);
+                    }
+                    .time{
+                        color: rgba(0, 0, 0,0.5);
+                        font-size: 13px;
+                        margin-top: 20px;
+                    }
+                    .q{
+                        font-size: 20px;
+                        font-weight: bold;
+                        max-width: 85%;
+                        @include abab
+                    }
+                    .a{
+                        max-width: 85%;
+                        margin-top: 10px;
+                        @include abab
+                    }
+                    .total{
+                        position: absolute;
+                        right: 3%;
+                        top: 10px;
+                        width: 70px;
+                        height: 70px;
+                        background-color: rgb(242,246,237);
+                        border-radius: 10px;
+                        text-align: center;
+                        line-height: 70px;
+                        color: rgb(98,171,0);
+                        font-size: 20px;
+                    }
+                }
+                
+            }
         }
         .myanswer{
-
+            .qa{
+                background-color: white;
+                padding: 10px;
+                box-sizing: border-box;
+                .title{
+                    font-size: 20px;
+                    font-weight: bold;
+                    span{
+                        color:rgb(253,76,56) ;
+                    }
+                }
+                .qaitem{
+                    margin-top: 20px;
+                    position: relative;
+                    min-height: 100px;
+                    cursor: pointer;
+                    padding: 10px;
+                    box-sizing: border-box;
+                    border-bottom: 1px solid rgba(0, 0, 0,0.1);
+                    @mixin abab{
+                        word-wrap: break-word; /* 允许单词在断字处换行 */
+                        overflow-wrap: break-word; /* 允许单词在断字处换行（同 word-wrap，为了更好的浏览器兼容性） */
+                    }
+                    &:hover{
+                        background-color: rgba(0, 0, 0,0.03);
+                    }
+                    .time{
+                        color: rgba(0, 0, 0,0.5);
+                        font-size: 13px;
+                        margin-top: 20px;
+                    }
+                    .q{
+                        font-size: 20px;
+                        font-weight: bold;
+                        max-width: 85%;
+                        @include abab
+                    }
+                    .a{
+                        max-width: 85%;
+                        margin-top: 10px;
+                        @include abab
+                    }
+                    .total{
+                        position: absolute;
+                        right: 3%;
+                        top: 10px;
+                        width: 70px;
+                        height: 70px;
+                        background-color: rgb(242,246,237);
+                        border-radius: 10px;
+                        text-align: center;
+                        line-height: 70px;
+                        color: rgb(98,171,0);
+                        font-size: 20px;
+                    }
+                }
+                
+            }
         }
         .mycollect{
-
+            @mixin abab{
+                word-wrap: break-word; /* 允许单词在断字处换行 */
+                overflow-wrap: break-word; /* 允许单词在断字处换行（同 word-wrap，为了更好的浏览器兼容性） */
+            }
+            .collect{
+                margin-top: 20px;
+                & .title{
+                    font-size: 20px;
+                    font-weight: bold;
+                }
+                .houseitem{
+                    width: 100%;
+                    padding:20px ;
+                    box-sizing: border-box;
+                    border-bottom: 1px solid rgba(0, 0, 0,0.1);
+                    margin-top: 30px;
+                    position: relative;
+                    cursor: pointer;
+                    display: flex;
+                    gap: 20px;
+                    &:hover{
+                        box-shadow: 0 0 10px rgba(0, 0, 0,0.1);
+                    }
+                    & .imgs{
+                        max-width: 220px;
+                        max-height: 220px;
+                    }
+                    .rightpart{
+                        width: 78%;
+                        position: relative;
+                        & .title{
+                            font-size: 20px;
+                            font-weight: bold;
+                            max-width: 75%;
+                            @include abab
+                        }
+                        & .size{
+                            color: rgba(0, 0, 0,0.6);
+                            font-size: 18px;
+                            width: 75%;
+                            margin-top: 30px;
+                            @include abab
+                        }
+                        & .address{
+                            color: rgba(0, 0, 0,0.6);
+                            font-size: 18px;
+                            width: 75%;
+                            margin-top: 30px;
+                            @include abab
+                        }
+                   
+                        & .price{
+                            position: absolute;
+                            right: 0%;
+                            top: 20%;
+                            font-size: 28px;
+                            color: rgb(253,76,56);
+                            font-weight: bold;
+                            .per{
+                                color: rgba(0, 0, 0,0.5);
+                                position: absolute;
+                                font-size: 16px;
+                                right: 0;
+                            }
+                            
+                        }
+                        .newprice{
+                            color: rgba(0, 0, 0,0.8);
+                            position: absolute;
+                            right: 0%;
+                            top: 30%;
+                            font-weight: bold;
+                            .per{
+                                color: rgb(253,76,56);
+                                font-size: 28px;
+                            }
+                        }
+                        .cancel{
+                            position: absolute;
+                            right: 0%;
+                            top: 50%;
+                            cursor: pointer;
+                            background-color: orange;
+                            color: white;
+                            padding: 5px;
+                            border-radius: 5px;
+                            &:hover{
+                                box-shadow: 0 0 15px rgba(0, 0, 0,0.2);
+                            }
+                        }
+                        & .ts{
+                            margin-top: 30px;
+                            display: flex;
+                            gap: 10px;
+                            & .tsitems{
+                                color: rgba(0, 0, 0,0.6);
+                                font-size: 16px;
+                                background-color:rgb(103,205,219);
+                                padding: 0 5px;
+                                color: white;
+                                border-radius: 3px;
+                            }
+                        }
+                    }
+                    
+                   
+               
+                }
+            }
         }
     }
 }
