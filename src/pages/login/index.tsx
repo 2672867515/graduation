@@ -1,20 +1,35 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import './index.scss'
-import { Button, Form, Input } from 'antd';
+import { Button, Form, Input,message } from 'antd';
 import { LockOutlined , UserOutlined } from '@ant-design/icons';
 import { useSelector, useDispatch } from 'react-redux';
 import { LoginState,HeaderState } from '../../redux/action';
+import {tologin} from '../../api/api.ts'
 const  Login=(props)=> {
   let   history = useHistory() //将useHistory()钩子赋值给history方便使用
   const [login,Setlogin]=useState('login')
   const dispatch = useDispatch();
+  const [messageApi, contextHolder] = message.useMessage();
   const onFinish = (values: any) => {
     console.log('Success:', values);
-    history.push(`/Home`)
-    localStorage.setItem('login','true')
-    dispatch(LoginState('true'))
-    dispatch(HeaderState('Home'))
+
+    tologin('/user/login',values).then((res)=>{
+      console.log(res.data);
+      if(res.data.code===0){
+        message.success('登录成功');
+        history.push(`/Home`)
+        localStorage.setItem('login','true')
+        dispatch(LoginState('true'))
+        dispatch(HeaderState('Home'))
+      }
+      else{
+        message.error(res.data.msg);
+      }
+         
+    }).catch((error)=>{
+      console.log(error);
+    })
   };
 
   const onFinishFailed = (errorInfo: any) => {
@@ -48,7 +63,7 @@ const  Login=(props)=> {
  
   return (
     <div className="loginpage">
-
+    {contextHolder}
 
     <div className='login-box'>
       <div className="title">基于three.js的3D选房平台</div>
