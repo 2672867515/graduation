@@ -12,11 +12,8 @@ import {
   ArrowUpOutlined
 } from '@ant-design/icons';
 import { UploadOutlined } from '@ant-design/icons';
-import type { UploadProps } from 'antd';
 import loading from '../../img/2ba.jpg'
 import Hotitem from '../../components/hotitem/index.tsx'
-import {updateHead,getuser} from '../../api/api.ts'
-
 
 const Home=(props)=> {
   let   history = useHistory() //将useHistory()钩子赋值给history方便使用
@@ -28,36 +25,10 @@ const Home=(props)=> {
   const [topbanner, setTopbanner] = useState(false);
   const hotnew=[1,2,3,4,5,6,7,8]
   const hothouse=[1,2,3,4]
-
-  const [imgs,setImgs]=useState('')
-  const file: UploadProps = {
-  name: 'file',
-  action: 'http://127.0.0.1:8081/upload',
-  showUploadList:false,
-  headers: {
-    authorization: 'authorization-text',
-  },
-  onChange(info) {
-    if (info.file.status !== 'uploading') {
-      console.log(info.file, info.fileList);
-    }
-    if (info.file.status === 'done') {
-      message.success(`${info.file.name} 上传成功`);
-      let data={id:1,head:info.file.response}
-      updateHead('/user/updateHead',data).then(res=>{
-        console.log(res);
-        setImgs(res.data.data.head)
-      })
-    } else if (info.file.status === 'error') {
-      message.error(`${info.file.name} 上传失败`);
-    }
-  },
-};
+  
   //轮播
   useEffect(()=>{
-    getuser('/user/getuser',{id:1}).then(res=>{
-      setImgs(res.data.data.head)
-    })
+  
     let i=0
     setInterval(()=>{
       i++
@@ -120,15 +91,10 @@ const detial=(id)=>{
 }
   return (
     <div className='mainbox'>
-      <img src={imgs} alt="" style={{width:'100px',height:'100px'}}/>
       <img className="bg" src={url} alt='bg' />
       {isVisible &&  <Button className='toTop' onClick={scrollToTop}  shape="circle" icon={<ArrowUpOutlined  />}></Button>}
       <div className="bg-text">
       基于three.js的3D选房平台
-      <Upload {...file}>
-        <Button icon={<UploadOutlined />}>Click to Upload</Button>
-      </Upload>
-      
       </div>
       <div className="search">
       <Input placeholder="请输入楼盘名称、地址" className='searchinput' size={'large'}  allowClear value={inputValue} onChange={onChange}  />

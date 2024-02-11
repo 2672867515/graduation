@@ -40,10 +40,15 @@
         .personalmessage{
             .message{
                 width: 100%;
-                padding-top: 25px ;
+                padding: 25px 0 ;
                 padding-left:10px ;
                 box-sizing: border-box;
                 box-shadow:0 0 10px  rgba(0, 0, 0,0.1);
+                .headimg{
+                    width: 85px;
+                    height: 85px;
+                    border-radius: 50%;
+                }
             }
             .statistic{
                 margin-top: 30px;

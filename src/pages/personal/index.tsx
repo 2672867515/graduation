@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './index.scss'
 import { useDispatch } from 'react-redux';
 import { HeaderState } from '../../redux/action/index.jsx';
-import { Button, Form, Input, Menu, Row, type MenuProps, Col, Modal,message, Statistic } from 'antd';
-import { QuestionCircleOutlined, UserOutlined, BulbOutlined,StarOutlined,CommentOutlined } from '@ant-design/icons';
+import { Button, Form, Input, Menu, Row, type MenuProps, Col, Modal,message, Statistic, Upload } from 'antd';
+import { QuestionCircleOutlined, UserOutlined, BulbOutlined,StarOutlined,CommentOutlined,UploadOutlined } from '@ant-design/icons';
 import img from '../../img/2t.jpg'
 import { useHistory } from 'react-router-dom';
+import type { UploadProps } from 'antd';
+import {updateHead,getuser} from '../../api/api.ts'
+
 type MenuItem = Required<MenuProps>['items'][number];
 
 function getItem(
@@ -40,8 +43,9 @@ const Personal=()=> {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [key,setKey]=useState('1')
   const [edit,setEdit]=useState(false)
-  const messages={username:'sd',phonenumber:1122334} 
+  const [messages,setMessages]=useState({username:'',phonenumber:''} )
   const [form] = Form.useForm();
+  const [form2] = Form.useForm();
   const [messageApi, contextHolder] = message.useMessage();
 
   const housearr=[{ts:['近地铁','fg']},
@@ -58,6 +62,38 @@ const Personal=()=> {
     {qa:'wwww????',time:'2024-01-01',responsetotal:20,response:'sdsd'},
     {qa:'wwww????',time:'2024-01-01',responsetotal:20,response:'sdsd'}
   ]
+  const [imgs,setImgs]=useState('')
+
+  const file: UploadProps = {
+  name: 'file',
+  action: 'http://127.0.0.1:8081/upload',
+  showUploadList:false,
+  headers: {
+    authorization: 'authorization-text',
+  },
+  onChange(info) {
+    if (info.file.status !== 'uploading') {
+      console.log(info.file, info.fileList);
+    }
+    if (info.file.status === 'done') {
+      message.success(`${info.file.name} 上传成功`);
+      let data={id:1,head:info.file.response}
+      updateHead('/user/updateHead',data).then(res=>{
+        console.log(res);
+        setImgs(res.data.data.head)
+      })
+    } else if (info.file.status === 'error') {
+      message.error(`${info.file.name} 上传失败`);
+    }
+  },
+};
+useEffect(()=>{
+  getuser('/user/getuser',{id:1}).then(res=>{
+    setImgs(res.data.data.head)
+    console.log(res.data.data.username);
+    form.setFieldsValue(res.data.data);
+  })
+},[])
   const onClick: MenuProps['onClick'] = (e) => {
     console.log('click ', e);
     setKey(e.key)
@@ -99,14 +135,14 @@ const Personal=()=> {
     if(errorInfo.value.password&&errorInfo.value.password2){
       messageApi.open({
         type: 'error',
-        content: '原密码错误，修改失败',
+        content: '修改失败',
       });
     }
    
   };
   const editpassword=()=>{
     setIsModalOpen(true);
-    form.resetFields()
+    form2.resetFields()
   }
   const detial=(id)=>{
     history.push(`/detail/${id}?type=Newhome`)
@@ -145,15 +181,23 @@ const Personal=()=> {
         </div>
         <div className="realcontnet">
           {key==='1'&&<div className="personalmessage">
+        
             <div className="message">
             <Form
-              name="basic"
+              form={form}
+              name="message"
               onFinish={onFinish}
               onFinishFailed={onFinishFailed}
               initialValues={messages}
             >
             <Row gutter={20}>
-              <Col span={8}>
+              <Col span={2}>
+                <img src={imgs} alt="" className='headimg'/>
+                <Upload {...file}>
+                  <Button size='small' icon={<UploadOutlined />}>上传头像</Button>
+                </Upload>
+              </Col>
+              <Col span={8} offset={1} style={{marginTop:'30px'}}>
                 <Form.Item
                   label="用户名"
                   name="username"
@@ -162,36 +206,36 @@ const Personal=()=> {
                   <Input disabled={!edit}/>
                 </Form.Item>
               </Col>
-              <Col span={8}>
+              <Col span={8} style={{marginTop:'30px'}}>
                 <Form.Item
                   label="手机号"
                   name="phonenumber"
                   rules={[{ required: true, message: '请输入手机号' }]}
                 >
-                  <Input  disabled={!edit} />
+                  <Input disabled={!edit} />
                 </Form.Item>
               </Col>
-              {!edit&&<Col span={2}>
+              {!edit&&<Col span={2} style={{marginTop:'30px'}}>
                   <Button  style={{color:'rgb(82,196,26)',borderColor:'rgb(82,196,26)'}} onClick={doedit}>
                     编辑
                   </Button>
               </Col>}
-              {edit&&<Col span={2}>
+              {edit&&<Col span={2} style={{marginTop:'30px'}}>
                   <Button type="primary" htmlType="submit">
                     确定
                   </Button>
               </Col> }
-              {edit&&<Col span={2} onClick={docancle}>
+              {edit&&<Col span={2} onClick={docancle} style={{marginTop:'30px'}}>
                   <Button >
                     取消
                   </Button>
               </Col> }
              
-              <Col span={2}>
+              {!edit&&<Col span={2} style={{marginTop:'30px'}}>
                   <Button onClick={editpassword}>
                     修改密码
                   </Button>
-              </Col>
+              </Col>}
             </Row>
             </Form>
             </div>
@@ -286,22 +330,20 @@ const Personal=()=> {
       </div>
       <Modal 
         title="修改密码" 
-        okText='提交' 
-        cancelText='取消' 
         confirmLoading={loading} 
         open={isModalOpen} 
         footer={[
           // 注意这里使用的是 Form 组件的 submit 方法
-          <Button key="submit" onClick={() => handleCancel()}>
+          <Button  onClick={() => handleCancel()}>
             取消
           </Button>,
-          <Button key="submit" type="primary" loading={loading} onClick={() => form.submit()}>
+          <Button key="submit" type="primary" loading={loading} onClick={() => form2.submit()}>
             提交
           </Button>
         ]}
         >
         <Form
-          form={form}
+          form={form2}
           name="basic"
           labelCol={{span:4}}
           wrapperCol={{ span: 16 }}
