@@ -34,7 +34,8 @@ const Vr = (props): ReactElement => {
   const [res, setRes] = useState<any>(image)
 
   const { id } = useParams();
-
+  const queryParams = new URLSearchParams(window.location.search);
+  const type = queryParams.get('type');
   const width =750;
   const height = 600
 
@@ -128,7 +129,7 @@ const sortImage=(image)=> {
     return sortdata;
   }
   const init = () => {
-    queryImageById('image/queryImageById',{id:id}).then(res=>{
+    queryImageById('image/queryImageById',{id:id,type:type+'vr'}).then(res=>{
       console.log(res.data);
 
       setImage({...organizeData(res.data.data)})
