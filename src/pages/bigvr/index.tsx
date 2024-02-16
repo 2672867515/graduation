@@ -6,6 +6,7 @@ import  './index.scss'
 import {image} from '../../image.ts'
 import { useParams } from 'react-router-dom';
 import { Button, Modal, notification, Radio, Space } from 'antd';
+import { queryImageById } from '../../api/api.ts';
 
 interface HomeOjb {
   materials: [],
@@ -16,7 +17,7 @@ let scene: any = null //场景
 let loader: any = null
 
 const Vr = (): ReactElement => {
-
+  const [image,setImage]=useState({})
   const [camera, setCamera] = useState<any>() //摄像机
 
   const [renderer, setRenderer] = useState<any>() //渲染器
@@ -30,12 +31,13 @@ const Vr = (): ReactElement => {
   const [res, setRes] = useState<any>(image)
 
   const { id } = useParams();
-
+  const width =750;
+  const height = 600
 
   useEffect(() => {
     init() 
     // console.log(id);
-    
+  
   }, [])
 
   useEffect(() => {
@@ -70,20 +72,37 @@ const Vr = (): ReactElement => {
       }]
     })
   }
-
+  const organizeData=(data)=> {
+    const organizedData = {};
+    data.forEach(item => {
+      const { id, houseid, url, area, direction } = item;
+      if (!organizedData[area]) {
+        organizedData[area] = { image: [] };
+      }
+      organizedData[area].image.push(url);
+    });
+    
+    return organizedData;
+  }
   const init = () => {
-    loader = new THREE.TextureLoader() //纹理加载器
-    const width =  window.innerWidth;
-    const height = window.innerHeight
-    setHomeArr(getNewData(res))
-    console.log(getNewData(res));
-    setCurrentHome(getNewData(res)[0][0]) // 首次进来的房间
-    setCamera(new THREE.PerspectiveCamera(90, width / height, 0.1, 1000))    // 初始化相机
-    // 90：这是相机的视场角度，以度为单位。它定义了可见区域的大小。
-    // width / height：这是相机的宽高比，通常等于渲染窗口的宽度除以高度。这个值通常随着窗口大小的变化而变化。
-    // 0.1：这是相机的近截面。这定义了相机能够看到的最近的物体到相机的距离。任何距离小于这个值的物体都不会被渲染出来。
-    // 1000：这是相机的远截面。它定义了相机能够看到的最远的物体到相机的距离。任何距离超过这个值的物体也不会被渲染出来。
-    setRenderer(new THREE.WebGLRenderer())   // 初始化渲染器
+    queryImageById('image/queryImageById',{id:id}).then(res=>{
+      console.log(res.data);
+      console.log(organizeData(res.data.data));
+      setImage({...organizeData(res.data.data)})
+      const images={...organizeData(res.data.data)}
+      console.log(images);
+      
+      loader = new THREE.TextureLoader() //纹理加载器
+      setHomeArr(getNewData(images))
+      console.log(getNewData(images));
+      setCurrentHome(getNewData(images)[0][0]) // 首次进来的房间
+      setCamera(new THREE.PerspectiveCamera(90, width / height, 0.1, 1000))    // 初始化相机
+      // 90：这是相机的视场角度，以度为单位。它定义了可见区域的大小。
+      // width / height：这是相机的宽高比，通常等于渲染窗口的宽度除以高度。这个值通常随着窗口大小的变化而变化。
+      // 0.1：这是相机的近截面。这定义了相机能够看到的最近的物体到相机的距离。任何距离小于这个值的物体都不会被渲染出来。
+      // 1000：这是相机的远截面。它定义了相机能够看到的最远的物体到相机的距离。任何距离超过这个值的物体也不会被渲染出来。
+      setRenderer(new THREE.WebGLRenderer())   // 初始化渲染器
+    })
   }
 
   const initBaseFactor = () => {

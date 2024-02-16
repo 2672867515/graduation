@@ -3,12 +3,13 @@ import React, { ReactElement, useEffect, useRef, useState } from 'react';
 import * as THREE from "three";
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import  './index.scss'
-import {image} from '../../image.ts'
+// import {image} from '../../image.ts'
 import { useParams } from 'react-router-dom';
 import {
   ArrowsAltOutlined
 } from '@ant-design/icons';
 import { Tooltip } from 'antd';
+import { queryImageById } from '../../api/api.ts';
 
 interface HomeOjb {
   materials: [],
@@ -19,7 +20,7 @@ let scene: any = null //场景
 let loader: any = null
 
 const Vr = (props): ReactElement => {
-
+  const [image,setImage]=useState({})
   const [camera, setCamera] = useState<any>() //摄像机
 
   const [renderer, setRenderer] = useState<any>() //渲染器
@@ -40,9 +41,9 @@ const Vr = (props): ReactElement => {
   useEffect(() => {
     init() 
     // console.log(id);
-    
+  
   }, [])
-
+ 
   useEffect(() => {
     if (camera && renderer) {
       setControls(new OrbitControls(camera, renderer.domElement))//用于实现交互式的相机控制。它允许用户通过鼠标拖拽、缩放、旋转等方式来控制相机的视角和位置
@@ -76,18 +77,76 @@ const Vr = (props): ReactElement => {
     })
   }
 
-  const init = () => {
-    loader = new THREE.TextureLoader() //纹理加载器
+// 右左上下前后
+// 对 image 对象中的 image 属性值进行排序
+const sortImage=(image)=> {
+ 
+  Object.keys(image).forEach(area => {
+    console.log(`Area: ${area}`);
+    let temp=[0,1,2,3,4,5]
+    image[area].image.forEach(img => {
+      if (img.includes("_r.")) {
+        temp[0]=img
+      } 
+      if (img.includes("_l.")) {
+        temp[1]=img
+        console.log(img);
+        
+      } 
+      if (img.includes("_t.")) {
+        temp[2]=img
+      } 
+      if (img.includes("_bo.")) {
+        temp[3]=img
+      } 
+      if (img.includes("_f.")) {
+        temp[4]=img
+      } 
+      if (img.includes("_ba.")) {
+        temp[5]=img
+      } 
+    });
+    image[area].image=temp
+  });
+  return image
+}
+ const organizeData=(data)=> {
+    const organizedData = {};
 
-    setHomeArr(getNewData(res))
-    console.log(getNewData(res));
-    setCurrentHome(getNewData(res)[0][0]) // 首次进来的房间
-    setCamera(new THREE.PerspectiveCamera(90, width / height, 0.1, 1000))    // 初始化相机
-    // 90：这是相机的视场角度，以度为单位。它定义了可见区域的大小。
-    // width / height：这是相机的宽高比，通常等于渲染窗口的宽度除以高度。这个值通常随着窗口大小的变化而变化。
-    // 0.1：这是相机的近截面。这定义了相机能够看到的最近的物体到相机的距离。任何距离小于这个值的物体都不会被渲染出来。
-    // 1000：这是相机的远截面。它定义了相机能够看到的最远的物体到相机的距离。任何距离超过这个值的物体也不会被渲染出来。
-    setRenderer(new THREE.WebGLRenderer())   // 初始化渲染器
+    data.forEach(item => {
+      const { id, houseid, url, area, direction } = item;
+      if (!organizedData[area]) {
+        organizedData[area] = { image: [] };
+      }
+      organizedData[area].image.push(url);
+    });
+    console.log(organizedData);
+    
+    let sortdata=sortImage(organizedData)
+    console.log(sortdata);
+    
+    return sortdata;
+  }
+  const init = () => {
+    queryImageById('image/queryImageById',{id:id}).then(res=>{
+      console.log(res.data);
+
+      setImage({...organizeData(res.data.data)})
+      const images={...organizeData(res.data.data)}
+      console.log(images);
+      
+      loader = new THREE.TextureLoader() //纹理加载器
+      setHomeArr(getNewData(images))
+      console.log(getNewData(images));
+      setCurrentHome(getNewData(images)[0][0]) // 首次进来的房间
+      setCamera(new THREE.PerspectiveCamera(90, width / height, 0.1, 1000))    // 初始化相机
+      // 90：这是相机的视场角度，以度为单位。它定义了可见区域的大小。
+      // width / height：这是相机的宽高比，通常等于渲染窗口的宽度除以高度。这个值通常随着窗口大小的变化而变化。
+      // 0.1：这是相机的近截面。这定义了相机能够看到的最近的物体到相机的距离。任何距离小于这个值的物体都不会被渲染出来。
+      // 1000：这是相机的远截面。它定义了相机能够看到的最远的物体到相机的距离。任何距离超过这个值的物体也不会被渲染出来。
+      setRenderer(new THREE.WebGLRenderer())   // 初始化渲染器
+    })
+ 
   }
 
   const initBaseFactor = () => {
@@ -137,7 +196,7 @@ const Vr = (props): ReactElement => {
     renderer.render(scene, camera);
   }
   const change=(i)=>{
-    setCurrentHome(getNewData(res)[i][0]) 
+    setCurrentHome(getNewData(image)[i][0]) 
   }
 
   return (

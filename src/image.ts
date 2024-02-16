@@ -27,7 +27,8 @@ import bottom from './img/2_wsahroom_bo.webp'
 import front from './img/2_wsahroom_f.webp'
 import back from './img/2_wsahroom_ba.webp'
 
-const image={
+
+let image={
     home1: {
       image: [ home1_right,home1_left, home1_top, home1_bottom, home1_front, home1_back],// 左右前后上下
     },
