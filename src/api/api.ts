@@ -20,3 +20,6 @@ export const getuser = (url, data) => {
 export const queryImageById = (url, data) => {
   return instance.post(url,data);
 };
+export const getByid = (url, data) => {
+  return instance.post(url,data);
+};

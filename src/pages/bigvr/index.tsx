@@ -31,6 +31,8 @@ const Vr = (): ReactElement => {
   const [res, setRes] = useState<any>(image)
 
   const { id } = useParams();
+  const queryParams = new URLSearchParams(window.location.search);
+  const type = queryParams.get('type');
   const width =750;
   const height = 600
 
@@ -72,8 +74,42 @@ const Vr = (): ReactElement => {
       }]
     })
   }
-  const organizeData=(data)=> {
+ // 右左上下前后
+// 对 image 对象中的 image 属性值进行排序
+const sortImage=(image)=> {
+ 
+  Object.keys(image).forEach(area => {
+    console.log(`Area: ${area}`);
+    let temp=[0,1,2,3,4,5]
+    image[area].image.forEach(img => {
+      if (img.includes("_r.")) {
+        temp[0]=img
+      } 
+      if (img.includes("_l.")) {
+        temp[1]=img
+        console.log(img);
+        
+      } 
+      if (img.includes("_t.")) {
+        temp[2]=img
+      } 
+      if (img.includes("_bo.")) {
+        temp[3]=img
+      } 
+      if (img.includes("_f.")) {
+        temp[4]=img
+      } 
+      if (img.includes("_ba.")) {
+        temp[5]=img
+      } 
+    });
+    image[area].image=temp
+  });
+  return image
+}
+ const organizeData=(data)=> {
     const organizedData = {};
+
     data.forEach(item => {
       const { id, houseid, url, area, direction } = item;
       if (!organizedData[area]) {
@@ -81,13 +117,17 @@ const Vr = (): ReactElement => {
       }
       organizedData[area].image.push(url);
     });
+    console.log(organizedData);
     
-    return organizedData;
+    let sortdata=sortImage(organizedData)
+    console.log(sortdata);
+    
+    return sortdata;
   }
   const init = () => {
-    queryImageById('image/queryImageById',{id:id}).then(res=>{
+    queryImageById('image/queryImageById',{id:id,type:type+'vr'}).then(res=>{
       console.log(res.data);
-      console.log(organizeData(res.data.data));
+
       setImage({...organizeData(res.data.data)})
       const images={...organizeData(res.data.data)}
       console.log(images);
@@ -154,7 +194,7 @@ const Vr = (): ReactElement => {
     renderer.render(scene, camera);
   }
   const change=(i)=>{
-    setCurrentHome(getNewData(res)[i][0]) 
+    setCurrentHome(getNewData(image)[i][0]) 
   }
 
   return (

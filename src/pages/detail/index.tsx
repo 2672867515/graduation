@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Vr from '../../components/VR/index.tsx'
 import { useParams } from 'react-router-dom';
 import  './index.scss'
@@ -10,6 +10,7 @@ import { Tooltip,message } from 'antd';
 import {
   StarFilled
 } from '@ant-design/icons';
+import { getByid } from '../../api/api.ts';
 const Detail=(props)=> {
   const [collect,setCollect]=useState(true)
   let   history = useHistory()
@@ -21,10 +22,10 @@ const Detail=(props)=> {
   console.log(type);
   dispatch(HeaderState(type))
   const header = useSelector((state) => state.header);
+  const [housedata,setHousedata]=useState({})
+  const [tsarr,setTsarr]=useState(['特色'])
   console.log(header);
   const [messageApi, contextHolder] = message.useMessage();
-  const tsarr=['特色','特色','特色']
-
   const housearr=[{ts:['近地铁','fg']},
   {ts:['ute','5rt']},
   {ts:['67yh','ewsf','fgh']},
@@ -36,6 +37,16 @@ const Detail=(props)=> {
 
   const qs=[1,2,3]
 
+  useEffect(()=>{
+    if(type==="Newhome"){
+      getByid("newhome/getByid",{id:id}).then(res=>{
+        
+        setHousedata(res.data.data[0])
+        setTsarr(res.data.data[0].feature.split("，"))
+      })
+    }
+
+  },[])
   const detial=(id)=>{
     history.push(`/detail/${id}?type=${type}`)
   }
@@ -67,7 +78,7 @@ const Detail=(props)=> {
           <span className="project">基于three.js的3D选房平台</span>
           <span className="pagetype">|  详情</span>
         </div>
-        <div className="housename">好房子急售！五四北1号线 鲁能公馆，中层南北通透全明户型</div>
+        <div className="housename">{housedata.name}</div>
         <div className="content">
           <Vr />
           <div className="details">
@@ -82,24 +93,24 @@ const Detail=(props)=> {
             </div>
             <div className="message">
               {type!=='Newhome'&&<div className="price">300万 <div className='per'>20305元/㎡</div></div>}
-              {type==='Newhome'&&<div className="newprice">均价：<span className="per">23564 </span> /㎡</div>}
+              {type==='Newhome'&&<div className="newprice">均价：<span className="per">{housedata.averageprice} </span> /㎡</div>}
                 <div className="base">
-                  <span>2室2厅1卫 </span>
+                  <span>{housedata.housetype}</span>
                   <div>
-                    <span className='pf'>84.9㎡</span><br />
+                    <span className='pf'>{housedata.size}</span><br />
                     <span className='zx'>精装修</span>
                   </div>
                   <div>
-                    <span className='jf'>2019年交房</span><br />
-                    <span className='kp'>2015年开盘</span>
+                    <span className='jf'>交房：{housedata.jf}</span><br />
+                    <span className='kp'>开盘：{housedata.kp}</span>
                   </div>
                   
                 </div>
                 <div className="ts">
                   {tsarr.map((item)=>{ return <div className="tsitem">{item}</div>   })}
                 </div>
-                <div className="address">晋安 五四北</div>
-                <div className="manager">联系人</div>
+                <div className="address">{housedata.address}</div>
+                <div className="manager">联系电话 : {housedata.phone}</div>
             </div>
             <div className="map">
               假装有地图

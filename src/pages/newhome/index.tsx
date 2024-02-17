@@ -1,5 +1,5 @@
 import { Button, Input } from 'antd';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import './index.scss'
 import Pagesearch from '../../components/pagesearch//index.tsx'
@@ -52,6 +52,7 @@ const Newhome=(props)=> {
     {img:'',name:'sdssd',describe:'dsds'},
     {img:'',name:'sdssd',describe:'dsdfdgggggggggs'},
   ]
+
   const onChange=(event)=>{
     setInputValue(event.target.value);
   }

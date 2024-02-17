@@ -9,7 +9,7 @@ import {
   ArrowsAltOutlined
 } from '@ant-design/icons';
 import { Tooltip } from 'antd';
-import { queryImageById } from '../../api/api.ts';
+import { getByid, queryImageById } from '../../api/api.ts';
 
 interface HomeOjb {
   materials: [],
@@ -91,8 +91,6 @@ const sortImage=(image)=> {
       } 
       if (img.includes("_l.")) {
         temp[1]=img
-        console.log(img);
-        
       } 
       if (img.includes("_t.")) {
         temp[2]=img
@@ -129,6 +127,7 @@ const sortImage=(image)=> {
     return sortdata;
   }
   const init = () => {
+  
     queryImageById('image/queryImageById',{id:id,type:type+'vr'}).then(res=>{
       console.log(res.data);
 
@@ -205,7 +204,7 @@ const sortImage=(image)=> {
       {/* 场景 */}
       <div id="threeDemo" style={{ overflow: 'hidden' }}>
       <Tooltip title="全屏">
-        <a className="tip"  target='blank' href={`/bigvr/${id}`}> <ArrowsAltOutlined  />
+        <a className="tip"  target='blank' href={`/bigvr/${id}?type=${type}`}> <ArrowsAltOutlined  />
         </a>
       </Tooltip>
       <div className="select">

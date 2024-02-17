@@ -34,8 +34,7 @@
             right: 0;
             width: 35%;
             .tip{
-                position: absolute;
-                top: 0;
+                position: relative;
                 width: 100%;
                 background-color: rgb(251,247,241);
                 padding: 10px;
@@ -67,8 +66,7 @@
                
             }
             .message{
-                position: absolute;
-                top: 60px;
+                position: relative;
                 width: 100%;
                 .price{
                     font-size: 40px;
@@ -92,7 +90,7 @@
                 .base{
                     margin-top: 20px;
                     display: flex;
-                    gap: 30px;
+                    gap: 20px;
                     text-align: center;
                     color: black;
                     font-size: 20px;
@@ -111,12 +109,14 @@
                 .ts{
                     margin-top: 20px;
                     display: flex;
-                    gap: 20px;
+                    gap: 10px;
+                    flex-wrap: wrap;
                     .tsitem{
-                        background-color:rgb(245,247,249);
+                        background-color:rgb(103,205,219);
                         padding: 0 5px;
                         border-radius: 3px;
-                        color: rgba(0,0,0,0.5);
+                        color:white;
+    
                     }
                 }
                 .address{
@@ -127,8 +127,7 @@
                 }
             }
             .map{
-                position: absolute;
-                top: 330px;
+                margin-top: 20px;
                 right: 0;
                 width: 100%;
                 height: 190px;
