@@ -10,7 +10,7 @@ import { Tooltip,message } from 'antd';
 import {
   StarFilled
 } from '@ant-design/icons';
-import { getByid, usedgetByid } from '../../api/api.ts';
+import { getByid, rentgetByid, usedgetByid } from '../../api/api.ts';
 const Detail=(props)=> {
   const [collect,setCollect]=useState(true)
   let   history = useHistory()
@@ -49,6 +49,15 @@ const Detail=(props)=> {
       console.log(2);
       
       usedgetByid("used/getByid",{id:id}).then(res=>{
+        
+        setHousedata(res.data.data[0])
+        setTsarr(res.data.data[0].feature.split("，"))
+      })
+    }
+    if(type==="Rent"){
+      console.log(2);
+      
+     rentgetByid("rent/getByid",{id:id}).then(res=>{
         
         setHousedata(res.data.data[0])
         setTsarr(res.data.data[0].feature.split("，"))
@@ -100,7 +109,7 @@ const Detail=(props)=> {
                 <span className="collect" style={{color:collect?'orange':''}} onClick={changecollect}> <StarFilled /></span>
               </Tooltip>
             </div>
-            <div className="message">
+            {type!=='Rent'&&<div className="message">
               {type!=='Newhome'&&<div className="price">{housedata.price}万 <div className='per'>{housedata.per}元/㎡</div></div>}
               {type==='Newhome'&&<div className="newprice">均价：<span className="per">{housedata.averageprice} </span> /㎡</div>}
                 <div className="base">
@@ -121,7 +130,31 @@ const Detail=(props)=> {
                 </div>
                 <div className="address">{housedata.address}</div>
                 <div className="manager">联系电话 : {housedata.phone}</div>
-            </div>
+            </div>}
+            {type==='Rent'&&<div className="message">
+              <div className="price">{100}元/月<div className='per'>押一付一</div></div>
+                <div className="base">
+                    <div>
+                      <span className='pf'>三室两厅</span><br />
+                      <span className='zx'>共1层</span>
+                    </div>
+                    <div>
+                      <span className='pf'>{100}㎡</span><br />
+                      <span className='zx'>精装修</span>
+                    </div>
+                    <div>
+                      <span className='pf'>朝向：{'南北'}</span><br />
+                      <span className='zx'>类型：别墅</span>
+                    </div>
+                <div>
+                </div>
+                </div>
+                <div className="ts">
+                  {tsarr.map((item)=>{ return <div className="tsitem">{item}</div>   })}
+                </div>
+                <div className="address">地址：{housedata.address}</div>
+                <div className="manager">联系电话 : {housedata.phone}</div>
+            </div>}
             <div className="map">
               假装有地图
             </div>
@@ -131,10 +164,12 @@ const Detail=(props)=> {
             <div className="title">房源概况</div>
             <div className="block">
               <div className="item">
-                <div className="dot"><div className="line"></div><span>核心卖点</span></div>
-                <div className="survey-detail">{housedata.sp}</div>
+              {type==='Used'&&<div className="dot"><div className="line"></div><span>核心卖点</span></div>}
+                {type==='Used'&&<div className="survey-detail">{housedata.sp}</div>}
                 <div className="dot"><div className="line"></div><span>基本情况</span></div>
                 <div className="survey-detail">{housedata.base}</div>
+                {type==='Rent'&&<div className="dot"><div className="line"></div><span>房源设施</span></div>}
+                {type==='Rent'&&<div className="survey-detail">111</div>}
               </div>
             </div>
           </div>}
@@ -156,7 +191,7 @@ const Detail=(props)=> {
           </div>}
 
           <div className="comment">
-            <div className="title">小区问答 ({100})</div>
+            <div className="title">房源问答 ({100})</div>
             {qs.map(()=>{
               return <div className="qs" onClick={()=>getqs(1,1)}>
                 <div className="question"><span className='icon'>问</span> ???老wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww登</div>

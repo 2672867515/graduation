@@ -26,3 +26,6 @@ export const getByid = (url, data) => {
 export const usedgetByid = (url, data) => {
   return instance.post(url,data);
 };
+export const rentgetByid = (url, data) => {
+  return instance.post(url,data);
+};
