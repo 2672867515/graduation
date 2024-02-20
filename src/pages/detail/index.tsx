@@ -10,7 +10,7 @@ import { Tooltip,message } from 'antd';
 import {
   StarFilled
 } from '@ant-design/icons';
-import { getByid } from '../../api/api.ts';
+import { getByid, usedgetByid } from '../../api/api.ts';
 const Detail=(props)=> {
   const [collect,setCollect]=useState(true)
   let   history = useHistory()
@@ -19,7 +19,7 @@ const Detail=(props)=> {
   console.log(id);
   const queryParams = new URLSearchParams(window.location.search);
   const type = queryParams.get('type');
-  console.log(type);
+
   dispatch(HeaderState(type))
   const header = useSelector((state) => state.header);
   const [housedata,setHousedata]=useState({})
@@ -40,6 +40,15 @@ const Detail=(props)=> {
   useEffect(()=>{
     if(type==="Newhome"){
       getByid("newhome/getByid",{id:id}).then(res=>{
+        
+        setHousedata(res.data.data[0])
+        setTsarr(res.data.data[0].feature.split("，"))
+      })
+    }
+    if(type==="Used"){
+      console.log(2);
+      
+      usedgetByid("used/getByid",{id:id}).then(res=>{
         
         setHousedata(res.data.data[0])
         setTsarr(res.data.data[0].feature.split("，"))
@@ -92,17 +101,18 @@ const Detail=(props)=> {
               </Tooltip>
             </div>
             <div className="message">
-              {type!=='Newhome'&&<div className="price">300万 <div className='per'>20305元/㎡</div></div>}
+              {type!=='Newhome'&&<div className="price">{housedata.price}万 <div className='per'>{housedata.per}元/㎡</div></div>}
               {type==='Newhome'&&<div className="newprice">均价：<span className="per">{housedata.averageprice} </span> /㎡</div>}
                 <div className="base">
                   <span>{housedata.housetype}</span>
                   <div>
-                    <span className='pf'>{housedata.size}</span><br />
+                    <span className='pf'>{housedata.size}㎡</span><br />
                     <span className='zx'>精装修</span>
                   </div>
                   <div>
-                    <span className='jf'>交房：{housedata.jf}</span><br />
-                    <span className='kp'>开盘：{housedata.kp}</span>
+                  {type==='Newhome'&&<span className='jf'>交房：{housedata.jf} <br /></span>}
+                  {type==='Newhome'&&<span className='kp'>开盘：{housedata.kp} </span>}
+                  {type==='Used'&&<span className='jg'>竣工：{housedata.jg}年</span>}
                   </div>
                   
                 </div>
@@ -122,9 +132,9 @@ const Detail=(props)=> {
             <div className="block">
               <div className="item">
                 <div className="dot"><div className="line"></div><span>核心卖点</span></div>
-                <div className="survey-detail">asadasa</div>
+                <div className="survey-detail">{housedata.sp}</div>
                 <div className="dot"><div className="line"></div><span>基本情况</span></div>
-                <div className="survey-detail">asadasa</div>
+                <div className="survey-detail">{housedata.base}</div>
               </div>
             </div>
           </div>}

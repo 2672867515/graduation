@@ -138,37 +138,34 @@
         .lb{
             position: absolute;
             left: 0;
-            @mixin block{
-                width: 90%;
-                .item{
-                    width: 100%;
-                    .dot{
-                        margin-top: 20px;
-                        width: 100%;
-                        display: flex;
-                        gap: 10px;
-                        .line{
-                            border: 3px solid rgb(29, 182, 131);
-                            box-sizing: border-box;
-                            border-radius: 2px;
-                        }
-                        span{
-                            font-size: 14px;
-                        }
-                    }
-                    .survey-detail{
-                        margin-top: 10px;
-                    }
-                }
-            }
             .survey{
                 margin-top: 50px;
-                width: 750px;
                 .title{
                     font-size: 20px;
                     font-weight: bold;
                 }
-                @include block
+                .block{
+                    width: 62%;
+                    .item{
+                        .dot{
+                            margin-top: 20px;
+                            width: 100%;
+                            display: flex;
+                            gap: 10px;
+                            .line{
+                                border: 3px solid rgb(29, 182, 131);
+                                box-sizing: border-box;
+                                border-radius: 2px;
+                            }
+                            span{
+                                font-size: 14px;
+                            }
+                        }
+                        .survey-detail{
+                            margin-top: 15px;
+                        }
+                    }
+                }
             }
             .householdtype{
                 margin-top: 50px;

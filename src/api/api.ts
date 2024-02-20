@@ -23,3 +23,6 @@ export const queryImageById = (url, data) => {
 export const getByid = (url, data) => {
   return instance.post(url,data);
 };
+export const usedgetByid = (url, data) => {
+  return instance.post(url,data);
+};
