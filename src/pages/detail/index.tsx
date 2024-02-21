@@ -5,12 +5,13 @@ import  './index.scss'
 import { useDispatch,useSelector } from 'react-redux';
 import { HeaderState } from '../../redux/action/index.jsx';
 import img from '../../img/2t.jpg'
+import nodata from '../../img/nodata.jpg'
 import { useHistory } from 'react-router-dom';
 import { Tooltip,message } from 'antd';
 import {
   StarFilled
 } from '@ant-design/icons';
-import { getByid, rentgetByid, usedgetByid } from '../../api/api.ts';
+import { getByid, getHousetype, rentgetByid, usedgetByid } from '../../api/api.ts';
 const Detail=(props)=> {
   const [collect,setCollect]=useState(true)
   let   history = useHistory()
@@ -24,8 +25,8 @@ const Detail=(props)=> {
   const header = useSelector((state) => state.header);
   const [housedata,setHousedata]=useState({})
   const [tsarr,setTsarr]=useState(['特色'])
-  console.log(header);
   const [messageApi, contextHolder] = message.useMessage();
+  const [hxarr,setHxarr]=useState([])
   const housearr=[{ts:['近地铁','fg']},
   {ts:['ute','5rt']},
   {ts:['67yh','ewsf','fgh']},
@@ -33,16 +34,18 @@ const Detail=(props)=> {
   {ts:['f','fg'],hot:'超级优惠'},
   {ts:['hjk','6765g']}
   ]
-  const hxarr=[1,2,3,4]
+  // const hxarr=[1,2,3,4]
 
   const qs=[1,2,3]
 
   useEffect(()=>{
     if(type==="Newhome"){
       getByid("newhome/getByid",{id:id}).then(res=>{
-        
         setHousedata(res.data.data[0])
         setTsarr(res.data.data[0].feature.split("，"))
+      })
+      getHousetype('housetype/getHousetype',{houseid:id}).then(res=>{
+        setHxarr(res.data.data)
       })
     }
     if(type==="Used"){
@@ -113,7 +116,7 @@ const Detail=(props)=> {
               {type!=='Newhome'&&<div className="price">{housedata.price}万 <div className='per'>{housedata.per}元/㎡</div></div>}
               {type==='Newhome'&&<div className="newprice">均价：<span className="per">{housedata.averageprice} </span> /㎡</div>}
                 <div className="base">
-                  <span>{housedata.housetype}</span>
+                  <span style={{fontSize:'18px'}}>{housedata.housetype}</span>
                   <div>
                     <span className='pf'>{housedata.size}㎡</span><br />
                     <span className='zx'>精装修</span>
@@ -128,7 +131,7 @@ const Detail=(props)=> {
                 <div className="ts">
                   {tsarr.map((item)=>{ return <div className="tsitem">{item}</div>   })}
                 </div>
-                <div className="address">{housedata.address}</div>
+                <div className="address">地址：{housedata.address}</div>
                 <div className="manager">联系电话 : {housedata.phone}</div>
             </div>}
             {type==='Rent'&&<div className="message">
@@ -152,7 +155,7 @@ const Detail=(props)=> {
                 <div className="ts">
                   {tsarr.map((item)=>{ return <div className="tsitem">{item}</div>   })}
                 </div>
-                <div className="address">地址：{housedata.address}</div>
+                <div className="addresss">地址：{housedata.address}</div>
                 <div className="manager">联系电话 : {housedata.phone}</div>
             </div>}
             <div className="map">
@@ -174,15 +177,15 @@ const Detail=(props)=> {
             </div>
           </div>}
           {type==='Newhome'&&<div className="householdtype">
-            <div className="title">楼盘户型</div>
+            <div className="title">楼盘户型(部分)</div>
             <div className="items">
               {
                 hxarr.map((item)=>{
                   return <div className="block">
-                    <img className="img" src={img} alt='' />
-                    <div className="size">三室一厅 120㎡</div>
-                    <div className="floor">2单元-608</div>
-                    <div className="price">400万<span className="per">23564 /㎡</span> </div>
+                    <img className="img" src={item.url||nodata} alt='' />
+                    <div className="size">{item.type} {item.size}㎡</div>
+                    <div className="floor">{item.location}</div>
+                    <div className="price">{item.price}万<span className="per">{item.per}/㎡</span> </div>
                 </div>
                 })
               } 

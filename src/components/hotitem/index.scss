@@ -11,6 +11,7 @@
         }
         .hot-detail{
             width: 100%;
+            padding: 0 10px;
             .hot-name{
                 font-size: 18px;
             }
@@ -23,6 +24,7 @@
             }
         }
     }
+    transition: 150ms;
     &:hover{
         box-shadow: 0 0 20px rgba(0, 0, 0,0.2);
     }

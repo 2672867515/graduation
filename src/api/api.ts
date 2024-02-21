@@ -8,7 +8,10 @@ const instance = axios.create({
 export const tologin = (url, data) => {
   return instance.post(url, data);
 };
-export const getall = (url, data) => {
+export const getall = (url) => {
+  return instance.get(url);
+};
+export const newhomegetHot = (url) => {
   return instance.get(url);
 };
 export const updateHead = (url, data) => {
@@ -27,5 +30,8 @@ export const usedgetByid = (url, data) => {
   return instance.post(url,data);
 };
 export const rentgetByid = (url, data) => {
+  return instance.post(url,data);
+};
+export const getHousetype = (url, data) => {
   return instance.post(url,data);
 };

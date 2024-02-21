@@ -5,6 +5,8 @@ import Search from '../../components/search/index.tsx'
 import banner1 from '../../img/banner1.jpg';
 import banner2 from '../../img/banner2.png';
 import banner3 from '../../img/banner3.png';
+import ad from '../../img/ad.jpg';
+import ad2 from '../../img/ad2.webp';
 import { Button, Input, message, Upload } from 'antd';
 import { useDispatch } from 'react-redux';
 import { HeaderState } from '../../redux/action';
@@ -14,6 +16,7 @@ import {
 import { UploadOutlined } from '@ant-design/icons';
 import loading from '../../img/2ba.jpg'
 import Hotitem from '../../components/hotitem/index.tsx'
+import { newhomegetHot } from '../../api/api.ts';
 
 const Home=(props)=> {
   let   history = useHistory() //将useHistory()钩子赋值给history方便使用
@@ -23,12 +26,23 @@ const Home=(props)=> {
   const [isVisible, setIsVisible] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [topbanner, setTopbanner] = useState(false);
+  const [allhotnewhome, setAllhotnewhome] = useState([]);
+  const [hotnewhome4, setHotnewhome4] = useState([]);
+  const [hotnewhome8, setHotnewhome8] = useState([]);
+
   const hotnew=[1,2,3,4,5,6,7,8]
-  const hothouse=[1,2,3,4]
   
+  useEffect(()=>{
+    newhomegetHot('newhome/newhomegetHot').then(res=>{
+      console.log(res);
+      setAllhotnewhome(res.data.data)
+      setHotnewhome4(res.data.data.slice(0,4))
+      setHotnewhome8(res.data.data.slice(4,12))
+    })
+  },[])
   //轮播
   useEffect(()=>{
-  
+
     let i=0
     setInterval(()=>{
       i++
@@ -115,29 +129,29 @@ const detial=(id)=>{
       </div>
       <div className="content">
         <div className="content-part">
-          
           <div className="hot-title">热门套房</div>
           <div className="banner">
             <div className="part1" style={{marginLeft:topbanner?'-100%':'0'}}>
-            {hothouse.map(()=>{
-              return( <div className="part1-content" onClick={()=>detial(1)}>
-              <img className="part1-img" src={loading} alt='' />
+            {hotnewhome4.map((item)=>{
+              return( <div className="part1-content" onClick={()=>detial(item.id)}>
+              <img className="part1-img" src={item.cover} alt='' />
                   <div className="part1-detail">
-                    <div className="part1-name">{1}</div>
-                    <div className="part1-size">{1}</div>
-                    <div className="part1-price">{1}/㎡</div>
+                    <div className="part1-name">{item.name}</div>
+                    <div className="part1-size">{item.size}㎡</div>
+                    <div className="part1-price">{item.averageprice}/㎡</div>
                   </div>
               </div>)
             })}
             </div>
           </div>
         </div>
+        <img style={{width:'100%'}} src={ad} alt="" />
         <div className="content-part">
           <div className="hot-title">精选新盘</div>
           <div className="hot-more" onClick={()=>more('Newhome')}>查看更多</div>
           <div className="part-item">
-            {hotnew.map(()=>{
-              return <Hotitem id={2} type='Newhome' name='汤臣一品' size='1-1-1' price='1000w'  />
+            {hotnewhome8.map((item)=>{
+              return <Hotitem id={item.id} type='Newhome' img={item.cover} name={item.name} size={item.size} price={item.averageprice} />
             })}
           </div>
         
@@ -152,6 +166,7 @@ const detial=(id)=>{
           </div>
         
         </div>
+        <img style={{width:'100%',marginTop:'20px'}} src={ad2} alt="" />
         <div className="content-part">
           <div className="hot-title">热租好房</div>
           <div className="hot-more" onClick={()=>more('Rent')}>查看更多</div>
