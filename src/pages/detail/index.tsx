@@ -4,6 +4,22 @@ import { useParams } from 'react-router-dom';
 import  './index.scss'
 import { useDispatch,useSelector } from 'react-redux';
 import { HeaderState } from '../../redux/action/index.jsx';
+import ds from '../../img/ds.png'
+import kt from '../../img/kt.png'
+import yg from '../../img/yg.png'
+import c from '../../img/c.png'
+import wsj from '../../img/wsj.png'
+import znms from '../../img/znms.png'
+import yt from '../../img/yt.png'
+import nq from '../../img/nq.png'
+import bx from '../../img/bx.png'
+import xyj from '../../img/xyj.png'
+import rsq from '../../img/rsq.png'
+import kd from '../../img/kd.png'
+import sf from '../../img/sf.png'
+import yyj from '../../img/yyj.png'
+import rqz from '../../img/rqz.png'
+import kzf from '../../img/kzf.png'
 import img from '../../img/2t.jpg'
 import nodata from '../../img/nodata.jpg'
 import { useHistory } from 'react-router-dom';
@@ -13,6 +29,8 @@ import {
 } from '@ant-design/icons';
 import { getByid, getHousetype, getrentimg, rentgetByid, usedgetByid } from '../../api/api.ts';
 const Detail=(props)=> {
+  const eqs=[ds,kt,yg,c,wsj,znms,yt,nq]
+  const eqs2=[bx,xyj,rsq,kd,sf,yyj,rqz,kzf]
   const [collect,setCollect]=useState(true)
   let   history = useHistory()
   const dispatch = useDispatch();
@@ -29,6 +47,8 @@ const Detail=(props)=> {
   const [hxarr,setHxarr]=useState([])
   const [position,setPosition]=useState(0)
   const [imgs,setImgs]=useState([])
+  const [bedroomeqs,setBedroomeqs]=useState([])
+  const [publiceqs,setPubliceqs]=useState([])
   const housearr=[{ts:['近地铁','fg']},
   {ts:['ute','5rt']},
   {ts:['67yh','ewsf','fgh']},
@@ -62,7 +82,9 @@ const Detail=(props)=> {
       console.log(2);
       
      rentgetByid("rent/getByid",{id:id}).then(res=>{
-        
+        console.log(res);
+        setBedroomeqs(res.data.data[0].bedroomeqs.match(/\d+/g).map(Number))
+        setPubliceqs(res.data.data[0].publiceqs.match(/\d+/g).map(Number))
         setHousedata(res.data.data[0])
         setTsarr(res.data.data[0].feature.split("，"))
       })
@@ -204,7 +226,32 @@ const Detail=(props)=> {
                 <div className="dot"><div className="line"></div><span>基本情况</span></div>
                 <div className="survey-detail">{housedata.base}</div>
                 {type==='Rent'&&<div className="dot"><div className="line"></div><span>房源设施</span></div>}
-                {type==='Rent'&&<div className="survey-detail">111</div>}
+                {type==='Rent'&&<div className="survey-detail">
+                  <div className="eqtitle">卧室设施</div>
+                  <div className="bedroom">
+                    <div className="items">
+                      {bedroomeqs.map(item=>{
+                        return (
+                          <div className="item">
+                            <img src={eqs[item]} alt="" />  
+                          </div>
+                          )
+                      })}
+                      
+                    </div>
+                  </div>
+                  <div className="eqtitle">公共设施</div>
+                  <div className="public">
+                    <div className="items">
+                    {publiceqs.map(item=>{
+                        return (
+                          <div className="item">
+                            <img src={eqs2[item]} alt="" />  </div>
+                          )
+                      })}
+                    </div>
+                  </div>
+                  </div>}
               </div>
             </div>
           </div>}
