@@ -28,6 +28,46 @@
     .content{
         padding-top: 20px;
         position: relative;
+        .rentimg{
+            width: 750px;
+            height: 550px;
+            background-color: aquamarine;
+            overflow: hidden;
+            position: relative;
+            @mixin but{
+                position: absolute;
+                top: 50%;
+                cursor: pointer;
+                width: 40px;
+                height:60px;
+                transform: translateY(-50%);
+                color: white;
+                font-size: 40px;
+                text-align: center;
+                line-height: 60px;
+                transition: 100ms;
+                &:hover{
+                    background-color: rgba(0, 0, 0,0.2)
+                }
+            }
+            .left{
+                @include but;
+                left: 0;
+            }
+            .right{
+                @include but;
+                right: 0;
+            }
+            .imgs{
+                width: 8000px;
+                display: flex;
+                transition: 500ms;
+                .rentroomimg{
+                    width: 750px;
+                    height: 550px;
+                }
+            }
+        }
         .details{
             position: absolute;
             top: 20px;

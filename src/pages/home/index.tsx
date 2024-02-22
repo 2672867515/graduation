@@ -16,7 +16,7 @@ import {
 import { UploadOutlined } from '@ant-design/icons';
 import loading from '../../img/2ba.jpg'
 import Hotitem from '../../components/hotitem/index.tsx'
-import { newhomegetHot } from '../../api/api.ts';
+import { newhomegetHot, rentgetHot, usedgetHot } from '../../api/api.ts';
 
 const Home=(props)=> {
   let   history = useHistory() //将useHistory()钩子赋值给history方便使用
@@ -29,8 +29,8 @@ const Home=(props)=> {
   const [allhotnewhome, setAllhotnewhome] = useState([]);
   const [hotnewhome4, setHotnewhome4] = useState([]);
   const [hotnewhome8, setHotnewhome8] = useState([]);
-
-  const hotnew=[1,2,3,4,5,6,7,8]
+  const [hotused, setHotused] = useState([]);
+  const [hotrent, setHotrent] = useState([]);
   
   useEffect(()=>{
     newhomegetHot('newhome/newhomegetHot').then(res=>{
@@ -38,6 +38,12 @@ const Home=(props)=> {
       setAllhotnewhome(res.data.data)
       setHotnewhome4(res.data.data.slice(0,4))
       setHotnewhome8(res.data.data.slice(4,12))
+    })
+    usedgetHot('used/usedgetHot').then(res=>{
+      setHotused(res.data.data.slice(0,8))
+    })
+    rentgetHot('rent/rentgetHot').then(res=>{
+      setHotrent(res.data.data.slice(0,8))
     })
   },[])
   //轮播
@@ -151,7 +157,7 @@ const detial=(id)=>{
           <div className="hot-more" onClick={()=>more('Newhome')}>查看更多</div>
           <div className="part-item">
             {hotnewhome8.map((item)=>{
-              return <Hotitem id={item.id} type='Newhome' img={item.cover} name={item.name} size={item.size} price={item.averageprice} />
+              return <Hotitem id={item.id} type='Newhome' img={item.cover} name={item.name} size={item.size} price={item.averageprice+'/㎡'} />
             })}
           </div>
         
@@ -160,8 +166,8 @@ const detial=(id)=>{
           <div className="hot-title">精选二手房</div>
           <div className="hot-more" onClick={()=>more('Used')}>查看更多</div>
           <div className="part-item">
-            {hotnew.map(()=>{
-              return <Hotitem id={2} type='Used' name='汤臣一品' size='1-1-1' price='1000w'  />
+            {hotused.map((item)=>{
+              return <Hotitem id={item.id} img={item.cover} type='Used' name={item.name} size={item.size} price={item.price+'w'}  />
             })}
           </div>
         
@@ -171,8 +177,8 @@ const detial=(id)=>{
           <div className="hot-title">热租好房</div>
           <div className="hot-more" onClick={()=>more('Rent')}>查看更多</div>
           <div className="part-item">
-            {hotnew.map(()=>{
-              return <Hotitem id={2} type='Rent' name='汤臣一品' size='1-1-1' price='1000w'  />
+            {hotrent.map((item)=>{
+              return <Hotitem id={item.id} img={item.cover} type='Rent' name={item.name} size={item.size} price={item.price+'/月'}   />
             })}
           </div>
         </div>

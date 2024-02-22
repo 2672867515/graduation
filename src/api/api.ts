@@ -14,6 +14,12 @@ export const getall = (url) => {
 export const newhomegetHot = (url) => {
   return instance.get(url);
 };
+export const usedgetHot = (url) => {
+  return instance.get(url);
+};
+export const rentgetHot = (url) => {
+  return instance.get(url);
+};
 export const updateHead = (url, data) => {
   return instance.post(url,data);
 };
@@ -33,5 +39,8 @@ export const rentgetByid = (url, data) => {
   return instance.post(url,data);
 };
 export const getHousetype = (url, data) => {
+  return instance.post(url,data);
+};
+export const getrentimg = (url, data) => {
   return instance.post(url,data);
 };

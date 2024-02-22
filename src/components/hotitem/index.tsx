@@ -16,12 +16,11 @@ import { HeaderState } from '../../redux/action';
   return (
     <div className='Hotitem' onClick={()=>detial(type)}>
         <div className="hot-content">
-        <img className="hot-img" src={img} alt='' />
+          <img className="hot-img" src={img} alt='' />
             <div className="hot-detail">
               <div className="hot-name">{name}</div>
               <div className="hot-size">{size}㎡</div>
-              {type!=='Newhome'&&<div className="hot-price">{price}</div>}
-              {type==='Newhome'&&<div className="hot-price">{price}/㎡</div>}
+              <div className="hot-price">{price}</div>
             </div>
         </div>
     </div>

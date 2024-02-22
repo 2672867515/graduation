@@ -9,9 +9,9 @@ import nodata from '../../img/nodata.jpg'
 import { useHistory } from 'react-router-dom';
 import { Tooltip,message } from 'antd';
 import {
-  StarFilled
+  StarFilled,LeftOutlined,RightOutlined
 } from '@ant-design/icons';
-import { getByid, getHousetype, rentgetByid, usedgetByid } from '../../api/api.ts';
+import { getByid, getHousetype, getrentimg, rentgetByid, usedgetByid } from '../../api/api.ts';
 const Detail=(props)=> {
   const [collect,setCollect]=useState(true)
   let   history = useHistory()
@@ -27,6 +27,8 @@ const Detail=(props)=> {
   const [tsarr,setTsarr]=useState(['特色'])
   const [messageApi, contextHolder] = message.useMessage();
   const [hxarr,setHxarr]=useState([])
+  const [position,setPosition]=useState(0)
+  const [imgs,setImgs]=useState([])
   const housearr=[{ts:['近地铁','fg']},
   {ts:['ute','5rt']},
   {ts:['67yh','ewsf','fgh']},
@@ -34,8 +36,7 @@ const Detail=(props)=> {
   {ts:['f','fg'],hot:'超级优惠'},
   {ts:['hjk','6765g']}
   ]
-  // const hxarr=[1,2,3,4]
-
+  
   const qs=[1,2,3]
 
   useEffect(()=>{
@@ -65,9 +66,27 @@ const Detail=(props)=> {
         setHousedata(res.data.data[0])
         setTsarr(res.data.data[0].feature.split("，"))
       })
+      getrentimg('image/getrentimg',{houseid:id,type:"Rent"}).then(res=>{
+        setImgs(res.data.data)
+      })
     }
 
   },[])
+  const prev=()=>{
+    if(position===0){
+
+    }else{
+      setPosition(position+750)
+    }
+  }
+  const next=()=>{
+    if(position===imgs.length*-750+750){
+
+    }else{
+      setPosition(position-750)
+    }
+
+  }
   const detial=(id)=>{
     history.push(`/detail/${id}?type=${type}`)
   }
@@ -101,7 +120,20 @@ const Detail=(props)=> {
         </div>
         <div className="housename">{housedata.name}</div>
         <div className="content">
-          <Vr />
+        {type!=='Rent'&&<Vr />}
+        {type==='Rent'&& <div className="rentimg">
+          <div className="left" onClick={prev}><LeftOutlined /></div>
+          <div className="right" onClick={next}><RightOutlined /></div>
+          <div className="imgs" style={{marginLeft:position+'px'}}>
+            {imgs.map((item)=>{
+                return (
+                  <img className='rentroomimg' src={item.url} alt="" />
+                )
+              })}
+          </div>
+
+        </div>}
+
           <div className="details">
             <div className="tip">
               <div className="ad">
