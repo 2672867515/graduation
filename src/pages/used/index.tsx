@@ -1,5 +1,5 @@
 import { Button, Input } from 'antd';
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import './index.scss'
@@ -8,6 +8,7 @@ import img from '../../img/2bo.jpg'
 import { RightOutlined } from '@ant-design/icons';
 import { useSelector, useDispatch } from 'react-redux';
 import { LoginState,HeaderState } from '../../redux/action';
+import { getall } from '../../api/api.ts';
 const Used=(props)=> {
   const dispatch = useDispatch();
   const { path } = useParams();
@@ -19,13 +20,14 @@ const Used=(props)=> {
   let   history = useHistory() //将useHistory()钩子赋值给history方便使用
   const [inputValue, setInputValue] = useState('');
   const [choose, setChoose] = useState('all');
-  const housearr=[{ts:['近地铁','fg'],hot:'热门好房'},
-                {ts:['ute','5rt'],hot:0},
-                {ts:['67yh','ewsf','fgh'],hot:0},
-                {ts:['q343dw','e33'],hot:0},
-                {ts:['f','fg'],hot:'超级优惠'},
-                {ts:['hjk','6765g'],hot:0}
-              ]
+
+  const [housearr, setHousearr] = useState([]);
+  useEffect(()=>{
+    getall('used/getall').then(res=>{
+      setHousearr(res.data.data.sort((a, b) => a.price - b.price))
+    })
+
+  },[])
   const questions=[
     {id:1,qs:'sdssdss'},
     {id:2,qs:'sdssdss'},
@@ -77,14 +79,14 @@ const Used=(props)=> {
         <div className="newhouse">
           {housearr.map((item)=>{
             return (<div className="houseitem" onClick={()=>detial(1)}>
-              <img className='img' src={img} alt="" />
-              {item.hot!==0&&<div className="hot">{item.hot}</div>}
-              <div className="title">汤臣一品</div>
-              <div className="size">100</div>
-              <div className="address">10dss0</div>
-              <div className="price">1000w <br /><span className="per">23564/㎡</span></div>
+              <img className='img' src={item.cover} alt="" />
+              {item.ishot==='true'&&<div className="hot">热门二手房</div>}
+              <div className="title">{item.name}</div>
+              <div className="size">{item.size}m²</div>
+              <div className="address">{item.address}</div>
+              <div className="price">{item.price}w <br /><span className="per">{item.per}/㎡</span></div>
               <div className="ts">
-                  {item.ts.map((item)=>{
+              {item.feature.split("，").map((item)=>{
                     return <div className="tsitems">{item}</div>
                   })}
               </div>

@@ -103,7 +103,6 @@
                 }
                 & .hot{
                     position: absolute;
-                    width: 90px;
                     text-align: center;
                     border-radius: 5px;
                     right: 2%;
@@ -112,7 +111,7 @@
                     font-weight: bold;
                     background-color: rgb(253,76,56);
                     color:white;
-                    padding: 3px 3px;
+                    padding: 3px 8px;
                     box-sizing: border-box;
                 }
                 & .size{
@@ -146,13 +145,15 @@
                         position: absolute;
                         font-size: 16px;
                         right: 0;
+                        width: 100px;
+                        text-align: right;
                     }
                 }
            
                 & .ts{
                     position: absolute;
                     left: 22%;
-                    top: 65%; 
+                    top: 70%; 
                     display: flex;
                     gap: 10px;
                     & .tsitems{

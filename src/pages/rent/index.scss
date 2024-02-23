@@ -101,9 +101,9 @@
                     max-width: 62%;
                     @include abab
                 }
-                & .hot{
+                & .hotrent{
                     position: absolute;
-                    width: 70px;
+                    padding: 3px 8px;
                     text-align: center;
                     border-radius: 5px;
                     right: 2%;
@@ -112,7 +112,6 @@
                     font-weight: bold;
                     background-color: rgb(223,245,238);
                     color:rgb(31,176,129);
-                    padding: 3px 3px;
                     box-sizing: border-box;
                 }
                 & .size{
@@ -141,18 +140,12 @@
                     font-size: 28px;
                     color: rgb(253,76,56);
                     font-weight: bold;
-                    .per{
-                        color: rgba(0, 0, 0,0.5);
-                        position: absolute;
-                        font-size: 16px;
-                        right: 0;
-                    }
                 }
            
                 & .ts{
                     position: absolute;
                     left: 22%;
-                    top: 65%; 
+                    top: 70%; 
                     display: flex;
                     gap: 10px;
                     & .tsitems{

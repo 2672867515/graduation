@@ -7,7 +7,7 @@ import img from '../../img/2bo.jpg'
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { HeaderState } from '../../redux/action/index.jsx';
-import {updateHead} from '../../api/api.ts'
+import {getall, newhomegetHot, updateHead} from '../../api/api.ts'
 
 
 const Newhome=(props)=> {
@@ -21,21 +21,17 @@ const Newhome=(props)=> {
   dispatch(HeaderState('Newhome'))
   const [inputValue, setInputValue] = useState('');
   const [choose, setChoose] = useState('all');
-  const housearr=[{ts:['近地铁','fg'],hot:'热门好房'},
-                {ts:['ute','5rt'],hot:0},
-                {ts:['67yh','ewsf','fgh'],hot:0},
-                {ts:['q343dw','e33'],hot:0},
-                {ts:['f','fg'],hot:'超级优惠'},
-                {ts:['hjk','6765g'],hot:0}
-              ]
-  const hotarr=[
-    {img:'',name:'sdssd',describe:'ddfgggggggggggdsfsssssssssssssssssdffffffffffffgggggsds'},
-    {img:'',name:'sdssd',describe:'dsds'},
-    {img:'',name:'sdssd',describe:'dsds'},
-    {img:'',name:'sdssd',describe:'dsds'},
-    {img:'',name:'sdssd',describe:'dsdfdgggggggggs'},
-  ]
-
+  const [housearr, setHousearr] = useState([]);
+  const [hotnewhome, setHotnewhome] = useState([]);
+  useEffect(()=>{
+    getall('newhome/getall').then(res=>{
+      setHousearr(res.data.data.sort((a, b) => a.averageprice - b.averageprice))
+    })
+    newhomegetHot('newhome/newhomegetHot').then(res=>{
+      console.log(res);
+      setHotnewhome(res.data.data.slice(0,4))
+    })
+  },[])
   const onChange=(event)=>{
     setInputValue(event.target.value);
   }
@@ -73,16 +69,15 @@ const Newhome=(props)=> {
         </div>
         <div className="newhouse">
           {housearr.map((item)=>{
-            return (<div className="houseitem" onClick={()=>detial(1)}>
-              <img className='img' src={img} alt="" />
-              {item.hot!==0&&<div className="hot">{item.hot}</div>}
-              <div className="title">汤臣一品</div>
-              <div className="size">100</div>
-              <div className="address">10dss0</div>
-              {type!=='Newhome'&&<div className="price">1000w <br /><span className="per">23564/㎡</span></div>}
-              {type==='Newhome'&&<div className="newprice">均价：<span className="per">23564</span>/㎡</div>}
+            return (<div className="houseitem" onClick={()=>detial(item.id)}>
+              <img className='img' src={item.cover} alt="" />
+              {item.ishot==='true'&&<div className="hot">人气好房</div>}
+              <div className="title">{item.name}</div>
+              <div className="size">{item.size}m²</div>
+              <div className="address">{item.address}</div>
+              <div className="newprice">均价：<span className="per">{item.averageprice}</span>/㎡</div>
               <div className="ts">
-                  {item.ts.map((item)=>{
+                  {item.feature.split("，").map((item)=>{
                     return <div className="tsitems">{item}</div>
                   })}
               </div>
@@ -94,11 +89,11 @@ const Newhome=(props)=> {
           <div className="title">
             热门好房
           </div> 
-         {hotarr.map((item)=>{
-          return <div className="hotitem" onClick={()=>detial(1)}>
-            <img className='img' src={img} alt="" />
+         {hotnewhome.map((item)=>{
+          return <div className="hotitem" onClick={()=>detial(item.id)}>
+            <img className='img' src={item.cover} alt="" />
             <div className="name">{item.name}</div>
-            <div className="describe">{item.describe}</div>
+            <div className="describe">{item.address}</div>
           </div>
          }) }
         </div>

@@ -60,6 +60,9 @@ const Detail=(props)=> {
   const qs=[1,2,3]
 
   useEffect(()=>{
+    document.documentElement.scrollIntoView({
+      behavior: 'smooth'
+    });
     if(type==="Newhome"){
       getByid("newhome/getByid",{id:id}).then(res=>{
         setHousedata(res.data.data[0])
@@ -186,22 +189,22 @@ const Detail=(props)=> {
                   {tsarr.map((item)=>{ return <div className="tsitem">{item}</div>   })}
                 </div>
                 <div className="address">地址：{housedata.address}</div>
-                <div className="manager">联系电话 : {housedata.phone}</div>
+                <div className="phone">联系电话 : {housedata.phone}</div>
             </div>}
             {type==='Rent'&&<div className="message">
-              <div className="price">{100}元/月<div className='per'>押一付一</div></div>
-                <div className="base">
+              <div className="price">{housedata.price}元/月<div className='per'>{housedata.paytype}</div></div>
+                <div className="base" style={{gap:'50'}}>
                     <div>
-                      <span className='pf'>三室两厅</span><br />
-                      <span className='zx'>共1层</span>
+                      <span className='pf'>{housedata.housetype}</span><br />
+                      <span className='zx'>{housedata.floor}</span>
                     </div>
                     <div>
-                      <span className='pf'>{100}㎡</span><br />
+                      <span className='pf'>{housedata.size}㎡</span><br />
                       <span className='zx'>精装修</span>
                     </div>
                     <div>
-                      <span className='pf'>朝向：{'南北'}</span><br />
-                      <span className='zx'>类型：别墅</span>
+                      <span className='pf'>朝向：{housedata.direction}</span><br />
+                      <span className='zx'>类型：{housedata.type}</span>
                     </div>
                 <div>
                 </div>
@@ -209,8 +212,8 @@ const Detail=(props)=> {
                 <div className="ts">
                   {tsarr.map((item)=>{ return <div className="tsitem">{item}</div>   })}
                 </div>
-                <div className="addresss">地址：{housedata.address}</div>
-                <div className="manager">联系电话 : {housedata.phone}</div>
+                <div className="address">地址：{housedata.address}</div>
+                <div className="phone">联系电话 : {housedata.phone}</div>
             </div>}
             <div className="map">
               假装有地图

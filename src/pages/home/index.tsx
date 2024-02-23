@@ -7,6 +7,7 @@ import banner2 from '../../img/banner2.png';
 import banner3 from '../../img/banner3.png';
 import ad from '../../img/ad.jpg';
 import ad2 from '../../img/ad2.webp';
+import nodata from '../../img/nodata.jpg';
 import { Button, Input, message, Upload } from 'antd';
 import { useDispatch } from 'react-redux';
 import { HeaderState } from '../../redux/action';
@@ -26,7 +27,6 @@ const Home=(props)=> {
   const [isVisible, setIsVisible] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [topbanner, setTopbanner] = useState(false);
-  const [allhotnewhome, setAllhotnewhome] = useState([]);
   const [hotnewhome4, setHotnewhome4] = useState([]);
   const [hotnewhome8, setHotnewhome8] = useState([]);
   const [hotused, setHotused] = useState([]);
@@ -35,7 +35,6 @@ const Home=(props)=> {
   useEffect(()=>{
     newhomegetHot('newhome/newhomegetHot').then(res=>{
       console.log(res);
-      setAllhotnewhome(res.data.data)
       setHotnewhome4(res.data.data.slice(0,4))
       setHotnewhome8(res.data.data.slice(4,12))
     })
@@ -140,7 +139,7 @@ const detial=(id)=>{
             <div className="part1" style={{marginLeft:topbanner?'-100%':'0'}}>
             {hotnewhome4.map((item)=>{
               return( <div className="part1-content" onClick={()=>detial(item.id)}>
-              <img className="part1-img" src={item.cover} alt='' />
+              <img className="part1-img" src={item.cover||nodata} alt='' />
                   <div className="part1-detail">
                     <div className="part1-name">{item.name}</div>
                     <div className="part1-size">{item.size}㎡</div>
@@ -157,7 +156,7 @@ const detial=(id)=>{
           <div className="hot-more" onClick={()=>more('Newhome')}>查看更多</div>
           <div className="part-item">
             {hotnewhome8.map((item)=>{
-              return <Hotitem id={item.id} type='Newhome' img={item.cover} name={item.name} size={item.size} price={item.averageprice+'/㎡'} />
+              return <Hotitem id={item.id} type='Newhome' img={item.cover||nodata} name={item.name} size={item.size} price={item.averageprice+'/㎡'} />
             })}
           </div>
         
@@ -167,7 +166,7 @@ const detial=(id)=>{
           <div className="hot-more" onClick={()=>more('Used')}>查看更多</div>
           <div className="part-item">
             {hotused.map((item)=>{
-              return <Hotitem id={item.id} img={item.cover} type='Used' name={item.name} size={item.size} price={item.price+'w'}  />
+              return <Hotitem id={item.id} img={item.cover||nodata} type='Used' name={item.name} size={item.size} price={item.price+'w'}  />
             })}
           </div>
         
@@ -178,7 +177,7 @@ const detial=(id)=>{
           <div className="hot-more" onClick={()=>more('Rent')}>查看更多</div>
           <div className="part-item">
             {hotrent.map((item)=>{
-              return <Hotitem id={item.id} img={item.cover} type='Rent' name={item.name} size={item.size} price={item.price+'/月'}   />
+              return <Hotitem id={item.id} img={item.cover||nodata} type='Rent' name={item.name} size={item.size} price={item.price+'/月'}   />
             })}
           </div>
         </div>

@@ -1,5 +1,5 @@
 import { Button, Input } from 'antd';
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import './index.scss'
 import Pagesearch from '../../components/pagesearch//index.tsx'
@@ -7,6 +7,7 @@ import img from '../../img/2bo.jpg'
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { HeaderState } from '../../redux/action/index.jsx';
+import { getall } from '../../api/api.ts';
 const Rent=(props)=> {
   const dispatch = useDispatch();
   let   history = useHistory()
@@ -17,14 +18,13 @@ const Rent=(props)=> {
   const type = queryParams.get('type');
   dispatch(HeaderState(type))
   const [inputValue, setInputValue] = useState('');
+  const [housearr, setHousearr] = useState([]);
+  useEffect(()=>{
+    getall('rent/getall').then(res=>{
+      setHousearr(res.data.data.sort((a, b) => a.price - b.price))
+    })
 
-  const housearr=[{ts:['近地铁','fg'],hot:'安心租'},
-                {ts:['ute','5rt'],hot:0},
-                {ts:['67yh','ewsf','fgh'],hot:0},
-                {ts:['q343dw','e33'],hot:0},
-                {ts:['f','fg'],hot:'安心租'},
-                {ts:['hjk','6765g'],hot:0}
-              ]
+  },[])
 
   const onChange=(event)=>{
     setInputValue(event.target.value);
@@ -58,15 +58,15 @@ const Rent=(props)=> {
         </div>
         <div className="newhouse">
           {housearr.map((item)=>{
-            return (<div className="houseitem" onClick={()=>detial(1)}>
-              <img className='img' src={img} alt="" />
-              {item.hot!==0&&<div className="hot">{item.hot}</div>}
-              <div className="title">汤臣一品</div>
-              <div className="size">100</div>
-              <div className="address">10dss0</div>
-              <div className="price">1000元/月</div>
+            return (<div className="houseitem" onClick={()=>detial(item.id)}>
+              <img className='img' src={item.cover} alt="" />
+              {item.ishot==='true'&&<div className="hotrent">热租</div>}
+              <div className="title">{item.name}</div>
+              <div className="size">{item.size}m²</div>
+              <div className="address">{item.address}</div>
+              <div className="price">{item.price}元/月</div>
               <div className="ts">
-                  {item.ts.map((item)=>{
+              {item.feature.split("，").map((item)=>{
                     return <div className="tsitems">{item}</div>
                   })}
               </div>
