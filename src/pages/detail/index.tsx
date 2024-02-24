@@ -23,12 +23,14 @@ import kzf from '../../img/kzf.png'
 import img from '../../img/2t.jpg'
 import nodata from '../../img/nodata.jpg'
 import { useHistory } from 'react-router-dom';
-import { Tooltip,message } from 'antd';
+import { Button, Form, Modal, Select, Tooltip,message,Input } from 'antd';
 import {
   StarFilled,LeftOutlined,RightOutlined
 } from '@ant-design/icons';
-import { getByid, getHousetype, getrentimg, rentgetByid, usedgetByid } from '../../api/api.ts';
+import { addquestion, getByid, getHousetype, gethouseqa, getrentimg, rentgetByid, usedgetByid } from '../../api/api.ts';
 const Detail=(props)=> {
+  const { TextArea } = Input;
+  const { Option } = Select;
   const eqs=[ds,kt,yg,c,wsj,znms,yt,nq]
   const eqs2=[bx,xyj,rsq,kd,sf,yyj,rqz,kzf]
   const [collect,setCollect]=useState(true)
@@ -38,6 +40,7 @@ const Detail=(props)=> {
   console.log(id);
   const queryParams = new URLSearchParams(window.location.search);
   const type = queryParams.get('type');
+  console.log(type);
 
   dispatch(HeaderState(type))
   const header = useSelector((state) => state.header);
@@ -49,6 +52,11 @@ const Detail=(props)=> {
   const [imgs,setImgs]=useState([])
   const [bedroomeqs,setBedroomeqs]=useState([])
   const [publiceqs,setPubliceqs]=useState([])
+  const [qa,setQa]=useState([])
+  const [qwa,setQwa]=useState([])
+  const [form] = Form.useForm();
+  const [loading, setLoading] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const housearr=[{ts:['近地铁','fg']},
   {ts:['ute','5rt']},
   {ts:['67yh','ewsf','fgh']},
@@ -56,13 +64,20 @@ const Detail=(props)=> {
   {ts:['f','fg'],hot:'超级优惠'},
   {ts:['hjk','6765g']}
   ]
-  
-  const qs=[1,2,3]
 
   useEffect(()=>{
     document.documentElement.scrollIntoView({
       behavior: 'smooth'
     });
+    let data={houseid:id,housetype:type}
+    gethouseqa('question/gethouseqa',data).then(res=>{
+      console.log(res.data.data);
+        setQa( res.data.data.sort((a, b) =>{
+          const dateA = new Date(a.time+ 'T00:00:00');
+          const dateB = new Date(b.time+ 'T00:00:00');
+          return dateB - dateA; // 从近到远排序
+        }))
+    })
     if(type==="Newhome"){
       getByid("newhome/getByid",{id:id}).then(res=>{
         setHousedata(res.data.data[0])
@@ -123,19 +138,73 @@ const Detail=(props)=> {
     setCollect(prevState => !prevState)
    
   }
-  const getqs=(type,id)=>{
-    switch (type){
+  const getqs=(qatype,qaid)=>{
+    switch (qatype){
       case 1 :
-      history.push(`/Qa/${id}`)
+      history.push(`/Qa?qa=${qaid}`)
       dispatch(HeaderState('Question'))
       break;
       case 2 :
-      history.push(`/Question`)
+      history.push(`/Question?houseid=${id}&housetype=${type}`)
       dispatch(HeaderState('Question'))
       break;
     }
     
   }
+    
+  const ask = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+    form.resetFields()
+  };
+  const onFinish = (values: any) => {
+    setLoading(true);
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = ('0' + (now.getMonth() + 1)).slice(-2); // 月份从0开始，需要加1，并且保证两位数
+    const day = ('0' + now.getDate()).slice(-2); // 保证两位数
+    const dateString = `${year}-${month}-${day}`;
+    const data={
+      houseid:id,
+      userid:localStorage.getItem('userid'),
+      content:values.question,
+      time:dateString,
+      housetype:type,
+      type:values.select
+  }
+ 
+    setTimeout(() => {
+      addquestion('question/addquestion',data).then(res=>{
+        console.log(res.data);
+        setLoading(false);
+        setIsModalOpen(false);
+        messageApi.open({
+          type: 'success',
+          content: '提交成功',
+        });
+        let data={houseid:id,housetype:type}
+        gethouseqa('question/gethouseqa',data).then(res=>{
+          console.log(res.data.data);
+            setQa( res.data.data.sort((a, b) =>{
+              const dateA = new Date(a.time+ 'T00:00:00');
+              const dateB = new Date(b.time+ 'T00:00:00');
+              return dateB - dateA; // 从近到远排序
+            }))
+        })
+      })
+
+    }, 1000);
+    console.log('Success:', values);
+   
+  };
+  
+  const onFinishFailed = (errorInfo: any) => {
+    console.log('Failed:', errorInfo);
+    
+  };
   return (
     <div className='detail'>
         {contextHolder}
@@ -276,15 +345,16 @@ const Detail=(props)=> {
           </div>}
 
           <div className="comment">
-            <div className="title">房源问答 ({100})</div>
-            {qs.map(()=>{
-              return <div className="qs" onClick={()=>getqs(1,1)}>
-                <div className="question"><span className='icon'>问</span> ???老wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww登</div>
-                <div className="answer"><span className='icon'>答</span>说的是多所多所wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww多所多所多 <span className='time'>2024-01-01</span></div>
-                <div className="all">44个回答</div>
+            <div className="title">房源问答 ({qa.length})</div>
+            {qa.map((item)=>{
+              return <div className="qs" onClick={()=>getqs(1,item.id)}>
+                <div className="question"><span className='icon'>问</span>{item.content}</div>
+                <div className="answer"><span className='icon'>答</span>{item.answer[0]?item.answer[0].content:'暂无回答'} <span className='time'>{item.time}</span></div>
+                <div className="all">{item.answer.length}个回答</div>
               </div>
             })}
-            <div className="more"onClick={()=>getqs(2,3)}>查看更多小区问答</div>
+            {qa.length!==0&&<div className="more"onClick={()=>getqs(2,null)}>查看更多房源问答</div>}
+            {qa.length===0&&<div className="more"onClick={()=>ask()}>我要提问</div>}
           </div>
           </div>
           <div className="alike">
@@ -307,6 +377,66 @@ const Detail=(props)=> {
           })}
           </div>
         </div>
+        <Modal 
+        title="提问" 
+        okText='提交' 
+        cancelText='取消' 
+        confirmLoading={loading} 
+        open={isModalOpen} 
+        footer={[
+          // 注意这里使用的是 Form 组件的 submit 方法
+          <Button key="submit" onClick={() => handleCancel()}>
+            取消
+          </Button>,
+          <Button key="submit" type="primary" loading={loading} onClick={() => form.submit()}>
+            提交
+          </Button>
+        ]}
+        >
+        <Form
+          form={form}
+          name="basic"
+          labelCol={{span:4}}
+          wrapperCol={{ span: 16 }}
+          style={{ maxWidth: 500 }}
+          onFinish={onFinish}
+          onFinishFailed={onFinishFailed}
+          initialValues={{select:'房价行情'}}
+        >
+           <Form.Item 
+           name="select" 
+           label="问题类型"
+           rules={[{ required: true, message: '请选择问题类型' }]}>
+            <Select >
+              <Option value="房价行情">房价行情</Option>
+              <Option value="购房建议">购房建议</Option>
+              <Option value="买房风险">买房风险</Option>
+              <Option value="新房">新房</Option>
+              <Option value="二手房">二手房</Option>
+              <Option value="房屋估价">房屋估价</Option>
+              <Option value="卖房流程">卖房流程</Option>
+              <Option value="出售方案">出售方案</Option>
+              <Option value="卖房风险">卖房风险</Option>
+              <Option value="租房准备">租房准备</Option>
+              <Option value="租房注意事项">租房注意事项</Option>
+              <Option value="合租">合租</Option>
+              <Option value="整租">整租</Option>
+              <Option value="装修">装修</Option>
+              <Option value="拆迁">拆迁</Option>
+              <Option value="房产政策">房产政策</Option>
+              <Option value="法律纠纷">法律纠纷</Option>
+              <Option value="其他">其他</Option>
+            </Select>
+          </Form.Item>
+          <Form.Item
+            label="内容"
+            name="question"
+            rules={[{ required: true, message: '请描述您的问题' }]}
+          >
+             <TextArea rows={3} placeholder="描述问题" maxLength={6} />
+          </Form.Item>
+        </Form>
+      </Modal>
     </div>
   )
 }

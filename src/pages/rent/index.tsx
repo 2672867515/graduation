@@ -35,6 +35,8 @@ const Rent=(props)=> {
     
   }
   const detial=(id)=>{
+    console.log(id);
+    
     history.push(`/detail/${id}?type=Rent`)
     
   }

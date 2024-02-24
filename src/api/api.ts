@@ -8,6 +8,9 @@ const instance = axios.create({
 export const tologin = (url, data) => {
   return instance.post(url, data);
 };
+export const getbyusername = (url, data) => {
+  return instance.post(url, data);
+};
 export const getall = (url) => {
   return instance.get(url);
 };
@@ -42,5 +45,20 @@ export const getHousetype = (url, data) => {
   return instance.post(url,data);
 };
 export const getrentimg = (url, data) => {
+  return instance.post(url,data);
+};
+export const gethouseqa = (url, data) => {
+  return instance.post(url,data);
+};
+export const getallhouseqa = (url, data) => {
+  return instance.post(url,data);
+};
+export const gethouseqabyid = (url, data) => {
+  return instance.post(url,data);
+};
+export const addquestion = (url, data) => {
+  return instance.post(url,data);
+};
+export const addanswer = (url, data) => {
   return instance.post(url,data);
 };

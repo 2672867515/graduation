@@ -5,7 +5,7 @@ import { Button, Form, Input,message } from 'antd';
 import { LockOutlined , UserOutlined } from '@ant-design/icons';
 import { useSelector, useDispatch } from 'react-redux';
 import { LoginState,HeaderState } from '../../redux/action';
-import {tologin} from '../../api/api.ts'
+import {getbyusername, tologin} from '../../api/api.ts'
 const  Login=(props)=> {
   let   history = useHistory() //将useHistory()钩子赋值给history方便使用
   const [login,Setlogin]=useState('login')
@@ -20,8 +20,11 @@ const  Login=(props)=> {
         message.success('登录成功');
         history.push(`/Home`)
         localStorage.setItem('login','true')
+        localStorage.setItem('userid',res.data.data.id)
         dispatch(LoginState('true'))
         dispatch(HeaderState('Home'))
+        console.log(values.username);
+        
       }
       else{
         message.error(res.data.msg);

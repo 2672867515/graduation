@@ -46,11 +46,11 @@ const Used=(props)=> {
     setChoose(i)
   }
   const more=()=>{
-    history.push(`/Question`)
+    history.push(`/Question?houseid=all&housetype=all`)
     dispatch(HeaderState('Question'))
   }
   const qs=(id)=>{
-    history.push(`/Qa/${id}`)
+    history.push(`/Qa?qa=${id}`)
     dispatch(HeaderState('Question'))
   }
   const detial=(id)=>{
@@ -78,7 +78,7 @@ const Used=(props)=> {
         </div>
         <div className="newhouse">
           {housearr.map((item)=>{
-            return (<div className="houseitem" onClick={()=>detial(1)}>
+            return (<div className="houseitem" onClick={()=>detial(item.id)}>
               <img className='img' src={item.cover} alt="" />
               {item.ishot==='true'&&<div className="hot">热门二手房</div>}
               <div className="title">{item.name}</div>

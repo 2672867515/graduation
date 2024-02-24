@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './index.scss'
 import { useDispatch } from 'react-redux';
 import { HeaderState } from '../../redux/action/index.jsx';
@@ -8,6 +8,7 @@ import {
   CommentOutlined
 } from '@ant-design/icons';
 import { useHistory } from 'react-router-dom';
+import { addquestion, getallhouseqa, gethouseqa } from '../../api/api.ts';
 const Question=()=> {
   let   history = useHistory()
   const dispatch = useDispatch();
@@ -15,15 +16,18 @@ const Question=()=> {
   const [messageApi, contextHolder] = message.useMessage();
   const queryParams = new URLSearchParams(window.location.search);
   const qs = queryParams.get('qs')||0;
+  const houseid = queryParams.get('houseid');
+  const housetype = queryParams.get('housetype');
   const { TextArea } = Input;
   const { Option } = Select;
   const [inputValue, setInputValue] = useState('');
   const [about, setAbout] = useState('');
+  const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
-  const [isshow, setIsshow] = useState(true);
   const [issearch, setIssearch] = useState(false);
   const [indeal, setIndeal] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [qa, setQa] = useState([]);
   
   const searchpart=[
     {title:'买房',item:['房价行情','购房建议','买房风险','新房','二手房']},
@@ -32,26 +36,57 @@ const Question=()=> {
     {title:'其他',item:['装修','拆迁','房产政策','法律纠纷','其他']}
   ]
   const [bytype,setBytype]=useState('')
-  const qas=[
-    {qa:'wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww????',time:'2024-01-01',responsetotal:20,response:'少时诵所所所所所所所所所所所所所所所所'},
-    {qa:'wwww????',time:'2024-01-01',responsetotal:20,response:'去去去去去群群群群群群群群群群群群群群群群群群群群群群群群去去去去去群群群群群群群群群群群群'},
-    {qa:'wwww????',time:'2024-01-01',responsetotal:20,response:'sdsd'},
-    {qa:'wwww????',time:'2024-01-01',responsetotal:20,response:'sdsd'},
-    {qa:'wwww????',time:'2024-01-01',responsetotal:20,response:'sdsd'}
-  ]
-  const inconcluso=[
+
+  const hotqa=[
     {qa:'wwww????',time:'2024-01-01'},
     {qa:'wwww????',time:'2024-01-01'},
     {qa:'wwwwwwwwwwweeeeeewwwwwwwwwwwwwwwwwwww????',time:'2024-01-01'},
     {qa:'wwww????',time:'2024-01-01'},
     {qa:'wwww????',time:'2024-01-01'}
   ]
-  const [form] = Form.useForm();
+
+
+  useEffect(() => {
+    const unlisten = history.listen(() => {
+      // 监听路由变化事件
+      window.location.reload(); // 刷新页面
+    });
+
+    return () => {
+      unlisten(); // 在组件卸载时取消监听
+    };
+  }, [history]);
+  useEffect(()=>{
+    window.scrollTo(0, 0);
+    let data={houseid:houseid,housetype:housetype}
+   
+    if(houseid==='all'&&housetype==='all'){
+      getallhouseqa('question/getallhouseqa',data).then(res=>{
+        console.log(res.data.data);
+        
+        setQa(res.data.data.sort((a, b) =>{
+          const dateA = new Date(a.time+ 'T00:00:00');
+          const dateB = new Date(b.time+ 'T00:00:00');
+          return dateB - dateA; // 从近到远排序
+        }))
+      })
+    }else{
+      gethouseqa('question/gethouseqa',data).then(res=>{
+        console.log(res.data.data);
+        setQa(res.data.data.sort((a, b) =>{
+          const dateA = new Date(a.time+ 'T00:00:00');
+          const dateB = new Date(b.time+ 'T00:00:00');
+          return dateB - dateA; // 从近到远排序
+        }))
+      })
+    }
+
+  },[])
+  
   const onChange=(event)=>{
     setInputValue(event.target.value);
   }
   const search=()=>{
-    setIsshow(false)
     setIssearch(true)
     setIndeal(true)
     setAbout(inputValue)
@@ -64,7 +99,6 @@ const Question=()=> {
     setIssearch(true)
   }
   const checkall=()=>{
-     setIsshow(false)
      setIssearch(true)
      setIndeal(false)
      setAbout('待解决问题')
@@ -72,10 +106,11 @@ const Question=()=> {
   
   const ask = () => {
     setIsModalOpen(true);
+    form.resetFields()
   };
 
   const toqa=(id)=>{
-    history.push(`/Qa/${id}`)
+    history.push(`/Qa?qa=${id}`)
   }
   const handleCancel = () => {
     setIsModalOpen(false);
@@ -83,15 +118,54 @@ const Question=()=> {
   };
   const onFinish = (values: any) => {
     setLoading(true);
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = ('0' + (now.getMonth() + 1)).slice(-2); // 月份从0开始，需要加1，并且保证两位数
+    const day = ('0' + now.getDate()).slice(-2); // 保证两位数
+    const dateString = `${year}-${month}-${day}`;
+    const data={
+      houseid:houseid,
+      userid:localStorage.getItem('userid'),
+      content:values.question,
+      time:dateString,
+      housetype:housetype,
+      type:values.select
+  }
+ 
     setTimeout(() => {
-      setLoading(false);
-      setIsModalOpen(false);
-      messageApi.open({
-        type: 'success',
-        content: '提交成功',
-      });
-      form.resetFields()
-    }, 1500);
+      addquestion('question/addquestion',data).then(res=>{
+        console.log(res.data);
+        setLoading(false);
+        setIsModalOpen(false);
+        messageApi.open({
+          type: 'success',
+          content: '提交成功',
+        });
+        let data={houseid:houseid,housetype:housetype}
+   
+        if(houseid==='all'&&housetype==='all'){
+          getallhouseqa('question/getallhouseqa',data).then(res=>{
+            console.log(res.data.data);
+            
+            setQa(res.data.data.sort((a, b) =>{
+              const dateA = new Date(a.time+ 'T00:00:00');
+              const dateB = new Date(b.time+ 'T00:00:00');
+              return dateB - dateA; // 从近到远排序
+            }))
+          })
+        }else{
+          gethouseqa('question/gethouseqa',data).then(res=>{
+            console.log(res.data.data);
+            setQa(res.data.data.sort((a, b) =>{
+              const dateA = new Date(a.time+ 'T00:00:00');
+              const dateB = new Date(b.time+ 'T00:00:00');
+              return dateB - dateA; // 从近到远排序
+            }))
+          })
+        }
+      })
+
+    }, 1000);
     console.log('Success:', values);
    
   };
@@ -117,7 +191,7 @@ const Question=()=> {
             <Tooltip title="提问">
             <Button className='ask' onClick={ask}  shape="circle" icon={<QuestionOutlined style={{ fontSize: '30px' }} />}></Button>
             </Tooltip>
-            {isshow&&<div className="searchmode">
+            <div className="searchmode">
             {searchpart.map((item)=>{
               return <div className="searchitems">
                     <div className="title">{item.title}</div>
@@ -129,11 +203,11 @@ const Question=()=> {
                   
               </div>
             })}
-            </div>}
-            <div className="inconcluso">
-              <div className="title">待解决问题<div className="all" onClick={checkall}>查看全部</div></div>
+            </div>
+            <div className="hotqa">
+              <div className="title">热门问答</div>
               <div className="inbox">
-                {inconcluso.map((item)=>{
+                {hotqa.map((item)=>{
                   return  <div className="initem" onClick={()=>toqa(1)}>
                     <div className="q">{item.qa}</div>
                     <div className="time">{item.time}</div>
@@ -145,13 +219,13 @@ const Question=()=> {
             <div className="qa">
               <div className="title">
                 {issearch&&<>为您找到<span>100</span>条"<span>{about}</span>"{indeal?'相关的问题':''}</>}
-                {!issearch&&<>共有<span>100</span>个房产问答</>}
+                {!issearch&&<>共有<span>{qa.length}</span>个房产问答</>}
               </div>
-              {qas.map((item)=>{
-                return <div className="qaitem" onClick={()=>toqa(1)}>
-                    <div className="q">{item.qa}</div>
-                    <div className="a">答：{item.response}</div>
-                    <div className="total"><CommentOutlined /> {item.responsetotal}</div>
+              {qa.map((item)=>{
+                return <div className="qaitem" onClick={()=>toqa(item.id)}>
+                    <div className="q">{item.content}</div>
+                    <div className="a">答：{item.answer[0]?item.answer[0].content:'暂无回答'}</div>
+                    <div className="total"><CommentOutlined /> {item.answer.length}</div>
                     <div className="time">{item.time}</div>
                 </div>
               })}
@@ -160,13 +234,12 @@ const Question=()=> {
         </div>
         <Modal 
         title="提问" 
-        okText='提交' 
-        cancelText='取消' 
         confirmLoading={loading} 
         open={isModalOpen} 
+        onCancel={handleCancel}
         footer={[
           // 注意这里使用的是 Form 组件的 submit 方法
-          <Button key="submit" onClick={() => handleCancel()}>
+          <Button  onClick={() => handleCancel()}>
             取消
           </Button>,
           <Button key="submit" type="primary" loading={loading} onClick={() => form.submit()}>
@@ -182,31 +255,31 @@ const Question=()=> {
           style={{ maxWidth: 500 }}
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
-          initialValues={{select:'1'}}
+          initialValues={{select:'房价行情'}}
         >
            <Form.Item 
            name="select" 
            label="问题类型"
            rules={[{ required: true, message: '请选择问题类型' }]}>
             <Select >
-              <Option value="1">房价行情</Option>
-              <Option value="2">购房建议</Option>
-              <Option value="3">买房风险</Option>
-              <Option value="4">新房</Option>
-              <Option value="5">二手房</Option>
-              <Option value="6">房屋估价</Option>
-              <Option value="7">卖房流程</Option>
-              <Option value="8">出售方案</Option>
-              <Option value="9">卖房风险</Option>
-              <Option value="10">租房准备</Option>
-              <Option value="11">租房注意事项</Option>
-              <Option value="12">合租</Option>
-              <Option value="13">整租</Option>
-              <Option value="14">装修</Option>
-              <Option value="15">拆迁</Option>
-              <Option value="16">房产政策</Option>
-              <Option value="17">法律纠纷</Option>
-              <Option value="18">其他</Option>
+              <Option value="房价行情">房价行情</Option>
+              <Option value="购房建议">购房建议</Option>
+              <Option value="买房风险">买房风险</Option>
+              <Option value="新房">新房</Option>
+              <Option value="二手房">二手房</Option>
+              <Option value="房屋估价">房屋估价</Option>
+              <Option value="卖房流程">卖房流程</Option>
+              <Option value="出售方案">出售方案</Option>
+              <Option value="卖房风险">卖房风险</Option>
+              <Option value="租房准备">租房准备</Option>
+              <Option value="租房注意事项">租房注意事项</Option>
+              <Option value="合租">合租</Option>
+              <Option value="整租">整租</Option>
+              <Option value="装修">装修</Option>
+              <Option value="拆迁">拆迁</Option>
+              <Option value="房产政策">房产政策</Option>
+              <Option value="法律纠纷">法律纠纷</Option>
+              <Option value="其他">其他</Option>
             </Select>
           </Form.Item>
           <Form.Item
@@ -214,7 +287,7 @@ const Question=()=> {
             name="question"
             rules={[{ required: true, message: '请描述您的问题' }]}
           >
-             <TextArea rows={3} placeholder="描述问题" maxLength={6} />
+             <TextArea rows={3} placeholder="描述问题" />
           </Form.Item>
         </Form>
       </Modal>

@@ -77,7 +77,7 @@ const Personal=()=> {
     }
     if (info.file.status === 'done') {
       message.success(`${info.file.name} 上传成功`);
-      let data={id:1,head:info.file.response}
+      let data={id:localStorage.getItem('userid'),head:info.file.response}
       updateHead('/user/updateHead',data).then(res=>{
         console.log(res);
         setImgs(res.data.data.head)
@@ -88,7 +88,7 @@ const Personal=()=> {
   },
 };
 useEffect(()=>{
-  getuser('/user/getuser',{id:1}).then(res=>{
+  getuser('/user/getuser',{id:localStorage.getItem('userid')}).then(res=>{
     setImgs(res.data.data.head)
     console.log(res.data.data.username);
     form.setFieldsValue(res.data.data);

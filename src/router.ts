@@ -21,7 +21,7 @@ const routes = [
   { name: '二手房', component: Used, path: '/Used/:path' },
   { name: '租房', component: Rent, path: '/Rent/:path' },
   { name: '问答', component: Question, path: '/Question' },
-  { name: '问答详情', component: Qa, path: '/Qa/:id' },
+  { name: '问答详情', component: Qa, path: '/Qa' },
 ];
 
 export default routes;
