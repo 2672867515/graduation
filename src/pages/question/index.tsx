@@ -8,7 +8,7 @@ import {
   CommentOutlined
 } from '@ant-design/icons';
 import { useHistory } from 'react-router-dom';
-import { addquestion, getallhouseqa, gethouseqa } from '../../api/api.ts';
+import { addquestion, getallhouseqa, gethouseqa, searchQa } from '../../api/api.ts';
 const Question=()=> {
   let   history = useHistory()
   const dispatch = useDispatch();
@@ -92,11 +92,47 @@ const Question=()=> {
     setAbout(inputValue)
     console.log(inputValue);
     
+    let data={content:inputValue,type:bytype}
+    if(inputValue===''){
+        
+      data.content=null
+    }
+    if(form.getFieldValue('select')===''){
+        
+      data.type=null
+    }
+    console.log(data);
+    
+    searchQa('question/searchQa',data).then(res=>{
+      setQa(res.data.data.sort((a, b) =>{
+        const dateA = new Date(a.time+ 'T00:00:00');
+        const dateB = new Date(b.time+ 'T00:00:00');
+        return dateB - dateA; // 从近到远排序
+      }))
+    })
   }
   const getbytype=(i)=>{
     setBytype(i)
     setAbout(i)
     setIssearch(true)
+    setInputValue('')
+    let data={content:'',type:i}
+    if(inputValue===''){
+        
+      data.content=null
+    }
+    if(form.getFieldValue('select')===''){
+        
+      data.type=null
+    }
+    console.log(data);
+    searchQa('question/searchQa',data).then(res=>{
+      setQa(res.data.data.sort((a, b) =>{
+        const dateA = new Date(a.time+ 'T00:00:00');
+        const dateB = new Date(b.time+ 'T00:00:00');
+        return dateB - dateA; // 从近到远排序
+      }))
+    })
   }
   const checkall=()=>{
      setIssearch(true)
@@ -218,7 +254,7 @@ const Question=()=> {
             </div>
             <div className="qa">
               <div className="title">
-                {issearch&&<>为您找到<span>100</span>条"<span>{about}</span>"{indeal?'相关的问题':''}</>}
+                {issearch&&<>为您找到<span>{qa.length}</span>条"<span>{about}</span>"{indeal?'相关的问题':''}</>}
                 {!issearch&&<>共有<span>{qa.length}</span>个房产问答</>}
               </div>
               {qa.map((item)=>{

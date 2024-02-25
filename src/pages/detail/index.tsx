@@ -23,7 +23,7 @@ import kzf from '../../img/kzf.png'
 import img from '../../img/2t.jpg'
 import nodata from '../../img/nodata.jpg'
 import { useHistory } from 'react-router-dom';
-import { Button, Form, Modal, Select, Tooltip,message,Input } from 'antd';
+import { Button, Form, Modal, Select, Tooltip,message,Input,Image } from 'antd';
 import {
   StarFilled,LeftOutlined,RightOutlined
 } from '@ant-design/icons';
@@ -333,7 +333,7 @@ const Detail=(props)=> {
               {
                 hxarr.map((item)=>{
                   return <div className="block">
-                    <img className="img" src={item.url||nodata} alt='' />
+                    <Image height={200} src={item.url||nodata} />
                     <div className="size">{item.type} {item.size}㎡</div>
                     <div className="floor">{item.location}</div>
                     <div className="price">{item.price}万<span className="per">{item.per}/㎡</span> </div>

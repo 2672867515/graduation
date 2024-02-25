@@ -62,3 +62,6 @@ export const addquestion = (url, data) => {
 export const addanswer = (url, data) => {
   return instance.post(url,data);
 };
+export const searchQa = (url, data) => {
+  return instance.post(url,data);
+};
