@@ -40,17 +40,23 @@
             text-overflow: ellipsis;    /* 显示省略号 */
         }
         .q{
-            width: 70%;
             background-color: white;
             padding: 20px;
             box-sizing: border-box;
-            .question{
+            .name{
                 @include break;
                 font-size: 25px;
                 font-weight: bold;
+                color: rgb(29, 182, 131)
+            }
+            .question{
+                @include break;
+                font-size: 22px;
+                font-weight: bold;
+                margin-top: 10px;
             }
             .bot{
-                margin-top: 20px;
+                margin-top: 10px;
                 color: rgba(0, 0, 0,0.5);
                 font-size: 15px;
                 display: flex;
@@ -59,7 +65,6 @@
            
         }
         .a{
-            width: 70%;
             background-color: white;
             margin-top: 30px;
             padding: 20px;

@@ -8,7 +8,7 @@ import img from '../../img/2bo.jpg'
 import { RightOutlined } from '@ant-design/icons';
 import { useSelector, useDispatch } from 'react-redux';
 import { LoginState,HeaderState } from '../../redux/action';
-import { getall } from '../../api/api.ts';
+import { getall, getallhouseqa, getusedhouseqa } from '../../api/api.ts';
 const Used=(props)=> {
   const dispatch = useDispatch();
   const { path } = useParams();
@@ -19,31 +19,30 @@ const Used=(props)=> {
   dispatch(HeaderState(type))
   let   history = useHistory() //将useHistory()钩子赋值给history方便使用
   const [inputValue, setInputValue] = useState('');
-  const [choose, setChoose] = useState('all');
+  const [qa, setQa] = useState([]);
 
   const [housearr, setHousearr] = useState([]);
   useEffect(()=>{
     getall('used/getall').then(res=>{
       setHousearr(res.data.data.sort((a, b) => a.price - b.price))
     })
-
+    getusedhouseqa('question/getusedhouseqa',{housetype:'Used'}).then(res=>{
+      console.log(res.data.data);
+      let data=res.data.data.sort((a, b) =>{
+        const dateA = new Date(a.time+ 'T00:00:00');
+        const dateB = new Date(b.time+ 'T00:00:00');
+        return dateB - dateA; // 从近到远排序
+      })
+      setQa(data.slice(0,5))
+      
+    })
   },[])
-  const questions=[
-    {id:1,qs:'sdssdss'},
-    {id:2,qs:'sdssdss'},
-    {id:3,qs:'sdssdss'},
-    {id:4,qs:'sdssdss'},
-    {id:5,qs:'sdssdss'},
-  ]
 
   const onChange=(event)=>{
     setInputValue(event.target.value);
   }
   const search=()=>{
     console.log(inputValue);
-  }
-  const choosed=(i)=>{
-    setChoose(i)
   }
   const more=()=>{
     history.push(`/Question?houseid=all&housetype=all`)
@@ -73,8 +72,7 @@ const Used=(props)=> {
       </div>
       <div className="newcontent">
         <div className="newhead">
-          <div className={choose==='all'?'headitm headitmclick':'headitm'} onClick={()=>choosed('all')}>全部</div>
-          <div className={choose==='cheap'?'headitm headitmclick':'headitm'} onClick={()=>choosed('cheap')}>房东急售</div>
+          <div className='headitm headitmclick'>全部</div>
         </div>
         <div className="newhouse">
           {housearr.map((item)=>{
@@ -96,14 +94,19 @@ const Used=(props)=> {
         </div>
         <div className="hotnew">
           <div className="title" onClick={more}>
-            热门问答 
+            最新问答 
             <div className="to"> <RightOutlined /> </div>
           </div> 
           <div className="hotqs">
           
-          {questions.map((item)=>{
-                    return <div className="qsitems" onClick={()=>qs(item.id)}>{item.qs}</div>
-                  })}
+          {qa.map((item)=>{
+            return (
+              <div className="qsitems">
+                <div className="content" onClick={()=>qs(item.id)}>{item.content}</div>
+                <div className="qtime"> {item.time}</div>
+              </div>
+            )
+          })}
           </div>
         </div>
       </div>

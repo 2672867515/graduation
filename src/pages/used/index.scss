@@ -194,17 +194,26 @@
                 width: 100%;
                 margin-top: 20px;
                 .qsitems{
-                    margin-top: 0px;
-                    font-size: 17px;
-                    color: rgba(0,0,0,0.6);
-                    cursor: pointer;
-                    @include abab;
-                    padding: 10px;
+                    .content{
+                        margin-top: 0px;
+                        font-size: 17px;
+                        color: rgba(0,0,0,0.7);
+                        cursor: pointer;
+                        @include abab;
+                        padding: 10px;
+                    }
+                    .qtime{
+                        font-size: 15px;
+                        margin-bottom: 10px;
+                        color: rgba(0,0,0,0.5);
+                        padding:0 10px ;
+                    }
                     &:hover{
                         color: rgb(35,201,147);
                         box-shadow: 0 0 10px rgba(0, 0, 0,0.1);
                     }
                 }
+               
             }
         }
     }

@@ -53,6 +53,7 @@ const Detail=(props)=> {
   const [bedroomeqs,setBedroomeqs]=useState([])
   const [publiceqs,setPubliceqs]=useState([])
   const [qa,setQa]=useState([])
+  const [qal,setQal]=useState(0)
   const [qwa,setQwa]=useState([])
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
@@ -72,11 +73,12 @@ const Detail=(props)=> {
     let data={houseid:id,housetype:type}
     gethouseqa('question/gethouseqa',data).then(res=>{
       console.log(res.data.data);
+      setQal(res.data.data.length)
         setQa( res.data.data.sort((a, b) =>{
           const dateA = new Date(a.time+ 'T00:00:00');
           const dateB = new Date(b.time+ 'T00:00:00');
           return dateB - dateA; // 从近到远排序
-        }))
+        }).slice(0,3))
     })
     if(type==="Newhome"){
       getByid("newhome/getByid",{id:id}).then(res=>{
@@ -141,11 +143,11 @@ const Detail=(props)=> {
   const getqs=(qatype,qaid)=>{
     switch (qatype){
       case 1 :
-      history.push(`/Qa?qa=${qaid}`)
+      history.push(`/Qa?qa=${qaid}&name=${housedata.name}`)
       dispatch(HeaderState('Question'))
       break;
       case 2 :
-      history.push(`/Question?houseid=${id}&housetype=${type}`)
+      history.push(`/Question?houseid=${id}&housetype=${type}&name=${housedata.name}`)
       dispatch(HeaderState('Question'))
       break;
     }
@@ -170,7 +172,7 @@ const Detail=(props)=> {
     const data={
       houseid:id,
       userid:localStorage.getItem('userid'),
-      content:values.question,
+      content:'['+housedata.name+']--'+values.question,
       time:dateString,
       housetype:type,
       type:values.select
@@ -188,6 +190,7 @@ const Detail=(props)=> {
         let data={houseid:id,housetype:type}
         gethouseqa('question/gethouseqa',data).then(res=>{
           console.log(res.data.data);
+          setQal(res.data.data.length)
             setQa( res.data.data.sort((a, b) =>{
               const dateA = new Date(a.time+ 'T00:00:00');
               const dateB = new Date(b.time+ 'T00:00:00');
@@ -345,7 +348,7 @@ const Detail=(props)=> {
           </div>}
 
           <div className="comment">
-            <div className="title">房源问答 ({qa.length})</div>
+            <div className="title">房源问答 ({qal})</div>
             {qa.map((item)=>{
               return <div className="qs" onClick={()=>getqs(1,item.id)}>
                 <div className="question"><span className='icon'>问</span>{item.content}</div>
@@ -433,7 +436,7 @@ const Detail=(props)=> {
             name="question"
             rules={[{ required: true, message: '请描述您的问题' }]}
           >
-             <TextArea rows={3} placeholder="描述问题" maxLength={6} />
+             <TextArea rows={3} placeholder="描述问题" />
           </Form.Item>
         </Form>
       </Modal>

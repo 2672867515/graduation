@@ -13,6 +13,7 @@ const Qa=()=> {
   let   history = useHistory()
   const queryParams = new URLSearchParams(window.location.search);
   const id = queryParams.get('qa');
+  const name = queryParams.get('name');
   const [messageApi, contextHolder] = message.useMessage();
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
@@ -123,7 +124,8 @@ const Qa=()=> {
         </div>
         <div className="qacontent">
           <div className="q">
-            <div className="question">{qa.content}</div>
+            <div className="name">楼盘：{name||'二手房'}</div>
+            <div className="question">提问：{qa.content}</div>
             <div className="bot">
               <div className="auth">{username}</div>
               <div className="qtime">{qa.time}</div>
@@ -145,17 +147,6 @@ const Qa=()=> {
                   </div>
               })}
             </div>
-          </div>
-          <div className="alike">
-                <div className="title">相关问题</div>
-                <div className="inbox">
-                  {alike.map((item)=>{
-                    return  <div className="initem" onClick={()=>toqa(2)}>
-                      <div className="alikeqa">{item.qa}</div>
-                      <div className="time">{item.time}</div>
-                    </div>
-                  })}
-                </div>
           </div>
         </div>
         <Modal 

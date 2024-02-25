@@ -65,3 +65,6 @@ export const addanswer = (url, data) => {
 export const searchQa = (url, data) => {
   return instance.post(url,data);
 };
+export const getusedhouseqa = (url, data) => {
+  return instance.post(url,data);
+};

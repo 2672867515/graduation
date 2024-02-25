@@ -18,6 +18,7 @@ const Question=()=> {
   const qs = queryParams.get('qs')||0;
   const houseid = queryParams.get('houseid');
   const housetype = queryParams.get('housetype');
+  const name = queryParams.get('name');
   const { TextArea } = Input;
   const { Option } = Select;
   const [inputValue, setInputValue] = useState('');
@@ -28,6 +29,7 @@ const Question=()=> {
   const [indeal, setIndeal] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [qa, setQa] = useState([]);
+  const [qaall, setQaall] = useState([]);
   
   const searchpart=[
     {title:'买房',item:['房价行情','购房建议','买房风险','新房','二手房']},
@@ -69,6 +71,7 @@ const Question=()=> {
           const dateB = new Date(b.time+ 'T00:00:00');
           return dateB - dateA; // 从近到远排序
         }))
+        setQaall(res.data.data)
       })
     }else{
       gethouseqa('question/gethouseqa',data).then(res=>{
@@ -78,6 +81,7 @@ const Question=()=> {
           const dateB = new Date(b.time+ 'T00:00:00');
           return dateB - dateA; // 从近到远排序
         }))
+        setQaall(res.data.data)
       })
     }
 
@@ -91,48 +95,47 @@ const Question=()=> {
     setIndeal(true)
     setAbout(inputValue)
     console.log(inputValue);
-    
-    let data={content:inputValue,type:bytype}
-    if(inputValue===''){
-        
-      data.content=null
-    }
-    if(form.getFieldValue('select')===''){
-        
-      data.type=null
-    }
-    console.log(data);
-    
-    searchQa('question/searchQa',data).then(res=>{
-      setQa(res.data.data.sort((a, b) =>{
+    console.log(bytype);
+    console.log(qa);
+    if(bytype===''){
+      let data=qaall.filter(item=>{
+       return item.content.includes(inputValue)
+      })
+      setQa(data.sort((a, b) =>{
         const dateA = new Date(a.time+ 'T00:00:00');
         const dateB = new Date(b.time+ 'T00:00:00');
         return dateB - dateA; // 从近到远排序
       }))
-    })
+    }else{
+      let data=qaall.filter(item=>{
+        return item.content.includes(inputValue)
+       })
+       let data2=data.filter(item=>{
+        return item.type===bytype
+       })
+       setQa(data2.sort((a, b) =>{
+         const dateA = new Date(a.time+ 'T00:00:00');
+         const dateB = new Date(b.time+ 'T00:00:00');
+         return dateB - dateA; // 从近到远排序
+       }))
+    }
   }
   const getbytype=(i)=>{
     setBytype(i)
     setAbout(i)
     setIssearch(true)
     setInputValue('')
-    let data={content:'',type:i}
-    if(inputValue===''){
-        
-      data.content=null
-    }
-    if(form.getFieldValue('select')===''){
-        
-      data.type=null
-    }
-    console.log(data);
-    searchQa('question/searchQa',data).then(res=>{
-      setQa(res.data.data.sort((a, b) =>{
-        const dateA = new Date(a.time+ 'T00:00:00');
-        const dateB = new Date(b.time+ 'T00:00:00');
-        return dateB - dateA; // 从近到远排序
-      }))
-    })
+    let data=qaall.filter(item=>{
+      return item.type===i
+     })
+
+     setQa(data.sort((a, b) =>{
+       const dateA = new Date(a.time+ 'T00:00:00');
+       const dateB = new Date(b.time+ 'T00:00:00');
+       return dateB - dateA; // 从近到远排序
+     }))
+    
+   
   }
   const checkall=()=>{
      setIssearch(true)
@@ -146,7 +149,7 @@ const Question=()=> {
   };
 
   const toqa=(id)=>{
-    history.push(`/Qa?qa=${id}`)
+    history.push(`/Qa?qa=${id}&name=${name}`)
   }
   const handleCancel = () => {
     setIsModalOpen(false);
@@ -162,7 +165,7 @@ const Question=()=> {
     const data={
       houseid:houseid,
       userid:localStorage.getItem('userid'),
-      content:values.question,
+      content:houseid==='all'?'[全部]--'+values.question:'['+name+']--'+values.question,
       time:dateString,
       housetype:housetype,
       type:values.select
@@ -177,12 +180,15 @@ const Question=()=> {
           type: 'success',
           content: '提交成功',
         });
+        setIssearch(false)
+        setBytype('')
+        setInputValue('')
         let data={houseid:houseid,housetype:housetype}
    
         if(houseid==='all'&&housetype==='all'){
           getallhouseqa('question/getallhouseqa',data).then(res=>{
             console.log(res.data.data);
-            
+            setQaall(res.data.data)
             setQa(res.data.data.sort((a, b) =>{
               const dateA = new Date(a.time+ 'T00:00:00');
               const dateB = new Date(b.time+ 'T00:00:00');
@@ -192,6 +198,7 @@ const Question=()=> {
         }else{
           gethouseqa('question/gethouseqa',data).then(res=>{
             console.log(res.data.data);
+            setQaall(res.data.data)
             setQa(res.data.data.sort((a, b) =>{
               const dateA = new Date(a.time+ 'T00:00:00');
               const dateB = new Date(b.time+ 'T00:00:00');
@@ -243,9 +250,9 @@ const Question=()=> {
             <div className="hotqa">
               <div className="title">热门问答</div>
               <div className="inbox">
-                {hotqa.map((item)=>{
-                  return  <div className="initem" onClick={()=>toqa(1)}>
-                    <div className="q">{item.qa}</div>
+                {qaall.slice(0,5).map((item)=>{
+                  return  <div className="initem" onClick={()=>toqa(item.id)}>
+                    <div className="q">{item.content}</div>
                     <div className="time">{item.time}</div>
                   </div>
                 })}
@@ -253,8 +260,9 @@ const Question=()=> {
               </div>
             </div>
             <div className="qa">
+              <div className="name">{name}</div>
               <div className="title">
-                {issearch&&<>为您找到<span>{qa.length}</span>条"<span>{about}</span>"{indeal?'相关的问题':''}</>}
+                {issearch&&<>为您找到<span>{qa.length}</span>条<span>{about}</span>{indeal?'相关的问题':''}</>}
                 {!issearch&&<>共有<span>{qa.length}</span>个房产问答</>}
               </div>
               {qa.map((item)=>{
