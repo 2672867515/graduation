@@ -48,8 +48,10 @@ const Used=(props)=> {
     history.push(`/Question?houseid=all&housetype=all`)
     dispatch(HeaderState('Question'))
   }
-  const qs=(id)=>{
-    history.push(`/Qa?qa=${id}`)
+  const qs=(item)=>{
+    const regex = /\[(.*?)\]/; // 使用非贪婪模式匹配方括号内的内容
+    const match = item.content.match(regex); // 匹配字符串中的方括号内容
+    history.push(`/Qa?qa=${item.id}&name=${match[1]||'未知楼盘'}`)
     dispatch(HeaderState('Question'))
   }
   const detial=(id)=>{
@@ -102,7 +104,7 @@ const Used=(props)=> {
           {qa.map((item)=>{
             return (
               <div className="qsitems">
-                <div className="content" onClick={()=>qs(item.id)}>{item.content}</div>
+                <div className="content" onClick={()=>qs(item)}>{item.content}</div>
                 <div className="qtime"> {item.time}</div>
               </div>
             )

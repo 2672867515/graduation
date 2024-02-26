@@ -83,6 +83,8 @@ const Detail=(props)=> {
     if(type==="Newhome"){
       getByid("newhome/getByid",{id:id}).then(res=>{
         setHousedata(res.data.data[0])
+        console.log(res.data.data[0]);
+        
         setTsarr(res.data.data[0].feature.split("，"))
       })
       getHousetype('housetype/getHousetype',{houseid:id}).then(res=>{

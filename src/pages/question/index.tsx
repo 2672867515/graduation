@@ -148,8 +148,11 @@ const Question=()=> {
     form.resetFields()
   };
 
-  const toqa=(id)=>{
-    history.push(`/Qa?qa=${id}&name=${name}`)
+  const toqa=(item)=>{
+    console.log(item);
+    const regex = /\[(.*?)\]/; // 使用非贪婪模式匹配方括号内的内容
+    const match = item.content.match(regex); // 匹配字符串中的方括号内容
+    history.push(`/Qa?qa=${item.id}&name=${match[1]||'未知楼盘'}`)
   }
   const handleCancel = () => {
     setIsModalOpen(false);
@@ -251,7 +254,7 @@ const Question=()=> {
               <div className="title">热门问答</div>
               <div className="inbox">
                 {qaall.slice(0,5).map((item)=>{
-                  return  <div className="initem" onClick={()=>toqa(item.id)}>
+                  return  <div className="initem" onClick={()=>toqa(item)}>
                     <div className="q">{item.content}</div>
                     <div className="time">{item.time}</div>
                   </div>
@@ -266,7 +269,7 @@ const Question=()=> {
                 {!issearch&&<>共有<span>{qa.length}</span>个房产问答</>}
               </div>
               {qa.map((item)=>{
-                return <div className="qaitem" onClick={()=>toqa(item.id)}>
+                return <div className="qaitem" onClick={()=>toqa(item)}>
                     <div className="q">{item.content}</div>
                     <div className="a">答：{item.answer[0]?item.answer[0].content:'暂无回答'}</div>
                     <div className="total"><CommentOutlined /> {item.answer.length}</div>
