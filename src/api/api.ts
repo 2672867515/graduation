@@ -68,3 +68,9 @@ export const searchQa = (url, data) => {
 export const getusedhouseqa = (url, data) => {
   return instance.post(url,data);
 };
+export const alikebynra = (url, data) => {
+  return instance.post(url,data);
+};
+export const condition = (url, data) => {
+  return instance.post(url,data);
+};

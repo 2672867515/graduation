@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import  './index.scss'
 import { useDispatch,useSelector } from 'react-redux';
 import { HeaderState } from '../../redux/action/index.jsx';
+import Map from '../../components/map/index.tsx'
 import ds from '../../img/ds.png'
 import kt from '../../img/kt.png'
 import yg from '../../img/yg.png'
@@ -27,7 +28,7 @@ import { Button, Form, Modal, Select, Tooltip,message,Input,Image } from 'antd';
 import {
   StarFilled,LeftOutlined,RightOutlined
 } from '@ant-design/icons';
-import { addquestion, getByid, getHousetype, gethouseqa, getrentimg, rentgetByid, usedgetByid } from '../../api/api.ts';
+import { addquestion, getByid, getHousetype, gethouseqa, getrentimg, alikebynra, rentgetByid, usedgetByid } from '../../api/api.ts';
 const Detail=(props)=> {
   const { TextArea } = Input;
   const { Option } = Select;
@@ -37,14 +38,14 @@ const Detail=(props)=> {
   let   history = useHistory()
   const dispatch = useDispatch();
   const { id } = useParams();
-  console.log(id);
   const queryParams = new URLSearchParams(window.location.search);
   const type = queryParams.get('type');
-  console.log(type);
+  const address = queryParams.get('address');
 
   dispatch(HeaderState(type))
   const header = useSelector((state) => state.header);
   const [housedata,setHousedata]=useState({})
+  // const [address,setAddress]=useState('')
   const [tsarr,setTsarr]=useState(['特色'])
   const [messageApi, contextHolder] = message.useMessage();
   const [hxarr,setHxarr]=useState([])
@@ -54,18 +55,21 @@ const Detail=(props)=> {
   const [publiceqs,setPubliceqs]=useState([])
   const [qa,setQa]=useState([])
   const [qal,setQal]=useState(0)
-  const [qwa,setQwa]=useState([])
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const housearr=[{ts:['近地铁','fg']},
-  {ts:['ute','5rt']},
-  {ts:['67yh','ewsf','fgh']},
-  {ts:['q343dw','e33']},
-  {ts:['f','fg'],hot:'超级优惠'},
-  {ts:['hjk','6765g']}
-  ]
+  const [alike, setAlike] = useState<any>([]);
+ 
+  useEffect(() => {
+    const unlisten = history.listen(() => {
+      // 监听路由变化事件
+      window.location.reload(); // 刷新页面
+    });
 
+    return () => {
+      unlisten(); // 在组件卸载时取消监听
+    };
+  }, [history]);
   useEffect(()=>{
     document.documentElement.scrollIntoView({
       behavior: 'smooth'
@@ -84,7 +88,7 @@ const Detail=(props)=> {
       getByid("newhome/getByid",{id:id}).then(res=>{
         setHousedata(res.data.data[0])
         console.log(res.data.data[0]);
-        
+        getalike('newhome/alike',res.data.data[0].address)
         setTsarr(res.data.data[0].feature.split("，"))
       })
       getHousetype('housetype/getHousetype',{houseid:id}).then(res=>{
@@ -92,19 +96,17 @@ const Detail=(props)=> {
       })
     }
     if(type==="Used"){
-      console.log(2);
-      
+
       usedgetByid("used/getByid",{id:id}).then(res=>{
-        
+        getalike('used/alike',res.data.data[0].address)
         setHousedata(res.data.data[0])
         setTsarr(res.data.data[0].feature.split("，"))
       })
     }
     if(type==="Rent"){
-      console.log(2);
-      
      rentgetByid("rent/getByid",{id:id}).then(res=>{
         console.log(res);
+        getalike('rent/alike',res.data.data[0].address)
         setBedroomeqs(res.data.data[0].bedroomeqs.match(/\d+/g).map(Number))
         setPubliceqs(res.data.data[0].publiceqs.match(/\d+/g).map(Number))
         setHousedata(res.data.data[0])
@@ -116,6 +118,26 @@ const Detail=(props)=> {
     }
 
   },[])
+  const getalike=(url,address)=>{
+    const area=['鼓楼','晋安','仓山','台江','马尾','长乐','闽侯','闽清','永泰','福清','罗源','连江','平潭']
+    area.forEach(item=>{
+      if(address.includes(item)) {
+        alikebynra(url,{address:item}).then(res=>{
+          if(res.data.data.length>1){
+            let data=res.data.data.filter(item=>  item.id!==id*1 )
+            data=data.slice(0,5)
+            data.forEach(item=>{
+              item.feature=item.feature.split("，").slice(0,4)
+            })
+            
+            setAlike(data)
+
+          }
+        })
+      }  
+    })
+
+  }
   const prev=()=>{
     if(position===0){
 
@@ -131,8 +153,10 @@ const Detail=(props)=> {
     }
 
   }
-  const detial=(id)=>{
-    history.push(`/detail/${id}?type=${type}`)
+  const detial=(item)=>{
+    console.log(id);
+    
+    history.push(`/detail/${item.id}?type=${type}&address=${item.address}`)
   }
   const changecollect=()=>{
     messageApi.open({
@@ -221,14 +245,14 @@ const Detail=(props)=> {
         <div className="content">
         {type!=='Rent'&&<Vr />}
         {type==='Rent'&& <div className="rentimg">
-          <div className="left" onClick={prev}><LeftOutlined /></div>
-          <div className="right" onClick={next}><RightOutlined /></div>
+          {imgs.length>0&&<div className="left" onClick={prev}><LeftOutlined /></div>}
+          {imgs.length>0&&<div className="right" onClick={next}><RightOutlined /></div>}
           <div className="imgs" style={{marginLeft:position+'px'}}>
-            {imgs.map((item)=>{
+            {imgs.length>0?imgs.map((item)=>{
                 return (
-                  <img className='rentroomimg' src={item.url} alt="" />
+                  <img className='rentroomimg' src={item.url?item.url:nodata} alt="" />
                 )
-              })}
+              }):<img className='rentroomimg' src={nodata} alt="" />}
           </div>
 
         </div>}
@@ -290,7 +314,7 @@ const Detail=(props)=> {
                 <div className="phone">联系电话 : {housedata.phone}</div>
             </div>}
             <div className="map">
-              假装有地图
+              <Map address={address}></Map>
             </div>
           </div>
           <div className="lb">
@@ -364,22 +388,25 @@ const Detail=(props)=> {
           </div>
           <div className="alike">
             <div className="title">相关推荐</div>
-          {housearr.map((item)=>{
-            return (<div className="houseitem" onClick={()=>detial(2)}>
-              <img className='imgs' src={img} alt="" />
-              <div className="title">汤臣一品</div>
-              <div className="size">100</div>
-              <div className="address">10dss0</div>
+            {alike.length>0&&alike.map((item)=>{
+            return (<div className="houseitem" onClick={()=>detial(item)}>
+              <img className='imgs' src={item.cover} alt="" />
+              <div className="title">{item.name}</div>
+              <div className="size">{item.size}㎡</div>
+              <div className="address">{item.address}</div>
               
-              {type!=='Newhome'&&<div className="price">1000w <br /><span className="per">23564/㎡</span></div>}
-              {type==='Newhome'&&<div className="newprice">均价：<span className="per">23564</span>/㎡</div>}
+              {type==='Rent'&&<div className="price">{item.price}元/月</div>}
+              {type==='Used'&&<div className="price">{item.price}w <br /><span className="per">{item.per}/㎡</span></div>}
+              {type==='Newhome'&&<div className="newprice">均价：<span className="per">{item.averageprice}</span>/㎡</div>}
               <div className="ts">
-                  {item.ts.map((item)=>{
+                  {item.feature.map((item)=>{
                     return <div className="tsitems">{item}</div>
                   })}
               </div>
+              <div style={{height:'20px'}}></div>
             </div>)
           })}
+          {alike.length===0&&<img style={{width:'100%'}} src={nodata} alt="" />}
           </div>
         </div>
         <Modal 

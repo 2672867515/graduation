@@ -103,8 +103,8 @@ const Home=(props)=> {
     dispatch(HeaderState(type))
     
 }
-const detial=(id)=>{
-  history.push(`/detail/${id}?type=Newhome`)
+const detial=(item)=>{
+  history.push(`/detail/${item.id}?type=Newhome&address=${item.address}`)
   dispatch(HeaderState('Newhome'))
   
 }
@@ -138,7 +138,7 @@ const detial=(id)=>{
           <div className="banner">
             <div className="part1" style={{marginLeft:topbanner?'-100%':'0'}}>
             {hotnewhome4.map((item)=>{
-              return( <div className="part1-content" onClick={()=>detial(item.id)}>
+              return( <div className="part1-content" onClick={()=>detial(item)}>
               <img className="part1-img" src={item.cover||nodata} alt='' />
                   <div className="part1-detail">
                     <div className="part1-name">{item.name}</div>
@@ -156,7 +156,7 @@ const detial=(id)=>{
           <div className="hot-more" onClick={()=>more('Newhome')}>查看更多</div>
           <div className="part-item">
             {hotnewhome8.map((item)=>{
-              return <Hotitem id={item.id} type='Newhome' img={item.cover||nodata} name={item.name} size={item.size} price={item.averageprice+'/㎡'} />
+              return <Hotitem id={item.id} type='Newhome' address={item.address} img={item.cover||nodata} name={item.name} size={item.size} price={item.averageprice+'/㎡'} />
             })}
           </div>
         
@@ -166,7 +166,7 @@ const detial=(id)=>{
           <div className="hot-more" onClick={()=>more('Used')}>查看更多</div>
           <div className="part-item">
             {hotused.map((item)=>{
-              return <Hotitem id={item.id} img={item.cover||nodata} type='Used' name={item.name} size={item.size} price={item.price+'w'}  />
+              return <Hotitem id={item.id} address={item.address} img={item.cover||nodata} type='Used' name={item.name} size={item.size} price={item.price+'w'}  />
             })}
           </div>
         
@@ -177,7 +177,7 @@ const detial=(id)=>{
           <div className="hot-more" onClick={()=>more('Rent')}>查看更多</div>
           <div className="part-item">
             {hotrent.map((item)=>{
-              return <Hotitem id={item.id} img={item.cover||nodata} type='Rent' name={item.name} size={item.size} price={item.price+'/月'}   />
+              return <Hotitem id={item.id} address={item.address} img={item.cover||nodata} type='Rent' name={item.name} size={item.size} price={item.price+'/月'}   />
             })}
           </div>
         </div>

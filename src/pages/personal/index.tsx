@@ -144,8 +144,8 @@ useEffect(()=>{
     setIsModalOpen(true);
     form2.resetFields()
   }
-  const detial=(id)=>{
-    history.push(`/detail/${id}?type=Newhome`)
+  const detial=(item)=>{
+    history.push(`/detail/${item.id}?type=Newhome&address=${item.address}`)
   }
   const toqa=(id)=>{
     history.push(`/Qa/${id}`)
@@ -256,7 +256,7 @@ useEffect(()=>{
               <div className="title">好房推荐</div>
               <div className="alike">
               {housearr.map((item)=>{
-                return (<div className="houseitem" onClick={()=>detial(2)}>
+                return (<div className="houseitem" onClick={()=>detial(item)}>
                   <img className='imgs' src={img} alt="" />
                   <div className="title">汤臣一品</div>
                   <div className="size">100</div>
@@ -307,7 +307,7 @@ useEffect(()=>{
           {key==='4'&&<div className="mycollect">
           <div className="collect">
               {housearr.map((item)=>{
-                return (<div className="houseitem" onClick={()=>detial(2)}>
+                return (<div className="houseitem" onClick={()=>detial(item)}>
                   <img className='imgs' src={img} alt="" />
                   <div className="rightpart">
                     <div className="title">汤臣wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww一品</div>

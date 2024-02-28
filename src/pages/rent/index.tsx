@@ -7,7 +7,8 @@ import img from '../../img/2bo.jpg'
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { HeaderState } from '../../redux/action/index.jsx';
-import { getall } from '../../api/api.ts';
+import { alikebynra, getall } from '../../api/api.ts';
+import nodata from '../../img/nodata.jpg'
 const Rent=(props)=> {
   const dispatch = useDispatch();
   let   history = useHistory()
@@ -20,25 +21,41 @@ const Rent=(props)=> {
   const [inputValue, setInputValue] = useState('');
   const [housearr, setHousearr] = useState([]);
   useEffect(()=>{
-    getall('rent/getall').then(res=>{
-      setHousearr(res.data.data.sort((a, b) => a.price - b.price))
-    })
-
+    window.scrollTo(0, 0);
+    const unlisten = history.listen(() => {
+      // 监听路由变化事件
+      window.location.reload(); // 刷新页面
+    });
+    if(path==='all'){
+      getall('rent/getall').then(res=>{
+        setHousearr(res.data.data.sort((a, b) => a.price - b.price))
+      })
+    }else{
+      alikebynra('rent/alike',{address:kw}).then(res=>{
+        setHousearr(res.data.data.sort((a, b) => a.averageprice - b.averageprice))
+      })
+    }
   },[])
 
   const onChange=(event)=>{
     setInputValue(event.target.value);
   }
   const search=()=>{
-    
-    console.log(inputValue);
+
+    alikebynra('rent/alike',{address:inputValue}).then(res=>{
+      setHousearr(res.data.data.sort((a, b) => a.price - b.price))
+    })
     
   }
-  const detial=(id)=>{
-    console.log(id);
+  const detial=(item)=>{
+
     
-    history.push(`/detail/${id}?type=Rent`)
+    history.push(`/detail/${item.id}?type=Rent&address=${item.address}`)
     
+  }
+  const onCallback=(data)=>{
+    setInputValue('')
+    setHousearr(data.sort((a, b) => a.price - b.price))
   }
   return (
     <div className='Newhome'>
@@ -46,21 +63,23 @@ const Rent=(props)=> {
         <span className="project">基于three.js的3D选房平台</span>
         <span className="pagetype">|  租房</span>
       <Input placeholder="请输入楼盘名称、地址" className='searchinput' size={'middle'}  allowClear value={inputValue} onChange={onChange}  />
-      <Button className='but' size={'middle'} type="primary"  style={{width:'100px', backgroundColor: 'rgb(35,201,147)' }} onClick={()=>search}>
+      <Button className='but' size={'middle'} type="primary"  style={{width:'100px', backgroundColor: 'rgb(35,201,147)' }} onClick={search}>
         搜索
       </Button>
       </div>
       <div className="chat">安心租好房</div>
       <div className="searchpart">
-        <Pagesearch type={3} />
+        <Pagesearch type={3} onCallback={onCallback} />
       </div>
       <div className="newcontent">
         <div className="newhead">
           <div className='headitm headitmclick'>全部</div>
         </div>
         <div className="newhouse">
+          {housearr.length===0&&  <img src={nodata} alt="" />}
+
           {housearr.map((item)=>{
-            return (<div className="houseitem" onClick={()=>detial(item.id)}>
+            return (<div className="houseitem" onClick={()=>detial(item)}>
               <img className='img' src={item.cover} alt="" />
               {item.ishot==='true'&&<div className="hotrent">热租</div>}
               <div className="title">{item.name}</div>

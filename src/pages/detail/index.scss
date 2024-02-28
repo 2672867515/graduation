@@ -30,8 +30,8 @@
         position: relative;
         .rentimg{
             width: 750px;
-            height: 550px;
-            background-color: aquamarine;
+            height: 600px;
+            // background-color: aquamarine;
             overflow: hidden;
             position: relative;
             @mixin but{
@@ -173,8 +173,7 @@
                 margin-top: 20px;
                 right: 0;
                 width: 100%;
-                height: 190px;
-                background-color: antiquewhite;
+                height: 250px;
             }
            
         }
@@ -355,6 +354,7 @@
                 padding:10px  0 ;
                 border-bottom: 1px solid rgba(0, 0, 0,0.1);
                 margin-top: 20px;
+                box-sizing: border-box;
                 position: relative;
                 cursor: pointer;
                 &:hover{
@@ -375,7 +375,7 @@
                 & .size{
                     position: absolute;
                     left: 28%;
-                    top: 30%;
+                    top: 35%;
                     color: rgba(0, 0, 0,0.6);
                     font-size: 18px;
                     width: 62%;
@@ -384,18 +384,18 @@
                 & .address{
                     position: absolute;
                     left: 28%;
-                    top: 50%;
+                    top: 55%;
                     color: rgba(0, 0, 0,0.6);
-                    font-size: 18px;
-                    width: 62%;
+                    font-size: 16px;
+                    width: 48%;
                     @include abab
                 }
            
                 & .price{
                     position: absolute;
                     right: 3%;
-                    top: 20%;
-                    font-size: 28px;
+                    top: 30%;
+                    font-size: 25px;
                     color: rgb(253,76,56);
                     font-weight: bold;
                     .per{
@@ -403,6 +403,8 @@
                         position: absolute;
                         font-size: 16px;
                         right: 0;
+                        width: 90px;
+                        text-align: right;
                     }
                     
                 }
@@ -414,13 +416,13 @@
                     font-weight: bold;
                     .per{
                         color: rgb(253,76,56);
-                        font-size: 28px;
+                        font-size: 25px;
                     }
                 }
                 & .ts{
                     position: absolute;
                     left: 28%;
-                    top: 75%; 
+                    top: 78%; 
                     display: flex;
                     gap: 10px;
                     & .tsitems{

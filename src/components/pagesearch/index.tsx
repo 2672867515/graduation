@@ -1,35 +1,72 @@
 import React, { useEffect, useState } from 'react';
 import './index.scss'
 import { useParams } from 'react-router-dom';
-import {area,newprice,huxing,mianji,tese,rentprice,usedprice,rentts} from '../constant.ts'
+import {area,newprice,huxing,tese,rentprice,usedprice,rentts,usedts} from '../constant.ts'
+import { condition } from '../../api/api.ts';
 const Pagesearch=(props)=> {
-    const {type}=props
+    const {type,onCallback,iasearch}=props
+    const queryParams = new URLSearchParams(window.location.search);
+    const ptype = queryParams.get('type');
     const { path } = useParams();
     const [areaclick,setAreaclick]=useState('')
     const [priceclick,setPriceclick]=useState('')
     const [typeclick,setTypeclick]=useState('')
-    const [sizeclick,setSizeclick]=useState('')
     const [tsclick,setTsclick]=useState('')
-    console.log(path);
-    useEffect(()=>{
-        setAreaclick(path)
-        setPriceclick(path)
-        setTypeclick(path)
-        setSizeclick(path)
-        setTsclick(path)
-    },[])
-    
-    const search=(type,path)=>{
-        switch (type){
-            case 1: setAreaclick(path);
+
+    const dosearch= (data)=>{
+        if(ptype==='Newhome'){
+            condition('newhome/condition',data).then(res=>{
+                console.log(res);
+                onCallback(res.data.data)
+            })
+        }
+        if(ptype==='Used'){
+            condition('used/condition',data).then(res=>{
+                console.log(res);
+                onCallback(res.data.data)
+            })
+        }
+        if(ptype==='Rent'){
+            condition('rent/condition',data).then(res=>{
+                console.log(res);
+                onCallback(res.data.data)
+            })
+        }
+      
+
+    }
+
+    const search=(ctype,path)=>{
+        let data={address:areaclick,price:priceclick,housetype:typeclick,feature:tsclick}
+
+        switch (ctype){
+            case 1:
+            data.address=path
+            setAreaclick(path)
+            console.log(data);
+            dosearch(data)
+           
             break;
-            case 2: setPriceclick(path);
+
+            case 2: 
+            data.price=path
+            setPriceclick(path);
+            console.log(data);
+            dosearch(data)
             break;
-            case 3: setTypeclick(path);
+
+            case 3: 
+            data.housetype=path
+            setTypeclick(path);
+            console.log(data);
+            dosearch(data)
             break;
-            case 4: setSizeclick(path);
-            break;
-            case 5: setTsclick(path);
+
+            case 4: 
+            data.feature=path
+            setTsclick(path);
+            console.log(data);
+            dosearch(data)
             break;
         }
     }
@@ -81,20 +118,19 @@ const Pagesearch=(props)=> {
             </div>
         </div>
         <hr className='hr'/>
-        <div className="condition">
-        <span style={{fontSize:'14px' ,color:'rgba(0,0,0,0.5)'}}>面积:</span>
-            <div className="area">
-            { mianji.map((item,index)=>{
-                   return <span className={sizeclick===item.path?'searchitem searchitemclick':'searchitem'} onClick={()=>search(4,item.path)}>{item.name}</span>
-                })}
-            </div>
-        </div>
-        <hr className='hr'/>
-        {type!==3&& <div className="condition">
+        {type===1&& <div className="condition">
         <span style={{fontSize:'14px' ,color:'rgba(0,0,0,0.5)'}}>特色:</span>
             <div className="area">
             { tese.map((item,index)=>{
-                   return <span className={tsclick===item.path?'searchitem searchitemclick':'searchitem'} onClick={()=>search(5,item.path)}>{item.name}</span>
+                   return <span className={tsclick===item.path?'searchitem searchitemclick':'searchitem'} onClick={()=>search(4,item.path)}>{item.name}</span>
+                })}
+            </div>
+        </div>}
+        {type===2&& <div className="condition">
+        <span style={{fontSize:'14px' ,color:'rgba(0,0,0,0.5)'}}>特色:</span>
+            <div className="area">
+            { usedts.map((item,index)=>{
+                   return <span className={tsclick===item.path?'searchitem searchitemclick':'searchitem'} onClick={()=>search(4,item.path)}>{item.name}</span>
                 })}
             </div>
         </div>}
@@ -102,7 +138,7 @@ const Pagesearch=(props)=> {
         <span style={{fontSize:'14px' ,color:'rgba(0,0,0,0.5)'}}>特色:</span>
             <div className="area">
             { rentts.map((item,index)=>{
-                   return <span className={tsclick===item.path?'searchitem searchitemclick':'searchitem'} onClick={()=>search(5,item.path)}>{item.name}</span>
+                   return <span className={tsclick===item.path?'searchitem searchitemclick':'searchitem'} onClick={()=>search(4,item.path)}>{item.name}</span>
                 })}
             </div>
         </div>}

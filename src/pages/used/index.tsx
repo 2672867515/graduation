@@ -8,7 +8,7 @@ import img from '../../img/2bo.jpg'
 import { RightOutlined } from '@ant-design/icons';
 import { useSelector, useDispatch } from 'react-redux';
 import { LoginState,HeaderState } from '../../redux/action';
-import { getall, getallhouseqa, getusedhouseqa } from '../../api/api.ts';
+import { alikebynra, getall, getallhouseqa, getusedhouseqa } from '../../api/api.ts';
 const Used=(props)=> {
   const dispatch = useDispatch();
   const { path } = useParams();
@@ -23,9 +23,18 @@ const Used=(props)=> {
 
   const [housearr, setHousearr] = useState([]);
   useEffect(()=>{
-    getall('used/getall').then(res=>{
-      setHousearr(res.data.data.sort((a, b) => a.price - b.price))
-    })
+    window.scrollTo(0, 0);
+
+    if(path==='all'){
+      getall('used/getall').then(res=>{
+        setHousearr(res.data.data.sort((a, b) => a.price - b.price))
+      })
+    }else{
+      alikebynra('used/alike',{address:kw}).then(res=>{
+        setHousearr(res.data.data.sort((a, b) => a.averageprice - b.averageprice))
+      })
+    }
+
     getusedhouseqa('question/getusedhouseqa',{housetype:'Used'}).then(res=>{
       console.log(res.data.data);
       let data=res.data.data.sort((a, b) =>{
@@ -42,7 +51,11 @@ const Used=(props)=> {
     setInputValue(event.target.value);
   }
   const search=()=>{
-    console.log(inputValue);
+    alikebynra('used/alike',{address:inputValue}).then(res=>{
+      console.log(res.data.data);
+      
+      setHousearr(res.data.data.sort((a, b) => a.price - b.price))
+    })
   }
   const more=()=>{
     history.push(`/Question?houseid=all&housetype=all`)
@@ -54,9 +67,13 @@ const Used=(props)=> {
     history.push(`/Qa?qa=${item.id}&name=${match[1]||'未知楼盘'}`)
     dispatch(HeaderState('Question'))
   }
-  const detial=(id)=>{
-    history.push(`/detail/${id}?type=Used`)
+  const detial=(item)=>{
+    history.push(`/detail/${item.id}?type=Used&address=${item.address}`)
     
+  }
+  const onCallback=(data)=>{
+    setInputValue('')
+    setHousearr(data.sort((a, b) => a.price - b.price))
   }
   return (
     <div className='Newhome'>
@@ -64,13 +81,13 @@ const Used=(props)=> {
         <span className="project">基于three.js的3D选房平台</span>
         <span className="pagetype">|  二手房</span>
       <Input placeholder="请输入楼盘名称、地址" className='searchinput' size={'middle'}  allowClear value={inputValue} onChange={onChange}  />
-      <Button className='but' size={'middle'} type="primary"  style={{width:'100px', backgroundColor: 'rgb(35,201,147)' }} onClick={()=>search}>
+      <Button className='but' size={'middle'} type="primary"  style={{width:'100px', backgroundColor: 'rgb(35,201,147)' }} onClick={search}>
         搜索
       </Button>
       </div>
       <div className="chat">高品质二手房</div>
       <div className="searchpart">
-        <Pagesearch type={2} />
+        <Pagesearch type={2} onCallback={onCallback} />
       </div>
       <div className="newcontent">
         <div className="newhead">
@@ -78,7 +95,7 @@ const Used=(props)=> {
         </div>
         <div className="newhouse">
           {housearr.map((item)=>{
-            return (<div className="houseitem" onClick={()=>detial(item.id)}>
+            return (<div className="houseitem" onClick={()=>detial(item)}>
               <img className='img' src={item.cover} alt="" />
               {item.ishot==='true'&&<div className="hot">热门二手房</div>}
               <div className="title">{item.name}</div>
