@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 import './index.scss'
 import Pagesearch from '../../components/pagesearch//index.tsx'
 import img from '../../img/2bo.jpg'
+import nodata from '../../img/nodata.jpg'
 import { RightOutlined } from '@ant-design/icons';
 import { useSelector, useDispatch } from 'react-redux';
 import { LoginState,HeaderState } from '../../redux/action';
@@ -94,6 +95,7 @@ const Used=(props)=> {
           <div className='headitm headitmclick'>全部</div>
         </div>
         <div className="newhouse">
+        {housearr.length===0&&  <img src={nodata} alt="" />}
           {housearr.map((item)=>{
             return (<div className="houseitem" onClick={()=>detial(item)}>
               <img className='img' src={item.cover} alt="" />

@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react';
 import './index.scss'
 import { useDispatch } from 'react-redux';
 import { HeaderState } from '../../redux/action/index.jsx';
-import { Button, Form, Input, Menu, Row, type MenuProps, Col, Modal,message, Statistic, Upload } from 'antd';
-import { QuestionCircleOutlined, UserOutlined, BulbOutlined,StarOutlined,CommentOutlined,UploadOutlined } from '@ant-design/icons';
-import img from '../../img/2t.jpg'
+import { Button, Form, Input, Menu, Row, type MenuProps, Col, Modal,message, Statistic, Upload, Tag, Tabs } from 'antd';
+import { QuestionCircleOutlined, UserOutlined, UndoOutlined,StarOutlined,CommentOutlined,UploadOutlined } from '@ant-design/icons';
+import nodata from '../../img/nodata.jpg'
 import { useHistory } from 'react-router-dom';
 import type { UploadProps } from 'antd';
-import {updateHead,getuser} from '../../api/api.ts'
+import {updateHead,getuser, editphone, editpw, getquestionbyuser, getanswerbyuser, newhomegetHot, getcollect, getByid, decollect, getcollectnum} from '../../api/api.ts'
+import TabPane from 'antd/es/tabs/TabPane';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -30,8 +31,7 @@ function getItem(
 const items: MenuProps['items'] = [
   getItem('个人信息', '1',<UserOutlined />),
   getItem('我的提问', '2',<QuestionCircleOutlined />),
-  getItem('我回答过', '3',<BulbOutlined />),
-  getItem('我的收藏', '4',<StarOutlined />),
+  getItem('我的收藏', '3',<StarOutlined />),
 ];
 
 
@@ -43,25 +43,20 @@ const Personal=()=> {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [key,setKey]=useState('1')
   const [edit,setEdit]=useState(false)
-  const [messages,setMessages]=useState({username:'',phonenumber:''} )
+  const [messages,setMessages]=useState({phonenumber:''} )
   const [form] = Form.useForm();
   const [form2] = Form.useForm();
   const [messageApi, contextHolder] = message.useMessage();
+  const [qas,setQas]=useState([])
+  const [ans,setAns]=useState([])
+  const [collectnum,setCollectNum]=useState([])
+  const [hotnewhome,setHotnewhome]=useState([])
+  const [newhome,setNewhome]=useState([])
+  const [activeKey,setActiveKey]=useState("1")
+  const [newhouse,setNewhouse]=useState([])
+  const [used,setUsed]=useState([])
+  const [rent,setRent]=useState([])
 
-  const housearr=[{ts:['近地铁','fg']},
-  {ts:['ute','5rt']},
-  {ts:['67yh','ewsf','fgh']},
-  {ts:['q343dw','e33']},
-  {ts:['f','fg'],hot:'超级优惠'},
-  {ts:['hjk','6765g']}
-  ]
-  const qas=[
-    {qa:'wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww????',time:'2024-01-01',responsetotal:20,response:'少时诵所所所所所所所所所所所所所所所所'},
-    {qa:'wwww????',time:'2024-01-01',responsetotal:20,response:'去去去去去群群群群群群群群群群群群群群群群群群群群群群群群去去去去去群群群群群群群群群群群群'},
-    {qa:'wwww????',time:'2024-01-01',responsetotal:20,response:'sdsd'},
-    {qa:'wwww????',time:'2024-01-01',responsetotal:20,response:'sdsd'},
-    {qa:'wwww????',time:'2024-01-01',responsetotal:20,response:'sdsd'}
-  ]
   const [imgs,setImgs]=useState('')
 
   const file: UploadProps = {
@@ -73,7 +68,6 @@ const Personal=()=> {
   },
   onChange(info) {
     if (info.file.status !== 'uploading') {
-      console.log(info.file, info.fileList);
     }
     if (info.file.status === 'done') {
       message.success(`${info.file.name} 上传成功`);
@@ -90,18 +84,110 @@ const Personal=()=> {
 useEffect(()=>{
   getuser('/user/getuser',{id:localStorage.getItem('userid')}).then(res=>{
     setImgs(res.data.data.head)
-    console.log(res.data.data.username);
     form.setFieldsValue(res.data.data);
   })
+  getcollectnum('collect/getcollectnum',{userid:localStorage.getItem('userid')}).then(res=>{
+    setCollectNum(res.data.data)
+  })
+  getquestionbyuser('question/getquestionbyuser',{id:localStorage.getItem('userid')}).then(res=>{
+    setQas(res.data.data)
+  })
+  getanswerbyuser('answer/getanswerbyuser',{userid:localStorage.getItem('userid')}).then(res=>{
+    setAns(res.data.data)
+  })
+  newhomegetHot('newhome/getall').then(res=>{
+    // 新数组，用于存放随机取出的四个值
+    recommend(res.data.data)
+    setNewhome(res.data.data)
+  })
+  newcollect()
+  usedcollect()
+  rentcollect()
 },[])
+const newcollect=()=>{
+  getcollect('collect/getcollectbyid',{userid:localStorage.getItem('userid'),type:"Newhome"}).then(res=>{
+    let data=[]
+    console.log(res.data.data);
+    
+    res.data.data.forEach(async item=>{
+     await getByid('newhome/getByid',{id:item.houseid}).then(res=>{
+        data.push(res.data.data[0])
+        console.log(data);
+        setNewhouse(data)
+      })
+
+    })
+
+  })
+}
+const usedcollect=()=>{
+  getcollect('collect/getcollectbyid',{userid:localStorage.getItem('userid'),type:"Used"}).then(res=>{
+    let data=[]
+    
+    res.data.data.map(item=>{
+      getByid('used/getByid',{id:item.houseid}).then(res=>{
+        
+        data.push(res.data.data[0])
+        setUsed(data)
+      })
+    })
+
+  })
+}
+const rentcollect=()=>{
+  getcollect('collect/getcollectbyid',{userid:localStorage.getItem('userid'),type:"Rent"}).then(res=>{
+    let data=[]
+    
+    res.data.data.map(item=>{
+      getByid('rent/getByid',{id:item.houseid}).then(res=>{
+        
+        data.push(res.data.data[0])
+        setRent(data)
+      })
+    })
+
+  })
+}
+
+  const recommend=(data)=>{
+    let alldata=[...data]
+    const newArray = [];
+    // 循环取出四个随机值
+    for (let i = 0; i < 4; i++) {
+      // 生成一个介于 0 到数组长度减 1 的随机索引值
+      const randomIndex = Math.floor(Math.random() * alldata.length);
+      // 从原始数组中取出对应索引的值，并将其添加到新数组中
+      newArray.push(alldata[randomIndex]);
+      // 从原始数组中移除已经取出的值
+      alldata.splice(randomIndex, 1);
+    }
+    setHotnewhome(newArray.sort((a, b) => a.averageprice - b.averageprice))
+  }
+
+  const change=()=>{
+    const alldata=[...newhome]
+    const newArray = [];
+    // 循环取出四个随机值
+    for (let i = 0; i < 4; i++) {
+      // 生成一个介于 0 到数组长度减 1 的随机索引值
+      const randomIndex = Math.floor(Math.random() * alldata.length);
+      // 从原始数组中取出对应索引的值，并将其添加到新数组中
+      newArray.push(alldata[randomIndex]);
+      // 从原始数组中移除已经取出的值
+      alldata.splice(randomIndex, 1);
+    }
+    setHotnewhome(newArray.sort((a, b) => a.averageprice - b.averageprice))
+  }
+
   const onClick: MenuProps['onClick'] = (e) => {
-    console.log('click ', e);
     setKey(e.key)
-    console.log(key);
   };
   const onFinish = (values: any) => {
     console.log('Success:', values);
-    setEdit(false)
+    editphone('user/editphone',values).then(res=>{
+      setEdit(false)
+      message.success('编辑成功')
+    })
   };
   
   const onFinishFailed = (errorInfo: any) => {
@@ -117,15 +203,23 @@ useEffect(()=>{
     setIsModalOpen(false);
   };
   const onFinish2 = (values: any) => {
+    console.log(values);
+    let data={...values,id:localStorage.getItem('userid')}
     setLoading(true);
     setTimeout(() => {
-      setLoading(false);
-      setIsModalOpen(false);
-      messageApi.open({
-        type: 'success',
-        content: '修改成功',
-      });
-    }, 1000);
+      editpw('user/editpw',data).then(res=>{
+        if(res.data.code===-1){
+          setLoading(false);
+          message.error('原密码错误')
+        }else{
+          setLoading(false);
+          setIsModalOpen(false);
+          message.success('密码修改成功')
+        }
+
+      })
+     
+    }, 500);
     console.log('Success:', values);
    
   };
@@ -144,21 +238,49 @@ useEffect(()=>{
     setIsModalOpen(true);
     form2.resetFields()
   }
-  const detial=(item)=>{
-    history.push(`/detail/${item.id}?type=Newhome&address=${item.address}`)
+  const detial=(item,type)=>{
+    history.push(`/detail/${item.id}?type=${type}&address=${item.address}`)
   }
-  const toqa=(id)=>{
-    history.push(`/Qa/${id}`)
+  const toqa=(item)=>{
+    const regex = /\[(.*?)\]/; // 使用非贪婪模式匹配方括号内的内容
+    const match = item.content.match(regex); // 匹配字符串中的方括号内容
+    history.push(`/Qa?qa=${item.id}&name=${match[1]||'未知楼盘'}`)
   }
 
-  const cancelcollect=(id,e)=>{
+  const cancelcollect=(item,type,e)=>{
     e.stopPropagation();
-    console.log(id);
     
-    messageApi.open({
-      type: 'success',
-      content: '取消成功',
-    });
+    decollect('collect/decollect2',{houseid:item.id,userid:localStorage.getItem('userid'),type:type}).then(res=>{
+      messageApi.open({
+        type: 'success',
+        content: '取消成功',
+      })
+      if(type==='Newhome'){
+        newcollect()
+        if(newhouse.length===1){
+          setNewhouse([])
+        }
+      }
+      if(type==='Used'){
+ 
+        usedcollect()
+        if(used.length===1){
+          setUsed([])
+        }
+      }
+      if(type==='Rent'){
+        rentcollect()
+   
+        if(rent.length===1){
+          setRent([])
+        }
+      }
+    })
+    
+
+  }
+  const tabshandleChange = (key) => {
+    setActiveKey(key);
   }
   return (
     <div className='personal'>
@@ -197,13 +319,13 @@ useEffect(()=>{
                   <Button size='small' icon={<UploadOutlined />}>上传头像</Button>
                 </Upload>
               </Col>
-              <Col span={8} offset={1} style={{marginTop:'30px'}}>
+              <Col span={3} offset={1} style={{marginTop:'30px'}}>
                 <Form.Item
                   label="用户名"
                   name="username"
                   rules={[{ required: true, message: '请输入用户名!' }]}
                 >
-                  <Input disabled={!edit}/>
+                  <Tag color='green'>{form.getFieldValue('username')}</Tag>
                 </Form.Item>
               </Col>
               <Col span={8} style={{marginTop:'30px'}}>
@@ -242,30 +364,33 @@ useEffect(()=>{
             <div className="statistic">
             <Row gutter={16}>
               <Col span={8}>
-                <Statistic title={<span style={{color:'rgb(29, 182, 131)',fontWeight:'bold'}}>收藏数</span>} value={112893} />
+                <Statistic title={<span style={{color:'rgb(29, 182, 131)',fontWeight:'bold'}}>收藏数</span>} value={collectnum.length} />
               </Col>
               <Col span={8}>
-                <Statistic title={<span style={{color:'rgb(29, 182, 131)',fontWeight:'bold'}}>提问数</span>} value={112893} />
+                <Statistic title={<span style={{color:'rgb(29, 182, 131)',fontWeight:'bold'}}>提问数</span>} value={qas.length} />
               </Col>
               <Col span={8}>
-                <Statistic title={<span style={{color:'rgb(29, 182, 131)',fontWeight:'bold'}}>回答数</span>} value={112893} />
+                <Statistic title={<span style={{color:'rgb(29, 182, 131)',fontWeight:'bold'}}>回答数</span>} value={ans.length} />
               </Col>
             </Row>
             </div>
             <div className="suggess">
-              <div className="title">好房推荐</div>
+              <div className="title">新房推荐<span className='changes' onClick={change}><UndoOutlined />换一批</span></div>
               <div className="alike">
-              {housearr.map((item)=>{
-                return (<div className="houseitem" onClick={()=>detial(item)}>
-                  <img className='imgs' src={img} alt="" />
-                  <div className="title">汤臣一品</div>
-                  <div className="size">100</div>
-                  <div className="address">10dss0</div>
-                  <div className="newprice">均价：<span className="per">23564</span>/㎡</div>
-                  <div className="ts">
-                      {item.ts.map((item)=>{
-                        return <div className="tsitems">{item}</div>
-                      })}
+
+              {hotnewhome.map((item)=>{
+                return (<div className="houseitem" onClick={()=>detial(item,'Newhome')}>
+                  <img className='imgs' src={item.cover} alt="" />
+                  <div className="right">
+                    <div className="title">{item.name}</div>
+                    <div className="size">{item.size}㎡</div>
+                    <div className="address">{item.address}</div>
+                    <div className="newprice">均价：<span className="per">{item.averageprice}</span>/㎡</div>
+                    <div className="ts">
+                        {item.feature.split("，").map((item)=>{
+                          return <div className="tsitems">{item}</div>
+                        })}
+                    </div>
                   </div>
                 </div>)
               })}
@@ -275,56 +400,94 @@ useEffect(()=>{
           {key==='2'&&<div className="myquestion">
           <div className="qa">
               <div className="title">
-                <>共提出<span>100</span>个房产问题</>
+                <>共提出<span>{qas.length}</span>个房产问题</>
               </div>
               {qas.map((item)=>{
-                return <div className="qaitem" onClick={()=>toqa(1)}>
-                    <div className="q">{item.qa}</div>
-                    <div className="a">答：{item.response}</div>
-                    <div className="total"><CommentOutlined /> {item.responsetotal}</div>
+                return <div className="qaitem" onClick={()=>toqa(item)}>
+                    <div className="q">{item.content}</div>
+                    <div className="a">答：{item.answer[0]?item.answer[0].content:'暂无回答'}</div>
+                    <div className="total"><CommentOutlined /> {item.answer.length}</div>
                     <div className="time">{item.time}</div>
                 </div>
               })}
               
             </div>
           </div>}
-          {key==='3'&&<div className="myanswer">
-          <div className="qa">
-              <div className="title">
-                <>共回答过<span>100</span>个房产问题</>
-              </div>
-              {qas.map((item)=>{
-                return <div className="qaitem" onClick={()=>toqa(1)}>
-                    <div className="q">{item.qa}</div>
-                    <div className="a">答：{item.response}</div>
-                    <div className="total"><CommentOutlined /> {item.responsetotal}</div>
-                    <div className="time">{item.time}</div>
-                </div>
-              })}
-              
-            </div>
-          </div>}
-          {key==='4'&&<div className="mycollect">
+          {key==='3'&&<div className="mycollect">
+          <Tabs defaultActiveKey="1" activeKey={activeKey} onChange={tabshandleChange}>
+          <TabPane tab="新房" key="1">
           <div className="collect">
-              {housearr.map((item)=>{
-                return (<div className="houseitem" onClick={()=>detial(item)}>
-                  <img className='imgs' src={img} alt="" />
+          {newhouse.length===0&&<img className='nodataimg' src={nodata} alt="" />}
+              {newhouse.sort((a, b) => a.averageprice - b.averageprice).map((item)=>{
+                return (<div className="houseitem" onClick={()=>detial(item,'Newhome')}>
+                  <img className='imgs' src={item.cover?item.cover:nodata} alt="" />
                   <div className="rightpart">
-                    <div className="title">汤臣wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww一品</div>
-                    <div className="size">10wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww0</div>
-                    <div className="address">10dsswwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww0</div>
-                    <div className="newprice">均价：<span className="per">23564</span>/㎡</div>
-                    <div className="cancel" onClick={(e)=>cancelcollect(1,e)}>取消收藏</div>
+                    <div className="title">{item.name}</div>
+                    <div className="size">{item.size}㎡</div>
+                    <div className="address">{item.address}</div>
+                    <div className="newprice">均价：<span className="per">{item.averageprice}</span>/㎡</div>
+                    <div className="cancel" onClick={(e)=>cancelcollect(item,'Newhome',e)}>取消收藏</div>
                   
                     <div className="ts">
-                        {item.ts.map((item)=>{
+                        {item.feature.split("，").map((item)=>{
                           return <div className="tsitems">{item}</div>
                         })}
                     </div>
                   </div>
                 </div>)
               })}
-              </div>
+          </div>
+          </TabPane>
+          <TabPane tab="二手房" key="2">
+
+          <div className="collect">
+          {used.length===0&&<img className='nodataimg' src={nodata} alt="" />}
+              {used.sort((a, b) => a.price - b.price).map((item)=>{
+                return (<div className="houseitem" onClick={()=>detial(item,'Used')}>
+                  <img className='imgs' src={item.cover?item.cover:nodata} alt="" />
+                  <div className="rightpart">
+                    <div className="title">{item.name}</div>
+                    <div className="size">{item.size}㎡</div>
+                    <div className="address">{item.address}</div>
+                    <div className="newprice">总价：<span className="per">{item.price}w</span> 均价：<span className="per">{item.per}</span>/㎡</div>
+                    <div className="cancel" onClick={(e)=>cancelcollect(item,'Used',e)}>取消收藏</div>
+
+                    <div className="ts">
+                        {item.feature.split("，").map((item)=>{
+                          return <div className="tsitems">{item}</div>
+                        })}
+                    </div>
+                  </div>
+                </div>)
+              })}
+          </div>
+          
+          </TabPane>
+          <TabPane tab="租房" key="3">
+          <div className="collect">
+          {rent.length===0&&<img className='nodataimg' src={nodata} alt="" />}
+              {rent.sort((a, b) => a.price - b.price).map((item)=>{
+                return (<div className="houseitem" onClick={()=>detial(item,'Rent')}>
+                  <img className='imgs' src={item.cover?item.cover:nodata} alt="" />
+                  <div className="rightpart">
+                    <div className="title">{item.name}</div>
+                    <div className="size">{item.size}㎡</div>
+                    <div className="address">{item.address}</div>
+                    <div className="newprice"><span className="per">{item.price}</span>/月</div>
+                    <div className="cancel" onClick={(e)=>cancelcollect(item,'Rent',e)}>取消收藏</div>
+                  
+                    <div className="ts">
+                        {item.feature.split("，").map((item)=>{
+                          return <div className="tsitems">{item}</div>
+                        })}
+                    </div>
+                  </div>
+                </div>)
+              })}
+          </div>
+          </TabPane>
+        </Tabs>
+        
           </div>}
         </div>
       </div>
@@ -354,14 +517,14 @@ useEffect(()=>{
           
           <Form.Item
             label="原密码"
-            name="password"
+            name="opassword"
             rules={[{ required: true, message: '请输入原密码' }]}
           >
              <Input  placeholder="请输入原密码" />
           </Form.Item>
           <Form.Item
             label="新密码"
-            name="password2"
+            name="password"
             rules={[{ required: true, message: '请输入新密码' }]}
           >
              <Input  placeholder="请输入新密码" />

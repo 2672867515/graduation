@@ -28,13 +28,14 @@ import { Button, Form, Modal, Select, Tooltip,message,Input,Image } from 'antd';
 import {
   StarFilled,LeftOutlined,RightOutlined
 } from '@ant-design/icons';
-import { addquestion, getByid, getHousetype, gethouseqa, getrentimg, alikebynra, rentgetByid, usedgetByid } from '../../api/api.ts';
+import { addquestion, getByid, getHousetype, gethouseqa, getrentimg, alikebynra, rentgetByid, usedgetByid, getcollect,collected,decollect } from '../../api/api.ts';
 const Detail=(props)=> {
   const { TextArea } = Input;
   const { Option } = Select;
   const eqs=[ds,kt,yg,c,wsj,znms,yt,nq]
   const eqs2=[bx,xyj,rsq,kd,sf,yyj,rqz,kzf]
-  const [collect,setCollect]=useState(true)
+  const [collect,setCollect]=useState(false)
+  const [collectid,setCollectid]=useState()
   let   history = useHistory()
   const dispatch = useDispatch();
   const { id } = useParams();
@@ -94,6 +95,13 @@ const Detail=(props)=> {
       getHousetype('housetype/getHousetype',{houseid:id}).then(res=>{
         setHxarr(res.data.data)
       })
+      getcollect('collect/getcollectbyid',{userid:localStorage.getItem('userid'),houseid:id,type:"Newhome"}).then(res=>{
+        console.log(res);
+        if(res.data.data.length>0){
+          setCollect(true)
+          setCollectid(res.data.data[0].id)
+        }
+      })
     }
     if(type==="Used"){
 
@@ -101,6 +109,13 @@ const Detail=(props)=> {
         getalike('used/alike',res.data.data[0].address)
         setHousedata(res.data.data[0])
         setTsarr(res.data.data[0].feature.split("，"))
+      })
+      getcollect('collect/getcollectbyid',{userid:localStorage.getItem('userid'),houseid:id,type:"Used"}).then(res=>{
+        console.log(res);
+        if(res.data.data.length>0){
+          setCollect(true)
+          setCollectid(res.data.data[0].id)
+        }
       })
     }
     if(type==="Rent"){
@@ -114,6 +129,13 @@ const Detail=(props)=> {
       })
       getrentimg('image/getrentimg',{houseid:id,type:"Rent"}).then(res=>{
         setImgs(res.data.data)
+      })
+      getcollect('collect/getcollectbyid',{userid:localStorage.getItem('userid'),houseid:id,type:"Rent"}).then(res=>{
+        console.log(res);
+        if(res.data.data.length>0){
+          setCollect(true)
+          setCollectid(res.data.data[0].id)
+        }
       })
     }
 
@@ -158,12 +180,29 @@ const Detail=(props)=> {
     
     history.push(`/detail/${item.id}?type=${type}&address=${item.address}`)
   }
+
   const changecollect=()=>{
-    messageApi.open({
-      type: 'success',
-      content: collect?'已取消':'已收藏',
-    });
-    setCollect(prevState => !prevState)
+    let data={houseid:id,userid:localStorage.getItem('userid'),type:type}
+    if(collect){
+      decollect('collect/decollect',{id:collectid}).then(res=>{
+        messageApi.open({
+          type: 'success',
+          content: collect?'已取消':'已收藏',
+        });
+        setCollect(false)
+      })
+    }else{
+      collected('collect/collect',data).then(res=>{
+        messageApi.open({
+          type: 'success',
+          content: collect?'已取消':'已收藏',
+        });
+        setCollect(true)
+        setCollectid(res.data.data[0].id)
+      })
+    }
+  
+
    
   }
   const getqs=(qatype,qaid)=>{

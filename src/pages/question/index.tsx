@@ -137,11 +137,6 @@ const Question=()=> {
     
    
   }
-  const checkall=()=>{
-     setIssearch(true)
-     setIndeal(false)
-     setAbout('待解决问题')
-  }
   
   const ask = () => {
     setIsModalOpen(true);

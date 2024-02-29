@@ -7,7 +7,7 @@ import img from '../../img/2bo.jpg'
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { HeaderState } from '../../redux/action/index.jsx';
-import { alikebynra, getall } from '../../api/api.ts';
+import { alikebynra, getall, getbyprice } from '../../api/api.ts';
 import nodata from '../../img/nodata.jpg'
 const Rent=(props)=> {
   const dispatch = useDispatch();
@@ -16,6 +16,7 @@ const Rent=(props)=> {
   console.log(path);
   const queryParams = new URLSearchParams(window.location.search);
   const kw = queryParams.get('kw');
+  
   const type = queryParams.get('type');
   dispatch(HeaderState(type))
   const [inputValue, setInputValue] = useState('');
@@ -30,9 +31,18 @@ const Rent=(props)=> {
       getall('rent/getall').then(res=>{
         setHousearr(res.data.data.sort((a, b) => a.price - b.price))
       })
-    }else{
+    }else if(path*1>-1){
+      getbyprice('rent/getbyprice',{price:path}).then(res=>{
+        setHousearr(res.data.data.sort((a, b) => a.price - b.price))
+      })
+    }else if(path==='to'){
+
       alikebynra('rent/alike',{address:kw}).then(res=>{
-        setHousearr(res.data.data.sort((a, b) => a.averageprice - b.averageprice))
+        setHousearr(res.data.data.sort((a, b) => a.price - b.price))
+      })
+    }else{
+      alikebynra('rent/alike',{address:path}).then(res=>{
+        setHousearr(res.data.data.sort((a, b) => a.price - b.price))
       })
     }
   },[])

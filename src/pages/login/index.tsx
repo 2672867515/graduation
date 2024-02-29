@@ -5,7 +5,7 @@ import { Button, Form, Input,message } from 'antd';
 import { LockOutlined , UserOutlined } from '@ant-design/icons';
 import { useSelector, useDispatch } from 'react-redux';
 import { LoginState,HeaderState } from '../../redux/action';
-import {getbyusername, tologin} from '../../api/api.ts'
+import {getbyusername, singin, tologin} from '../../api/api.ts'
 const  Login=(props)=> {
   let   history = useHistory() //将useHistory()钩子赋值给history方便使用
   const [login,Setlogin]=useState('login')
@@ -48,6 +48,15 @@ const  Login=(props)=> {
 
   const onRegister = (values: any) => {
     console.log('Success:', values);
+    singin('user/singin',values).then(res=>{
+      if(res.data.code===-1){
+        message.error(res.data.msg);
+      }else{
+        Setlogin('login')
+        message.success("注册成功");
+      }
+      
+    })
   };
   const onRegisterFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);
@@ -125,7 +134,7 @@ const  Login=(props)=> {
       <Form.Item<FieldType2> 
       name="password" 
       rules={[{ required: true,message: '请输入密码' }]}>
-        <Input  placeholder="密码" prefix={<LockOutlined  className="site-form-item-icon" />} />
+        <Input.Password   placeholder="密码" prefix={<LockOutlined  className="site-form-item-icon" />} />
       </Form.Item>
 
       {/* Field */}
@@ -147,7 +156,7 @@ const  Login=(props)=> {
           }),
         ]}
       >
-        <Input  placeholder="确认密码" prefix={<LockOutlined  className="site-form-item-icon" />} />
+        <Input.Password   placeholder="确认密码" prefix={<LockOutlined  className="site-form-item-icon" />} />
       </Form.Item>
       <Form.Item wrapperCol={{ offset:2, span: 20 }}>
           <Button type="primary"  htmlType="submit" size="middle"  block style={{ backgroundColor: 'rgb(0, 160, 0)', borderColor: 'rgb(0, 150, 0)' }}>

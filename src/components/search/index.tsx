@@ -25,7 +25,7 @@ const Search=React.memo((props:detail)=> {
         {condition!==2&&<div className="condition">
            区域：
             <div className="area">
-                { area.map((item,index)=>{
+                { area.slice(1,14).map((item,index)=>{
                    return <span onClick={()=>search(item.path)}>{item.name}</span>
                 })}
             </div>
@@ -33,7 +33,7 @@ const Search=React.memo((props:detail)=> {
         {condition!==2&&condition!==3&&<div className="condition">
             售价:
             <div className="area">
-            { newprice.map((item,index)=>{
+            { newprice.slice(1,20).map((item,index)=>{
                    return <span onClick={()=>search(item.path)}>{item.name}</span>
                 })}
             </div>
@@ -41,7 +41,7 @@ const Search=React.memo((props:detail)=> {
         {condition===2&&<div className="condition">
             售价:
             <div className="area">
-            { usedprice.map((item,index)=>{
+            { usedprice.slice(1,20).map((item,index)=>{
                    return <span onClick={()=>search(item.path)}>{item.name}</span>
                 })}
             </div>
@@ -49,7 +49,7 @@ const Search=React.memo((props:detail)=> {
         {condition===3&&<div className="condition">
             租金:
             <div className="area">
-            { rentprice.map((item,index)=>{
+            { rentprice.slice(1,20).map((item,index)=>{
                    return <span onClick={()=>search(item.path)}>{item.name}</span>
                 })}
             </div>

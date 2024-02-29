@@ -8,7 +8,16 @@ const instance = axios.create({
 export const tologin = (url, data) => {
   return instance.post(url, data);
 };
+export const singin = (url, data) => {
+  return instance.post(url, data);
+};
 export const getbyusername = (url, data) => {
+  return instance.post(url, data);
+};
+export const editphone = (url, data) => {
+  return instance.post(url, data);
+};
+export const editpw = (url, data) => {
   return instance.post(url, data);
 };
 export const getall = (url) => {
@@ -72,5 +81,26 @@ export const alikebynra = (url, data) => {
   return instance.post(url,data);
 };
 export const condition = (url, data) => {
+  return instance.post(url,data);
+};
+export const getbyprice = (url, data) => {
+  return instance.post(url,data);
+};
+export const getquestionbyuser = (url, data) => {
+  return instance.post(url,data);
+};
+export const getanswerbyuser = (url, data) => {
+  return instance.post(url,data);
+};
+export const getcollect = (url, data) => {
+  return instance.post(url,data);
+};
+export const collected = (url, data) => {
+  return instance.post(url,data);
+};
+export const decollect = (url, data) => {
+  return instance.post(url,data);
+};
+export const getcollectnum = (url, data) => {
   return instance.post(url,data);
 };

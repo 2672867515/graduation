@@ -7,8 +7,8 @@ import img from '../../img/2bo.jpg'
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { HeaderState } from '../../redux/action/index.jsx';
-import {alikebynra, getall, newhomegetHot, updateHead} from '../../api/api.ts'
-
+import {alikebynra, getall, getbyprice, newhomegetHot, updateHead} from '../../api/api.ts'
+import nodata from '../../img/nodata.jpg'
 
 const Newhome=(props)=> {
   const dispatch = useDispatch();
@@ -33,8 +33,18 @@ const Newhome=(props)=> {
       getall('newhome/getall').then(res=>{
         setHousearr(res.data.data.sort((a, b) => a.averageprice - b.averageprice))
       })
-    }else{
+    }else if(path*1>-1){
+      getbyprice('newhome/getbyprice',{price:path}).then(res=>{
+        setHousearr(res.data.data.sort((a, b) => a.averageprice - b.averageprice))
+      })
+    }else if(path==='to'){
+      console.log(kw);
+      
       alikebynra('newhome/alike',{address:kw}).then(res=>{
+        setHousearr(res.data.data.sort((a, b) => a.averageprice - b.averageprice))
+      })
+    }else{
+      alikebynra('newhome/alike',{address:path}).then(res=>{
         setHousearr(res.data.data.sort((a, b) => a.averageprice - b.averageprice))
       })
     }
@@ -83,6 +93,8 @@ const Newhome=(props)=> {
           <div className='headitm headitmclick'>全部</div>
         </div>
         <div className="newhouse">
+        {housearr.length===0&&  <img src={nodata} alt="" />}
+
           {housearr.map((item)=>{
             return (<div className="houseitem" onClick={()=>detial(item)}>
               <img className='img' src={item.cover} alt="" />
