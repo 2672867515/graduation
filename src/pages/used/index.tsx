@@ -9,7 +9,7 @@ import nodata from '../../img/nodata.jpg'
 import { RightOutlined } from '@ant-design/icons';
 import { useSelector, useDispatch } from 'react-redux';
 import { LoginState,HeaderState } from '../../redux/action';
-import { alikebynra, getall, getallhouseqa, getusedhouseqa } from '../../api/api.ts';
+import { alikebynra, getall, getallhouseqa, getbyprice, getusedhouseqa } from '../../api/api.ts';
 const Used=(props)=> {
   const dispatch = useDispatch();
   const { path } = useParams();
@@ -30,9 +30,16 @@ const Used=(props)=> {
       getall('used/getall').then(res=>{
         setHousearr(res.data.data.sort((a, b) => a.price - b.price))
       })
-    }else{
+    }else if(path*1>-1){
+      console.log(111);
+      
+      getbyprice('used/getbyprice',{price:path}).then(res=>{
+        setHousearr(res.data.data.sort((a, b) => a.price - b.price))
+      })
+    }else if(path==='to'){
+
       alikebynra('used/alike',{address:kw}).then(res=>{
-        setHousearr(res.data.data.sort((a, b) => a.averageprice - b.averageprice))
+        setHousearr(res.data.data.sort((a, b) => a.price - b.price))
       })
     }
 

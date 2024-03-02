@@ -13,6 +13,14 @@ const Pagesearch=(props)=> {
     const [typeclick,setTypeclick]=useState('')
     const [tsclick,setTsclick]=useState('')
 
+    useEffect(()=>{
+        if(path*1>-1){
+            setPriceclick(path)
+        }
+        else if(path!=='to'&&path!=='all' ){
+            setAreaclick(path)
+        }
+    },[])
     const dosearch= (data)=>{
         if(ptype==='Newhome'){
             condition('newhome/condition',data).then(res=>{
@@ -33,7 +41,6 @@ const Pagesearch=(props)=> {
             })
         }
       
-
     }
 
     const search=(ctype,path)=>{
