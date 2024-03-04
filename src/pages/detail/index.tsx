@@ -461,6 +461,7 @@ const Detail=(props)=> {
         cancelText='取消' 
         confirmLoading={loading} 
         open={isModalOpen} 
+        onCancel={handleCancel}
         footer={[
           // 注意这里使用的是 Form 组件的 submit 方法
           <Button key="submit" onClick={() => handleCancel()}>
