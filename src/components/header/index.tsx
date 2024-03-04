@@ -25,6 +25,7 @@ const Header=(props)=> {
   }
   const exit=()=>{
     localStorage.setItem('login','false')
+    localStorage.setItem('userid','0')
     dispatch(LoginState('false'))
     dispatch(HeaderState('Login'))
     history.push(`/Login`)

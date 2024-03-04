@@ -62,8 +62,13 @@ const Qa=()=> {
     history.push(`/Qa?qa=${id}`)
   }
   const showModal = () => {
-    setIsModalOpen(true);
-    setInput('')
+    if(localStorage.getItem('userid')*1===0){
+      message.error('请先登录')
+    }else{
+      setIsModalOpen(true);
+      setInput('')
+    }
+
   };
   const handleTextAreaChange=(e)=>{
     setInput(e.target.value)

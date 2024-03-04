@@ -182,27 +182,29 @@ const Detail=(props)=> {
   }
 
   const changecollect=()=>{
-    let data={houseid:id,userid:localStorage.getItem('userid'),type:type}
-    if(collect){
-      decollect('collect/decollect',{id:collectid}).then(res=>{
-        messageApi.open({
-          type: 'success',
-          content: collect?'已取消':'已收藏',
-        });
-        setCollect(false)
-      })
+    if(localStorage.getItem('userid')*1===0){
+      message.error('请先登录')
     }else{
-      collected('collect/collect',data).then(res=>{
-        messageApi.open({
-          type: 'success',
-          content: collect?'已取消':'已收藏',
-        });
-        setCollect(true)
-        setCollectid(res.data.data[0].id)
-      })
+      let data={houseid:id,userid:localStorage.getItem('userid'),type:type}
+      if(collect){
+        decollect('collect/decollect',{id:collectid}).then(res=>{
+          messageApi.open({
+            type: 'success',
+            content: collect?'已取消':'已收藏',
+          });
+          setCollect(false)
+        })
+      }else{
+        collected('collect/collect',data).then(res=>{
+          messageApi.open({
+            type: 'success',
+            content: collect?'已取消':'已收藏',
+          });
+          setCollect(true)
+          setCollectid(res.data.data[0].id)
+        })
+      }
     }
-  
-
    
   }
   const getqs=(qatype,qaid)=>{
@@ -220,7 +222,12 @@ const Detail=(props)=> {
   }
     
   const ask = () => {
-    setIsModalOpen(true);
+    if(localStorage.getItem('userid')*1===0){
+      message.error('请先登录')
+    }else{
+      setIsModalOpen(true);
+    }
+
   };
 
   const handleCancel = () => {

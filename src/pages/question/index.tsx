@@ -139,8 +139,13 @@ const Question=()=> {
   }
   
   const ask = () => {
-    setIsModalOpen(true);
-    form.resetFields()
+    if(localStorage.getItem('userid')*1===0){
+      message.error('请先登录')
+    }else{
+      setIsModalOpen(true);
+      form.resetFields()
+    }
+
   };
 
   const toqa=(item)=>{
