@@ -76,7 +76,7 @@ const Used=(props)=> {
     dispatch(HeaderState('Question'))
   }
   const detial=(item)=>{
-    history.push(`/detail/${item.id}?type=Used&address=${item.address}`)
+    history.push(`/detail/${item.id}?type=Used&address=${item.address}&ishot=${item.ishot}`)
     
   }
   const onCallback=(data)=>{

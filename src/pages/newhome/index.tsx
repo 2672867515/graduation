@@ -67,7 +67,7 @@ const Newhome=(props)=> {
   }
 
   const detial=(item)=>{
-    history.push(`/detail/${item.id}?type=Newhome&address=${item.address}`)
+    history.push(`/detail/${item.id}?type=Newhome&address=${item.address}&ishot=${item.ishot}`)
     
   }
   const onCallback=(data)=>{

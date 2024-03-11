@@ -60,7 +60,7 @@ const Rent=(props)=> {
   const detial=(item)=>{
 
     
-    history.push(`/detail/${item.id}?type=Rent&address=${item.address}`)
+    history.push(`/detail/${item.id}?type=Rent&address=${item.address}&ishot=${item.ishot}`)
     
   }
   const onCallback=(data)=>{

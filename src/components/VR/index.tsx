@@ -129,12 +129,8 @@ const sortImage=(image)=> {
   const init = () => {
   
     queryImageById('image/queryImageById',{id:id,type:type+'vr'}).then(res=>{
-      console.log(res.data);
-
       setImage({...organizeData(res.data.data)})
       const images={...organizeData(res.data.data)}
-      console.log(images);
-      
       loader = new THREE.TextureLoader() //纹理加载器
       setHomeArr(getNewData(images))
       console.log(getNewData(images));

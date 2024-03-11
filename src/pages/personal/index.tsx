@@ -83,6 +83,8 @@ const Personal=()=> {
 };
 useEffect(()=>{
   getuser('/user/getuser',{id:localStorage.getItem('userid')}).then(res=>{
+    console.log(res.data.data);
+    
     setImgs(res.data.data.head)
     form.setFieldsValue(res.data.data);
   })

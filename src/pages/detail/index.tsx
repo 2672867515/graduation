@@ -42,11 +42,10 @@ const Detail=(props)=> {
   const queryParams = new URLSearchParams(window.location.search);
   const type = queryParams.get('type');
   const address = queryParams.get('address');
-
+  const ishot = queryParams.get('ishot');
   dispatch(HeaderState(type))
   const header = useSelector((state) => state.header);
   const [housedata,setHousedata]=useState({})
-  // const [address,setAddress]=useState('')
   const [tsarr,setTsarr]=useState(['特色'])
   const [messageApi, contextHolder] = message.useMessage();
   const [hxarr,setHxarr]=useState([])
@@ -306,9 +305,9 @@ const Detail=(props)=> {
           <div className="details">
             <div className="tip">
               <div className="ad">
-                热门好房
+                {ishot==='true'?type==='Rent'?'热租':type==='Newhome'?'人气好房':type==='Used'?'热门二手房':'真实房源':'品质好房'}
               </div>
-              <span className="vr">支持VR</span>
+              {type!=='Rent'&&<span className="vr">支持VR</span>}
               <Tooltip title={collect?'取消收藏':'收藏'} >
                 <span className="collect" style={{color:collect?'orange':''}} onClick={changecollect}> <StarFilled /></span>
               </Tooltip>

@@ -104,7 +104,7 @@ const Home=(props)=> {
     
 }
 const detial=(item)=>{
-  history.push(`/detail/${item.id}?type=Newhome&address=${item.address}`)
+  history.push(`/detail/${item.id}?type=Newhome&address=${item.address}&ishot=${item.ishot}`)
   dispatch(HeaderState('Newhome'))
   
 }
@@ -156,7 +156,7 @@ const detial=(item)=>{
           <div className="hot-more" onClick={()=>more('Newhome')}>查看更多</div>
           <div className="part-item">
             {hotnewhome8.map((item)=>{
-              return <Hotitem id={item.id} type='Newhome' address={item.address} img={item.cover||nodata} name={item.name} size={item.size} price={item.averageprice+'/㎡'} />
+              return <Hotitem id={item.id} ishot={item.ishot} type='Newhome' address={item.address} img={item.cover||nodata} name={item.name} size={item.size} price={item.averageprice+'/㎡'} />
             })}
           </div>
         
@@ -166,7 +166,7 @@ const detial=(item)=>{
           <div className="hot-more" onClick={()=>more('Used')}>查看更多</div>
           <div className="part-item">
             {hotused.map((item)=>{
-              return <Hotitem id={item.id} address={item.address} img={item.cover||nodata} type='Used' name={item.name} size={item.size} price={item.price+'w'}  />
+              return <Hotitem id={item.id} ishot={item.ishot} address={item.address} img={item.cover||nodata} type='Used' name={item.name} size={item.size} price={item.price+'w'}  />
             })}
           </div>
         
@@ -177,7 +177,7 @@ const detial=(item)=>{
           <div className="hot-more" onClick={()=>more('Rent')}>查看更多</div>
           <div className="part-item">
             {hotrent.map((item)=>{
-              return <Hotitem id={item.id} address={item.address} img={item.cover||nodata} type='Rent' name={item.name} size={item.size} price={item.price+'/月'}   />
+              return <Hotitem id={item.id} ishot={item.ishot} address={item.address} img={item.cover||nodata} type='Rent' name={item.name} size={item.size} price={item.price+'/月'}   />
             })}
           </div>
         </div>
