@@ -31,6 +31,8 @@ const Vr = (props): ReactElement => {
 
   const [currentHome, setCurrentHome] = useState('') // 当前所处房间
 
+  const [imgindex, setImgindex] = useState(0) 
+
   const [res, setRes] = useState<any>(image)
 
   const { id } = useParams();
@@ -192,6 +194,7 @@ const sortImage=(image)=> {
     renderer.render(scene, camera);
   }
   const change=(i)=>{
+    setImgindex(i)
     setCurrentHome(getNewData(image)[i][0]) 
   }
 
@@ -208,7 +211,7 @@ const sortImage=(image)=> {
         homeArr.map((item,index)=>{
           return (
           <div onClick={()=>change(index)} className="option">
-            <div className="text">{item[0]}</div>
+            <div className="text" style={{backgroundColor:imgindex===index?'rgb(35,201,147)':''}}>{item[0]}</div>
             <img style={{ width: '100%',height: '100%'}} key={index} src={item[1].image[4]} /> 
           </div>
           )
